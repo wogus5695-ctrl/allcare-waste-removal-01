@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import { SITE_CONFIG, hasValidContactPhone, hasValidKakaoUrl } from '@/config/site';
 
 export function Header() {
@@ -11,12 +12,17 @@ export function Header() {
         {/* Brand Logo */}
         <Link
           href="/"
-          className="flex items-center gap-2 text-lg font-black tracking-tight text-slate-900 transition hover:opacity-90"
+          className="flex items-center gap-2.5 text-lg font-black tracking-tight text-slate-900 transition hover:opacity-90"
         >
-          <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-slate-900 text-sm font-bold text-white">
-            올
-          </span>
-          <span>{SITE_CONFIG.brandName}</span>
+          <Image
+            src="/logo.png"
+            alt={SITE_CONFIG.brandName}
+            width={34}
+            height={34}
+            priority
+            className="h-8.5 w-8.5 object-contain"
+          />
+          <span className="font-extrabold tracking-tight">{SITE_CONFIG.brandName}</span>
         </Link>
 
         {/* Desktop Navigation Links */}

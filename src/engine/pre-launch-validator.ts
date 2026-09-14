@@ -164,7 +164,18 @@ export function validateFinalCtaAsset(customPath?: string): { status: GateStatus
 /**
  * Favicon 에셋 검증
  */
-export function validateFaviconAsset(): { status: GateStatus; message: string } {
+export function validateFaviconAsset(customPath?: string): { status: GateStatus; message: string } {
+  if (customPath) {
+    const exists = checkPublicAssetExists(customPath);
+    if (!exists) {
+      return {
+        status: 'PENDING',
+        message: `운영자 제공 파비콘 미등록 (대기 경로: public/${customPath}).`,
+      };
+    }
+    return { status: 'READY', message: `운영자 파비콘 확인 완료 (public/${customPath})` };
+  }
+
   const icoExists = checkPublicAssetExists('favicon.ico');
   const pngExists = checkPublicAssetExists('favicon.png');
   const svgExists = checkPublicAssetExists('favicon.svg');

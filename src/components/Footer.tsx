@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import { SITE_CONFIG } from '@/config/site';
 
 export function Footer() {
@@ -16,8 +17,18 @@ export function Footer() {
         <div className="flex flex-col gap-6 md:flex-row md:items-start md:justify-between">
           {/* Brand & Mission */}
           <div className="max-w-md">
-            <Link href="/" className="text-lg font-black text-slate-900">
-              {SITE_CONFIG.brandName}
+            <Link
+              href="/"
+              className="inline-flex items-center gap-2 text-lg font-black text-slate-900 transition hover:opacity-90"
+            >
+              <Image
+                src="/logo.png"
+                alt={SITE_CONFIG.brandName}
+                width={26}
+                height={26}
+                className="h-6.5 w-6.5 object-contain"
+              />
+              <span>{SITE_CONFIG.brandName}</span>
             </Link>
             <p className="mt-2 text-sm leading-relaxed text-slate-500 break-keep">
               가정집·사업장 폐기물 수거부터 실내 시설물 철거·원상복구까지

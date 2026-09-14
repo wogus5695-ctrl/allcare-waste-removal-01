@@ -104,8 +104,12 @@ describe('STEP 4-C Preview Safety Lock & Pre-Launch Validation Gates', () => {
     it('미등록된 운영자 실제 에셋은 PENDING 상태로 안전하게 보고되어야 한다', () => {
       assert.strictEqual(validateHeroAsset().status, 'PENDING');
       assert.strictEqual(validateFinalCtaAsset().status, 'PENDING');
-      assert.strictEqual(validateFaviconAsset().status, 'PENDING');
+      assert.strictEqual(validateFaviconAsset('nonexistent-favicon.ico').status, 'PENDING');
       assert.strictEqual(validateOgImageAsset().status, 'PENDING');
+    });
+
+    it('실제 등록된 Favicon은 READY 상태로 인식되어야 한다', () => {
+      assert.strictEqual(validateFaviconAsset().status, 'READY');
     });
   });
 
