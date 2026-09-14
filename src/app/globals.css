@@ -1,0 +1,29 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Pretendard Variable", Pretendard, "Noto Sans KR", "Segoe UI", Roboto, sans-serif;
+    word-break: keep-all;
+    overflow-wrap: break-word;
+    scroll-behavior: smooth;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    @apply bg-white text-slate-800 antialiased;
+  }
+}
+
+/* Native HTML <details> & <summary> 스타일링 */
+details summary {
+  list-style: none;
+}
+details summary::-webkit-details-marker {
+  display: none;
+}
+
+details[open] summary .faq-chevron {
+  transform: rotate(180deg);
+}
