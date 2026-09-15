@@ -10,6 +10,7 @@ import { ImagePlaceholder } from '@/components/ImagePlaceholder';
 import { ServiceHero } from '@/components/ServiceHero';
 import { ServiceScopeSection } from '@/components/ServiceScopeSection';
 import { EstimateCriteriaSection } from '@/components/EstimateCriteriaSection';
+import { BottomQuickCtaSection } from '@/components/BottomQuickCtaSection';
 
 interface PageProps {
   searchParams: Promise<{ k?: string }>;
@@ -335,84 +336,12 @@ export default async function HomePage({ searchParams }: PageProps) {
             </div>
           )}
 
-          {/* SECTION 07: FINAL CTA (Rhythm: Deep Navy Box, Left Content + Checklist, Right Image Slot) */}
-          <section className="bg-white pb-16 pt-6 md:pb-24">
-            <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
-              <div className="overflow-hidden rounded-3xl bg-slate-900 text-white shadow-xl">
-                <div className="grid grid-cols-1 items-center gap-8 p-8 sm:p-12 lg:grid-cols-12 lg:gap-12 lg:p-14">
-                  {/* Left Column: CTA Content & Quick Info Guide */}
-                  <div className="lg:col-span-7">
-                    <div className="inline-flex items-center gap-2 rounded-full border border-slate-700 bg-slate-800 px-3 py-1 text-xs font-semibold text-orange-400">
-                      <span className="h-1.5 w-1.5 rounded-full bg-orange-400"></span>
-                      간편 견적 상담
-                    </div>
-                    <h2 className="mt-4 text-2xl font-black tracking-tight text-white break-keep sm:text-3xl lg:text-4xl">
-                      {content.finalCtaTitle}
-                    </h2>
-                    <p className="mt-3 text-sm leading-relaxed text-slate-300 break-keep sm:text-base">
-                      {content.finalCtaDescription}
-                    </p>
-
-                    {/* Quick Guide Box */}
-                    <div className="mt-6 rounded-xl border border-slate-800 bg-slate-800/60 p-4 text-xs">
-                      <span className="font-bold text-slate-200">💡 사진 상담 시 도움이 되는 정보:</span>
-                      <ul className="mt-2 grid grid-cols-1 gap-1 text-slate-300 sm:grid-cols-2">
-                        <li>• 수거 대상 전체 사진</li>
-                        <li>• 큰 품목 크기</li>
-                        <li>• 대략적인 물량</li>
-                        <li>• 층수 및 엘리베이터 여부</li>
-                      </ul>
-                    </div>
-
-                    {/* Dual Action Buttons */}
-                    <div className="mt-8 flex flex-wrap items-center gap-3">
-                      {hasKakao ? (
-                        <a
-                          href={SITE_CONFIG.contact.kakaoUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-flex min-h-[48px] items-center justify-center gap-2 rounded-xl bg-orange-600 px-6 py-3.5 text-sm font-bold text-white shadow-sm transition hover:bg-orange-700 active:scale-[0.98]"
-                        >
-                          <span>💬</span>
-                          <span>카카오톡으로 사진 견적 문의</span>
-                        </a>
-                      ) : (
-                        <span className="inline-flex min-h-[48px] cursor-not-allowed items-center justify-center gap-2 rounded-xl border border-slate-700 bg-slate-800 px-5 py-3.5 text-xs font-medium text-slate-400">
-                          <span>💬</span>
-                          <span>카카오톡 견적 (준비중)</span>
-                        </span>
-                      )}
-
-                      {hasPhone ? (
-                        <a
-                          href={`tel:${SITE_CONFIG.contact.phone}`}
-                          className="inline-flex min-h-[48px] items-center justify-center gap-2 rounded-xl border border-slate-700 bg-slate-800 px-5 py-3.5 text-sm font-bold text-white shadow-xs transition hover:bg-slate-750 active:scale-[0.98]"
-                        >
-                          <span>📞</span>
-                          <span>전화 상담</span>
-                        </a>
-                      ) : (
-                        <span className="inline-flex min-h-[48px] cursor-not-allowed items-center justify-center gap-2 rounded-xl border border-slate-700 bg-slate-800 px-5 py-3.5 text-xs font-medium text-slate-400">
-                          <span>📞</span>
-                          <span>전화 상담 (준비중)</span>
-                        </span>
-                      )}
-                    </div>
-                  </div>
-
-                  {/* Right Column: Image Placeholder */}
-                  <div className="lg:col-span-5">
-                    <ImagePlaceholder
-                      label="현장 작업 사진 슬롯"
-                      sublabel="수거 및 적재 완료 현장 사진 반영 예정"
-                      aspectRatio="video"
-                      className="border-slate-700 bg-slate-800/70 text-slate-400"
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </section>
+          {/* SECTION 07: FINAL CTA (QUICK ESTIMATE) */}
+          <BottomQuickCtaSection
+            serviceFamily={context.serviceFamily}
+            title={content.finalCtaTitle}
+            supportingCopy={content.finalCtaDescription}
+          />
         </div>
       </>
     );
@@ -734,82 +663,8 @@ export default async function HomePage({ searchParams }: PageProps) {
           </div>
         </section>
 
-        {/* SECTION 07: FINAL CTA */}
-        <section className="bg-white pb-16 pt-6 md:pb-24">
-          <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
-            <div className="overflow-hidden rounded-3xl bg-slate-900 text-white shadow-xl">
-              <div className="grid grid-cols-1 items-center gap-8 p-8 sm:p-12 lg:grid-cols-12 lg:gap-12 lg:p-14">
-                <div className="lg:col-span-7">
-                  <div className="inline-flex items-center gap-2 rounded-full border border-slate-700 bg-slate-800 px-3 py-1 text-xs font-semibold text-orange-400">
-                    <span className="h-1.5 w-1.5 rounded-full bg-orange-400"></span>
-                    간편 견적 상담
-                  </div>
-                  <h2 className="mt-4 text-2xl font-black tracking-tight text-white break-keep sm:text-3xl lg:text-4xl">
-                    버릴 물건, 사진으로 먼저 확인해보세요
-                  </h2>
-                  <p className="mt-3 text-sm leading-relaxed text-slate-300 break-keep sm:text-base">
-                    현장 사진을 카카오톡으로 보내주시면 품목과 현장 조건을 확인해 상담합니다.
-                  </p>
-
-                  {/* Quick Guide Box */}
-                  <div className="mt-6 rounded-xl border border-slate-800 bg-slate-800/60 p-4 text-xs">
-                    <span className="font-bold text-slate-200">💡 사진 상담 시 도움이 되는 정보:</span>
-                    <ul className="mt-2 grid grid-cols-1 gap-1 text-slate-300 sm:grid-cols-2">
-                      <li>• 수거 대상 전체 사진</li>
-                      <li>• 큰 품목 크기</li>
-                      <li>• 대략적인 물량</li>
-                      <li>• 층수 및 엘리베이터 여부</li>
-                    </ul>
-                  </div>
-
-                  {/* Dual Action Buttons */}
-                  <div className="mt-8 flex flex-wrap items-center gap-3">
-                    {hasKakao ? (
-                      <a
-                        href={SITE_CONFIG.contact.kakaoUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex min-h-[48px] items-center justify-center gap-2 rounded-xl bg-orange-600 px-6 py-3.5 text-sm font-bold text-white shadow-sm transition hover:bg-orange-700 active:scale-[0.98]"
-                      >
-                        <span>💬</span>
-                        <span>카카오톡으로 사진 견적 문의</span>
-                      </a>
-                    ) : (
-                      <span className="inline-flex min-h-[48px] cursor-not-allowed items-center justify-center gap-2 rounded-xl border border-slate-700 bg-slate-800 px-5 py-3.5 text-xs font-medium text-slate-400">
-                        <span>💬</span>
-                        <span>카카오톡 견적 (준비중)</span>
-                      </span>
-                    )}
-
-                    {hasPhone ? (
-                      <a
-                        href={`tel:${SITE_CONFIG.contact.phone}`}
-                        className="inline-flex min-h-[48px] items-center justify-center gap-2 rounded-xl border border-slate-700 bg-slate-800 px-5 py-3.5 text-sm font-bold text-white shadow-xs transition hover:bg-slate-750 active:scale-[0.98]"
-                      >
-                        <span>📞</span>
-                        <span>전화 상담</span>
-                      </a>
-                    ) : (
-                      <span className="inline-flex min-h-[48px] cursor-not-allowed items-center justify-center gap-2 rounded-xl border border-slate-700 bg-slate-800 px-5 py-3.5 text-xs font-medium text-slate-400">
-                        <span>📞</span>
-                        <span>전화 상담 (준비중)</span>
-                      </span>
-                    )}
-                  </div>
-                </div>
-
-                <div className="lg:col-span-5">
-                  <ImagePlaceholder
-                    label="대표 현장 사진 적용 영역"
-                    sublabel="올케어환경 수거 작업 현장 이미지 반영 예정"
-                    aspectRatio="video"
-                    className="border-slate-700 bg-slate-800/70 text-slate-400"
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
+        {/* SECTION 07: FINAL CTA (QUICK ESTIMATE) */}
+        <BottomQuickCtaSection serviceFamily="WASTE" />
       </div>
     </>
   );

@@ -1,8 +1,9 @@
 import type { Metadata } from 'next';
-import { SITE_CONFIG, getAbsoluteUrl, hasValidContactPhone, hasValidKakaoUrl } from '@/config/site';
+import { SITE_CONFIG, getAbsoluteUrl } from '@/config/site';
 import { ServiceHero } from '@/components/ServiceHero';
 import { ServiceScopeSection } from '@/components/ServiceScopeSection';
 import { EstimateCriteriaSection } from '@/components/EstimateCriteriaSection';
+import { BottomQuickCtaSection } from '@/components/BottomQuickCtaSection';
 
 export const metadata: Metadata = {
   title: `철거·원상복구 공사 및 시공 상담 | ${SITE_CONFIG.brandName}`,
@@ -54,9 +55,6 @@ const FAQS = [
 ];
 
 export default function DemolitionServiceMainPage() {
-  const hasPhone = hasValidContactPhone(SITE_CONFIG.contact.phone);
-  const hasKakao = hasValidKakaoUrl(SITE_CONFIG.contact.kakaoUrl);
-
   return (
     <div className="w-full">
       {/* SECTION 01: HERO (Full-Width Visual & Standardized CTA) */}
@@ -168,38 +166,8 @@ export default function DemolitionServiceMainPage() {
         </div>
       </section>
 
-      {/* SECTION 07: CTA FOOTER */}
-      <section className="border-t border-slate-100 bg-slate-900 py-12 text-white md:py-16">
-        <div className="mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8">
-          <h2 className="text-2xl font-black tracking-tight sm:text-3xl md:text-4xl">
-            철거 범위 및 현장 여건 사진을 보내주세요
-          </h2>
-          <p className="mx-auto mt-3 max-w-xl text-xs text-slate-300 sm:text-sm md:text-base">
-            철거할 현장 공간 사진이나 평면도를 남겨주시면, 담당자가 확인 후 구조 및 공사 일정에 맞춘 견적을 신속히 안내해 드립니다.
-          </p>
-
-          <div className="mt-8 flex flex-wrap justify-center gap-3">
-            {hasKakao && (
-              <a
-                href={SITE_CONFIG.contact.kakaoUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center justify-center rounded-xl bg-[#FEE500] px-6 py-3.5 text-sm font-bold text-[#3c1e1e] shadow transition hover:bg-[#FADA0A]"
-              >
-                카카오톡 사진 전송 및 견적 문의
-              </a>
-            )}
-            {hasPhone && (
-              <a
-                href={`tel:${SITE_CONFIG.contact.phone.replace(/[^0-9]/g, '')}`}
-                className="inline-flex items-center justify-center rounded-xl border border-slate-700 bg-slate-800 px-6 py-3.5 text-sm font-bold text-white shadow transition hover:bg-slate-700"
-              >
-                전화 상담 ({SITE_CONFIG.contact.phone})
-              </a>
-            )}
-          </div>
-        </div>
-      </section>
+      {/* SECTION 07: CTA FOOTER (QUICK ESTIMATE) */}
+      <BottomQuickCtaSection serviceFamily="DEMOLITION" />
     </div>
   );
 }

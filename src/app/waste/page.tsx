@@ -1,8 +1,9 @@
 import type { Metadata } from 'next';
-import { SITE_CONFIG, getAbsoluteUrl, hasValidContactPhone, hasValidKakaoUrl } from '@/config/site';
+import { SITE_CONFIG, getAbsoluteUrl } from '@/config/site';
 import { ServiceHero } from '@/components/ServiceHero';
 import { ServiceScopeSection } from '@/components/ServiceScopeSection';
 import { EstimateCriteriaSection } from '@/components/EstimateCriteriaSection';
+import { BottomQuickCtaSection } from '@/components/BottomQuickCtaSection';
 
 export const metadata: Metadata = {
   title: `폐기물 수거·처리 서비스 안내 | ${SITE_CONFIG.brandName}`,
@@ -54,9 +55,6 @@ const FAQS = [
 ];
 
 export default function WasteServiceMainPage() {
-  const hasPhone = hasValidContactPhone(SITE_CONFIG.contact.phone);
-  const hasKakao = hasValidKakaoUrl(SITE_CONFIG.contact.kakaoUrl);
-
   return (
     <div className="w-full">
       {/* SECTION 01: HERO (Full-Width Visual & Standardized CTA) */}
@@ -181,46 +179,8 @@ export default function WasteServiceMainPage() {
         </div>
       </section>
 
-      {/* SECTION 07: FINAL CTA */}
-      <section className="bg-white py-16 md:py-24">
-        <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
-          <div className="overflow-hidden rounded-3xl bg-slate-900 p-8 sm:p-12 text-white shadow-xl">
-            <div className="max-w-2xl">
-              <span className="text-xs font-bold uppercase tracking-wider text-orange-400">
-                Quick Estimate
-              </span>
-              <h2 className="mt-3 text-2xl font-black tracking-tight text-white sm:text-3xl">
-                어떤 폐기물을 정리해야 할지 막막하신가요?
-              </h2>
-              <p className="mt-3 text-sm leading-relaxed text-slate-300 sm:text-base">
-                품목 사진을 찍어 보내주시면 현장 조건에 맞춰 가장 합리적인 수거 방안을 안내해 드립니다.
-              </p>
-              <div className="mt-8 flex flex-wrap items-center gap-3">
-                {hasKakao && (
-                  <a
-                    href={SITE_CONFIG.contact.kakaoUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex min-h-[48px] items-center justify-center gap-2 rounded-xl bg-orange-600 px-6 py-3.5 text-sm font-bold text-white shadow-sm transition hover:bg-orange-700"
-                  >
-                    <span>💬</span>
-                    <span>카카오톡으로 견적 상담</span>
-                  </a>
-                )}
-                {hasPhone && (
-                  <a
-                    href={`tel:${SITE_CONFIG.contact.phone}`}
-                    className="inline-flex min-h-[48px] items-center justify-center gap-2 rounded-xl border border-slate-700 bg-slate-800 px-5 py-3.5 text-sm font-bold text-white transition hover:bg-slate-750"
-                  >
-                    <span>📞</span>
-                    <span>전화 문의</span>
-                  </a>
-                )}
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* SECTION 07: FINAL CTA (QUICK ESTIMATE) */}
+      <BottomQuickCtaSection serviceFamily="WASTE" />
     </div>
   );
 }
