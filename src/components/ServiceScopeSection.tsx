@@ -46,32 +46,36 @@ export function ServiceScopeSection({
           {config.cards.map((card) => (
             <article
               key={card.id}
-              className="flex flex-col overflow-hidden rounded-2xl border border-slate-200/80 bg-white shadow-xs transition duration-200 hover:border-slate-300 hover:shadow-md md:hover:-translate-y-0.5"
+              className="group relative flex aspect-[16/11] min-h-[220px] w-full flex-col justify-end overflow-hidden rounded-2xl border border-slate-200/80 bg-slate-900 shadow-sm transition duration-200 hover:border-slate-300 hover:shadow-md sm:aspect-[16/10] sm:min-h-[260px] md:hover:-translate-y-0.5"
             >
-              {/* Field Photo Image Slot (16:9 Aspect Ratio) */}
-              <div className="relative aspect-[16/9] w-full overflow-hidden bg-gradient-to-br from-slate-100 via-slate-50 to-slate-200/80">
-                {card.imageSrc ? (
-                  <Image
-                    src={card.imageSrc}
-                    alt={card.imageAlt || card.title}
-                    fill
-                    sizes="(max-width: 768px) 100vw, 50vw"
-                    className="object-cover"
-                  />
-                ) : (
-                  <div
-                    className="h-full w-full bg-gradient-to-tr from-slate-100 via-slate-50/70 to-slate-200/60"
-                    aria-hidden="true"
-                  />
-                )}
-              </div>
+              {/* Background Image / Field Surface Layer */}
+              {card.imageSrc ? (
+                <Image
+                  src={card.imageSrc}
+                  alt={card.imageAlt || card.title}
+                  fill
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                  className="object-cover transition duration-300 group-hover:scale-[1.02]"
+                />
+              ) : (
+                <div
+                  className="absolute inset-0 bg-gradient-to-br from-slate-800 via-slate-850 to-slate-900"
+                  aria-hidden="true"
+                />
+              )}
 
-              {/* Text Area (Real HTML Text for SSR & SEO) */}
-              <div className="flex flex-1 flex-col justify-start p-5 sm:p-6">
-                <h3 className="text-base font-bold text-slate-900 break-keep sm:text-lg">
+              {/* Bottom Gradient Overlay (Deep Navy Tint -> Transparent) */}
+              <div
+                className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/45 to-transparent"
+                aria-hidden="true"
+              />
+
+              {/* Text Layer (Bottom-Left Anchored, Real HTML Text for SSR & SEO) */}
+              <div className="relative z-10 flex flex-col justify-end p-5 sm:p-6">
+                <h3 className="text-base font-bold text-white break-keep sm:text-lg">
                   {card.title}
                 </h3>
-                <p className="mt-2 text-xs leading-relaxed text-slate-600 break-keep sm:text-sm">
+                <p className="mt-1.5 text-xs leading-relaxed text-slate-200 break-keep sm:text-sm">
                   {card.description}
                 </p>
               </div>
@@ -81,7 +85,7 @@ export function ServiceScopeSection({
 
         {/* Scope Note (Preserves Service Coverage Meaning without Keyword Stuffing) */}
         {config.scopeNote && (
-          <p className="mt-6 text-xs text-slate-500 break-keep sm:text-sm">
+          <p className="mt-6 text-xs text-slate-500 break-keep">
             ※ {config.scopeNote}
           </p>
         )}
