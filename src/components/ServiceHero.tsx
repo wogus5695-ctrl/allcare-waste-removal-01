@@ -30,9 +30,10 @@ export interface ServiceHeroProps {
  * 1. FULL-WIDTH BACKGROUND VISUAL + LEFT-ALIGNED CONTENT LAYER
  * 2. 5단계 엄격한 정보 위계: Breadcrumb -> Service Label -> H1 -> Supporting Copy -> CTA
  * 3. 단일 Semantic <h1> 렌더링 (줄바꿈 지원)
- * 4. 긴급 서비스 최적화 표준 CTA: 1순위 전화 바로 상담(Primary, Orange) + 2순위 카카오톡 문의(Secondary, White)
- * 5. 운영자 사진이 없을 때 깨진 이미지 없이 Deep Navy + Subtle Orange Ambient Fallback 제공
- * 6. 운영자 사진 등록 시 hero-theme.ts의 단일 경로 지정만으로 즉시 안전 적용
+ * 4. 세로 높이 최적화: Desktop 약 1.6~1.8배 (min-h-[720px] lg:min-h-[820px]), Mobile 약 1.35~1.45배 (min-h-[580px])
+ * 5. 콘텐츠 배치: Visual Center보다 약 5~10% 상단 안착하여 CTA 시인성 및 우측/하단 현장 사진 노출 극대화
+ * 6. 가독성 오버레이: 좌측 고불투명도 화이트/뉴트럴 그라디언트 -> 우측 78%부터 완전 투명 (사진 본래 질감 100% 보존)
+ * 7. 긴급 서비스 최적화 표준 CTA: 1순위 전화 바로 상담(Primary, Orange) + 2순위 카카오톡 문의(Secondary, White)
  */
 export function ServiceHero({
   serviceFamily,
@@ -47,7 +48,7 @@ export function ServiceHero({
   const hasKakao = hasValidKakaoUrl(SITE_CONFIG.contact.kakaoUrl);
 
   return (
-    <section className="relative w-full overflow-hidden bg-slate-900 min-h-[480px] sm:min-h-[520px] lg:min-h-[560px] flex flex-col justify-center">
+    <section className="relative w-full overflow-hidden bg-slate-100 min-h-[580px] sm:min-h-[640px] md:min-h-[720px] lg:min-h-[820px] flex flex-col justify-center">
       {/* BACKGROUND VISUAL LAYER */}
       {theme.bgImage ? (
         <div className="absolute inset-0 z-0">
@@ -56,45 +57,63 @@ export function ServiceHero({
             src={theme.bgImage}
             alt=""
             aria-hidden="true"
-            className="h-full w-full object-cover"
-            style={{
-              objectPosition: theme.desktopPosition || 'right center',
-            }}
+            // @ts-expect-error - Next.js/HTML fetchpriority
+            fetchpriority="high"
+            loading="eager"
+            className="h-full w-full object-cover [object-position:var(--bg-pos-mo)] sm:[object-position:var(--bg-pos-pc)]"
+            style={
+              {
+                '--bg-pos-mo': theme.mobilePosition || 'center center',
+                '--bg-pos-pc': theme.desktopPosition || '60% center',
+              } as React.CSSProperties
+            }
           />
         </div>
       ) : (
         /* FALLBACK AMBIENT BACKGROUND: Deep Navy & Warm Orange Glow */
         <div className="absolute inset-0 z-0 bg-gradient-to-br from-slate-950 via-[#0a1128] to-slate-900 pointer-events-none" aria-hidden="true">
-          {/* 우측 상단 앰비언트 글로우 (현장 비주얼 중심 영역) */}
           <div className="absolute -right-20 -top-20 h-[480px] w-[480px] rounded-full bg-orange-600/10 blur-3xl" />
           <div className="absolute right-1/4 bottom-0 h-64 w-64 rounded-full bg-blue-600/10 blur-3xl" />
         </div>
       )}
 
-      {/* GRADIENT OVERLAY (텍스트 영역 가독성 100% 보호) */}
+      {/* GRADIENT OVERLAY (좌측 텍스트 가독성 100% 보장 & 우측 실제 현장 사진 100% 가시성) */}
       <div
-        className="absolute inset-0 z-10 bg-gradient-to-b from-slate-950/85 via-slate-950/70 to-slate-950/90 md:bg-gradient-to-r md:from-slate-950/95 md:via-slate-900/80 md:to-transparent pointer-events-none"
+        className="absolute inset-0 z-10 pointer-events-none hidden md:block"
+        style={{
+          background:
+            'linear-gradient(90deg, rgba(255,255,255,0.98) 0%, rgba(255,255,255,0.95) 32%, rgba(255,255,255,0.78) 46%, rgba(255,255,255,0.25) 62%, rgba(255,255,255,0) 78%)',
+        }}
+        aria-hidden="true"
+      />
+      {/* 모바일 전용 상하 그라디언트 (상단 텍스트 보호 및 하단 현장 사진 노출) */}
+      <div
+        className="absolute inset-0 z-10 pointer-events-none block md:hidden"
+        style={{
+          background:
+            'linear-gradient(180deg, rgba(255,255,255,0.97) 0%, rgba(255,255,255,0.93) 58%, rgba(255,255,255,0.65) 80%, rgba(255,255,255,0.15) 100%)',
+        }}
         aria-hidden="true"
       />
 
-      {/* FOREGROUND CONTENT LAYER (Left-aligned container) */}
-      <div className="relative z-20 mx-auto w-full max-w-5xl px-4 py-12 sm:px-6 sm:py-16 md:py-20 lg:px-8">
+      {/* FOREGROUND CONTENT LAYER (Left-aligned container, visual center보다 5~10% 상단 안착) */}
+      <div className="relative z-20 mx-auto w-full max-w-5xl px-4 pt-12 pb-20 sm:px-6 sm:pt-16 sm:pb-28 md:pt-20 md:pb-36 lg:px-8 lg:pt-24 lg:pb-44">
         <div className="max-w-xl lg:max-w-2xl">
           {/* STEP 1: BREADCRUMB */}
           <nav aria-label="Breadcrumb" className="mb-4 sm:mb-5">
-            <ol className="flex flex-wrap items-center gap-1.5 text-xs text-slate-400">
+            <ol className="flex flex-wrap items-center gap-1.5 text-xs text-slate-500 font-medium">
               {breadcrumbs.map((item, index) => {
                 const isLast = index === breadcrumbs.length - 1;
                 return (
                   <React.Fragment key={index}>
-                    {index > 0 && <li className="text-slate-500" aria-hidden="true">/</li>}
+                    {index > 0 && <li className="text-slate-400" aria-hidden="true">/</li>}
                     <li>
                       {item.href && !isLast ? (
-                        <Link href={item.href} className="transition hover:text-slate-200">
+                        <Link href={item.href} className="transition hover:text-slate-900">
                           {item.label}
                         </Link>
                       ) : (
-                        <span className={isLast ? 'font-medium text-slate-300' : ''} aria-current={isLast ? 'page' : undefined}>
+                        <span className={isLast ? 'font-bold text-slate-800' : ''} aria-current={isLast ? 'page' : undefined}>
                           {item.label}
                         </span>
                       )}
@@ -106,21 +125,21 @@ export function ServiceHero({
           </nav>
 
           {/* STEP 2: SERVICE LABEL BADGE */}
-          <div className="inline-flex items-center gap-2 rounded-full border border-orange-500/30 bg-orange-950/50 px-3.5 py-1 text-xs font-bold text-orange-400 backdrop-blur-xs">
-            <span className="h-1.5 w-1.5 rounded-full bg-orange-500" aria-hidden="true"></span>
+          <div className="inline-flex items-center gap-2 rounded-full border border-orange-200/90 bg-orange-50/95 px-3.5 py-1 text-xs font-bold text-orange-700 shadow-2xs backdrop-blur-xs">
+            <span className="h-1.5 w-1.5 rounded-full bg-orange-600" aria-hidden="true"></span>
             <span>{serviceLabel}</span>
           </div>
 
           {/* STEP 3: SINGLE SEMANTIC H1 */}
-          <h1 className="mt-3.5 text-2xl font-black tracking-tight text-white break-keep sm:text-4xl lg:text-5xl sm:leading-[1.18]">
+          <h1 className="mt-3.5 text-2xl font-black tracking-tight text-slate-950 break-keep sm:text-4xl lg:text-5xl sm:leading-[1.18]">
             <span className="block">{h1Main}</span>
-            <span className="mt-1 block text-slate-100 font-extrabold sm:mt-2 text-xl sm:text-3xl lg:text-4xl">
+            <span className="mt-1 block text-slate-800 font-extrabold sm:mt-2 text-xl sm:text-3xl lg:text-4xl">
               {h1Sub}
             </span>
           </h1>
 
           {/* STEP 4: SUPPORTING COPY */}
-          <p className="mt-3.5 text-sm leading-relaxed text-slate-300 break-keep sm:mt-4 sm:text-base sm:leading-relaxed">
+          <p className="mt-3.5 text-sm leading-relaxed text-slate-700 font-medium break-keep sm:mt-4 sm:text-base sm:leading-relaxed">
             {supportingCopy}
           </p>
 
@@ -130,7 +149,7 @@ export function ServiceHero({
             {hasPhone ? (
               <a
                 href={`tel:${SITE_CONFIG.contact.phone.replace(/[^0-9]/g, '')}`}
-                className="inline-flex min-h-[48px] flex-1 sm:flex-initial items-center justify-center gap-1.5 sm:gap-2 rounded-xl bg-orange-600 px-3 py-3 sm:px-6 sm:py-3.5 text-xs sm:text-sm font-bold text-white shadow-sm transition hover:bg-orange-700 active:scale-[0.98] text-center"
+                className="inline-flex min-h-[48px] flex-1 sm:flex-initial items-center justify-center gap-1.5 sm:gap-2 rounded-xl bg-orange-600 px-3 py-3 sm:px-6 sm:py-3.5 text-xs sm:text-sm font-bold text-white shadow-md transition hover:bg-orange-700 active:scale-[0.98] text-center"
               >
                 <span aria-hidden="true">📞</span>
                 <span className="sm:hidden">전화 상담</span>
@@ -138,7 +157,7 @@ export function ServiceHero({
               </a>
             ) : (
               <span
-                className="inline-flex min-h-[48px] flex-1 sm:flex-initial cursor-not-allowed items-center justify-center gap-1.5 sm:gap-2 rounded-xl border border-slate-700 bg-slate-800 px-3 py-3 sm:px-5 sm:py-3.5 text-xs sm:text-sm font-medium text-slate-400 text-center"
+                className="inline-flex min-h-[48px] flex-1 sm:flex-initial cursor-not-allowed items-center justify-center gap-1.5 sm:gap-2 rounded-xl border border-slate-300 bg-slate-100 px-3 py-3 sm:px-5 sm:py-3.5 text-xs sm:text-sm font-medium text-slate-400 text-center"
                 title="운영자 대표번호 등록 시 실제 연결됩니다"
                 aria-disabled="true"
               >
@@ -161,7 +180,7 @@ export function ServiceHero({
               </a>
             ) : (
               <span
-                className="inline-flex min-h-[48px] flex-1 sm:flex-initial cursor-not-allowed items-center justify-center gap-1.5 sm:gap-2 rounded-xl border border-slate-700 bg-slate-800 px-3 py-3 sm:px-5 sm:py-3.5 text-xs sm:text-sm font-medium text-slate-400 text-center"
+                className="inline-flex min-h-[48px] flex-1 sm:flex-initial cursor-not-allowed items-center justify-center gap-1.5 sm:gap-2 rounded-xl border border-slate-300 bg-slate-100 px-3 py-3 sm:px-5 sm:py-3.5 text-xs sm:text-sm font-medium text-slate-400 text-center"
                 title="카카오톡 채널 연동 시 활성화됩니다"
                 aria-disabled="true"
               >
@@ -175,3 +194,4 @@ export function ServiceHero({
     </section>
   );
 }
+

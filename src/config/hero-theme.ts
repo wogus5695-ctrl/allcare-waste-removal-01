@@ -21,15 +21,15 @@ export interface HeroThemeConfig {
 export const HERO_THEMES: Record<ServiceFamilyType, HeroThemeConfig> = {
   WASTE: {
     serviceFamily: 'WASTE',
-    bgImage: '', // [WASTE HERO IMAGE REQUIRED] 운영자 폐기물 현장 사진 등록 슬롯
-    desktopPosition: 'right center',
-    mobilePosition: 'center top',
+    bgImage: '/images/hero/waste-hero.webp',
+    desktopPosition: '60% center',
+    mobilePosition: '62% center',
   },
   DEMOLITION: {
     serviceFamily: 'DEMOLITION',
-    bgImage: '', // [DEMOLITION HERO IMAGE REQUIRED] 운영자 철거 현장 사진 등록 슬롯
-    desktopPosition: 'right center',
-    mobilePosition: 'center top',
+    bgImage: '/images/hero/demolition-hero.webp',
+    desktopPosition: '58% center',
+    mobilePosition: '50% center',
   },
 };
 
