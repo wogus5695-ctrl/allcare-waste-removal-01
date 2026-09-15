@@ -93,22 +93,22 @@ export function EstimateCriteriaSection({
               </div>
             )}
 
-            {/* Desktop: Soft diagonal (~10°) gradient transition from left visual to right white panel */}
+            {/* Desktop: Brand Deep Navy (~10°) soft diagonal gradient transition into right white panel */}
             <div
               className="pointer-events-none absolute inset-0 hidden md:block"
               style={{
                 background:
-                  'linear-gradient(100deg, transparent 68%, rgba(255, 255, 255, 0.4) 82%, rgba(255, 255, 255, 0.95) 95%, #ffffff 100%)',
+                  'linear-gradient(100deg, rgba(15, 23, 42, 0.10) 0%, rgba(15, 23, 42, 0.15) 50%, rgba(15, 23, 42, 0.42) 72%, rgba(15, 23, 42, 0.68) 88%, rgba(255, 255, 255, 0.70) 96%, #ffffff 100%)',
               }}
               aria-hidden="true"
             />
 
-            {/* Mobile: Soft vertical gradient transition into bottom white list */}
+            {/* Mobile: Brand Deep Navy soft vertical gradient transition into bottom white list */}
             <div
               className="pointer-events-none absolute inset-0 block md:hidden"
               style={{
                 background:
-                  'linear-gradient(to bottom, transparent 65%, rgba(255, 255, 255, 0.6) 85%, #ffffff 100%)',
+                  'linear-gradient(to bottom, rgba(15, 23, 42, 0.08) 0%, rgba(15, 23, 42, 0.12) 55%, rgba(15, 23, 42, 0.35) 78%, rgba(15, 23, 42, 0.55) 90%, rgba(255, 255, 255, 0.75) 97%, #ffffff 100%)',
               }}
               aria-hidden="true"
             />

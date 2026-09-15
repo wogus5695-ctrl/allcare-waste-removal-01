@@ -25,8 +25,8 @@ export const WASTE_ESTIMATE_CONFIG: EstimateCriteriaConfig = {
   h2: '폐기물 견적은 이렇게 결정됩니다',
   supportingCopy:
     '단순 무게만이 아닌 품목 구성, 전체 물량, 현장 반출 환경, 차량 접근성까지 종합적으로 고려하여 합리적인 견적을 안내합니다.',
-  // 운영자 실제 현장 사진 적용 (1톤 트럭 폐기물 적재 현장)
-  imageSrc: '/images/estimate/waste-estimate.webp',
+  // 운영자 실제 현장 사진 적용 (비식별화 privacy-safe 적용)
+  imageSrc: '/images/estimate/waste-estimate-privacy.webp',
   imageAlt: '폐기물을 차량에 적재한 수거 현장',
   desktopObjectPosition: '50% 52%',
   mobileObjectPosition: '50% 50%',
