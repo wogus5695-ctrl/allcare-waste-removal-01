@@ -11,6 +11,10 @@ export interface HeroThemeConfig {
   desktopPosition?: string;
   /** 모바일 배경 focal-point position (기본: 'center top') */
   mobilePosition?: string;
+  /** 데스크톱 배경 transform (scale, translateX 등 정밀 이동용) */
+  desktopTransform?: string;
+  /** 모바일 배경 transform */
+  mobileTransform?: string;
 }
 
 /**
@@ -24,12 +28,16 @@ export const HERO_THEMES: Record<ServiceFamilyType, HeroThemeConfig> = {
     bgImage: '/images/hero/waste-hero.webp',
     desktopPosition: '60% center',
     mobilePosition: '62% center',
+    desktopTransform: 'none',
+    mobileTransform: 'none',
   },
   DEMOLITION: {
     serviceFamily: 'DEMOLITION',
     bgImage: '/images/hero/demolition-hero.webp',
-    desktopPosition: '58% center',
-    mobilePosition: '50% center',
+    desktopPosition: '64% center',
+    mobilePosition: '52% center',
+    desktopTransform: 'scale(1.05) translateX(5%)',
+    mobileTransform: 'none',
   },
 };
 

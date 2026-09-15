@@ -60,11 +60,13 @@ export function ServiceHero({
             // @ts-expect-error - Next.js/HTML fetchpriority
             fetchpriority="high"
             loading="eager"
-            className="h-full w-full object-cover [object-position:var(--bg-pos-mo)] sm:[object-position:var(--bg-pos-pc)]"
+            className="h-full w-full object-cover [object-position:var(--bg-pos-mo)] sm:[object-position:var(--bg-pos-pc)] [transform:var(--bg-tf-mo)] sm:[transform:var(--bg-tf-pc)] origin-center"
             style={
               {
                 '--bg-pos-mo': theme.mobilePosition || 'center center',
                 '--bg-pos-pc': theme.desktopPosition || '60% center',
+                '--bg-tf-mo': theme.mobileTransform || 'none',
+                '--bg-tf-pc': theme.desktopTransform || 'none',
               } as React.CSSProperties
             }
           />
