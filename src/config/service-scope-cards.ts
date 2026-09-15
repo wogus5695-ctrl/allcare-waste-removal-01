@@ -73,34 +73,38 @@ export const DEMOLITION_SCOPE_CONFIG: ServiceScopeConfig = {
       title: '상가 원상복구',
       description:
         '임대차 종료에 맞춰 매장 철거와 원상복구 범위를 확인해 작업을 진행합니다.',
-      imageSrc: undefined, // Operator will provide real field photo
-      imageAlt: '상가 원상복구 철거 현장',
+      imageSrc: '/images/service-scope/demolition-card-restoration.jpg',
+      imageAlt: '상가 원상복구 현장',
+      objectPosition: 'center 35%',
     },
     {
-      id: 'officePartition',
-      title: '사무실 가벽·칸막이 철거',
+      id: 'interiorDemolition',
+      title: '인테리어 철거',
       description:
-        '사무실 구조 변경이나 퇴거 전 정리에 필요한 가벽, 칸막이와 관련 구조물을 철거합니다.',
-      imageSrc: undefined, // Operator will provide real field photo
-      imageAlt: '사무실 가벽 칸막이 철거 현장',
+        '실내 마감과 구조물을 확인해 공간 특성에 맞는 인테리어 철거를 진행합니다.',
+      imageSrc: '/images/service-scope/demolition-card-interior.jpg',
+      imageAlt: '실내 인테리어 철거 현장',
+      objectPosition: 'center 45%',
     },
     {
       id: 'partialDemolition',
       title: '실내 부분 철거',
       description:
         '주방, 욕실, 카운터, 벽체 등 필요한 구역을 확인해 부분 철거를 진행합니다.',
-      imageSrc: undefined, // Operator will provide real field photo
-      imageAlt: '실내 인테리어 부분 철거 현장',
+      imageSrc: '/images/service-scope/demolition-card-partial.jpg',
+      imageAlt: '주방을 포함한 실내 부분 철거 현장',
+      objectPosition: 'center 45%',
     },
     {
       id: 'floorCeiling',
       title: '바닥·천장 마감 철거',
       description:
         '바닥재, 텍스, 천장 마감재 등 마감재 해체와 필요한 기초 정리를 진행합니다.',
-      imageSrc: undefined, // Operator will provide real field photo
-      imageAlt: '바닥재 천장 텍스 마감 철거 현장',
+      imageSrc: '/images/service-scope/demolition-card-finishes.jpg',
+      imageAlt: '텍스 천장 및 천장 마감 철거 현장',
+      objectPosition: 'center 35%',
     },
   ],
   scopeNote:
-    '상가 원상복구, 사무실 철거, 부분 철거, 바닥·천장 마감 철거 등 현장별 작업 범위를 상담할 수 있습니다.',
+    '상가 원상복구, 인테리어 철거, 실내 부분 철거, 바닥·천장 마감 철거 등 현장별 작업 범위를 상담할 수 있습니다.',
 };
