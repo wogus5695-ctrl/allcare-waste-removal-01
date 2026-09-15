@@ -56,6 +56,7 @@ export function ServiceScopeSection({
                   fill
                   sizes="(max-width: 768px) 100vw, 50vw"
                   className="object-cover transition duration-300 group-hover:scale-[1.02]"
+                  style={card.objectPosition ? { objectPosition: card.objectPosition } : undefined}
                 />
               ) : (
                 <div

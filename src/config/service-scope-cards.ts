@@ -1,9 +1,10 @@
-﻿export interface ServiceScopeCard {
+export interface ServiceScopeCard {
   id: string;
   title: string;
   description: string;
   imageSrc?: string;
   imageAlt?: string;
+  objectPosition?: string;
 }
 
 export interface ServiceScopeConfig {
@@ -24,37 +25,41 @@ export const WASTE_SCOPE_CONFIG: ServiceScopeConfig = {
       id: 'furniture',
       title: '대형 가구·가전 수거',
       description:
-        '장롱, 침대, 책장, 소파 등 부피가 큰 가구와 생활 가전을 정리합니다.',
-      imageSrc: undefined, // Operator will provide real field photo
-      imageAlt: '대형 가구 가전 수거 현장',
+        '장롱, 침대, 책장, 소파 등 부피가 큰 가구와 생활 가전을 수거·정리합니다.',
+      imageSrc: '/images/service-scope/waste-card-furniture.jpg',
+      imageAlt: '대형 폐가구 수거 현장',
+      objectPosition: 'center 35%',
     },
     {
-      id: 'homeMove',
-      title: '가정집 비움·이사 폐기물',
+      id: 'clutterHouse',
+      title: '쓰레기집·고독사 현장',
       description:
-        '이사 전후 남은 생활 폐기물과 집 정리 과정에서 나온 물품을 수거합니다.',
-      imageSrc: undefined, // Operator will provide real field photo
-      imageAlt: '가정집 비움 이사 폐기물 정리 현장',
+        '생활 폐기물과 집기 등이 쌓인 공간을 확인해 현장 상황에 맞는 수거·정리 범위를 안내합니다.',
+      imageSrc: '/images/service-scope/waste-card-clutter.jpg',
+      imageAlt: '생활 폐기물이 쌓여 있는 주거 공간 정리 현장',
+      objectPosition: 'center 45%',
     },
     {
       id: 'businessFixtures',
-      title: '사무실·상가 집기 정리',
+      title: '사무실·상가 폐기물',
       description:
-        '책상, 의자, 진열장, 카운터 등 이전·폐업 과정에서 나온 집기를 정리합니다.',
-      imageSrc: undefined, // Operator will provide real field photo
-      imageAlt: '사무실 상가 불용 집기 정리 현장',
+        '책상, 의자, 진열장, 카운터 등 이전·폐업 과정에서 나온 사업장 폐기물을 정리합니다.',
+      imageSrc: '/images/service-scope/waste-card-commercial.jpg',
+      imageAlt: '사무실·상가 집기 및 폐기물 정리 현장',
+      objectPosition: 'center 40%',
     },
     {
       id: 'siteDebris',
-      title: '공사·현장 잔재물 수거',
+      title: '공사·인테리어 현장 폐기물',
       description:
-        '공사 후 남은 폐자재, 마대, 박스류 등 현장 정리 과정에서 나온 잔재물을 수거합니다.',
-      imageSrc: undefined, // Operator will provide real field photo
-      imageAlt: '공사 현장 잔재물 마대 수거 현장',
+        '공사·인테리어 후 남은 폐자재와 마대 등 현장 정리 과정에서 발생한 잔재물을 수거합니다.',
+      imageSrc: '/images/service-scope/waste-card-construction.jpg',
+      imageAlt: '공사·인테리어 잔재물 수거 현장',
+      objectPosition: 'center 40%',
     },
   ],
   scopeNote:
-    '대형 가구, 생활 폐기물, 이사 정리, 사무실·상가 집기, 공사 잔재물 등 현장 상황에 따라 상담 가능합니다.',
+    '대형 가구·가전, 생활 폐기물, 쓰레기집 정리, 사무실·상가 폐기물, 공사·인테리어 잔재물 등 현장 상황에 따라 상담 가능합니다.',
 };
 
 export const DEMOLITION_SCOPE_CONFIG: ServiceScopeConfig = {
