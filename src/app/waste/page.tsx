@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import { SITE_CONFIG, getAbsoluteUrl, hasValidContactPhone, hasValidKakaoUrl } from '@/config/site';
-import { ImagePlaceholder } from '@/components/ImagePlaceholder';
+import { ServiceHero } from '@/components/ServiceHero';
 
 export const metadata: Metadata = {
   title: `폐기물 수거·처리 서비스 안내 | ${SITE_CONFIG.brandName}`,
@@ -74,103 +74,19 @@ export default function WasteServiceMainPage() {
 
   return (
     <div className="w-full">
-      {/* SECTION 01: HERO */}
-      <section className="bg-white py-12 md:py-20">
-        <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
-          {/* Breadcrumb */}
-          <nav aria-label="Breadcrumb" className="mb-6">
-            <ol className="flex items-center gap-2 text-xs text-slate-500">
-              <li>
-                <a href="/" className="transition hover:text-slate-900">홈</a>
-              </li>
-              <li>/</li>
-              <li className="font-semibold text-slate-800" aria-current="page">폐기물 수거·처리</li>
-            </ol>
-          </nav>
+      {/* SECTION 01: HERO (Full-Width Visual & Standardized CTA) */}
+      <ServiceHero
+        serviceFamily="WASTE"
+        serviceLabel="폐기물 수거 · 처리"
+        h1Main="폐기물 수거·처리,"
+        h1Sub="필요한 현장을 빠르게 비워드립니다"
+        supportingCopy="가정집·이사·상가·사무실에서 나온 폐기물까지 현장과 물량을 확인해 수거 방법과 견적을 안내합니다."
+        breadcrumbs={[
+          { label: '홈', href: '/' },
+          { label: '폐기물 수거·처리' },
+        ]}
+      />
 
-          <div className="grid grid-cols-1 items-center gap-10 lg:grid-cols-12 lg:gap-14">
-            <div className="lg:col-span-7">
-              <div className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-slate-50 px-3.5 py-1 text-xs font-semibold text-slate-700">
-                <span className="h-1.5 w-1.5 rounded-full bg-orange-600"></span>
-                폐기물 전문 수거 서비스
-              </div>
-              <h1 className="mt-4 text-3xl font-extrabold tracking-tight text-slate-900 break-keep sm:text-4xl lg:text-5xl">
-                폐기물 수거·처리 서비스 안내
-              </h1>
-              <p className="mt-4 text-lg font-bold text-slate-800 break-keep sm:text-xl">
-                가정집 대형 가구부터 이사·사업장 폐기물까지 깔끔하게 비워드립니다
-              </p>
-              <p className="mt-3 text-sm leading-relaxed text-slate-600 break-keep sm:text-base">
-                혼자 들기 힘든 무거운 가구, 복잡한 실내 폐기물, 사업장 정리까지.
-                현장 사진을 전달해 주시면 품목과 반출 조건에 맞춘 투명한 견적을 안내해 드립니다.
-              </p>
-
-              {/* Dual CTA */}
-              <div className="mt-8 flex items-center gap-2.5 sm:flex-wrap sm:gap-3">
-                {hasKakao ? (
-                  <a
-                    href={SITE_CONFIG.contact.kakaoUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex min-h-[48px] flex-1 sm:flex-initial items-center justify-center gap-1.5 sm:gap-2 rounded-xl bg-orange-600 px-3 py-3 sm:px-6 sm:py-3.5 text-xs sm:text-sm font-bold text-white shadow-sm transition hover:bg-orange-700 active:scale-[0.98] text-center"
-                  >
-                    <span>💬</span>
-                    <span className="sm:hidden">카카오톡 문의</span>
-                    <span className="hidden sm:inline">카카오톡으로 견적 문의</span>
-                  </a>
-                ) : (
-                  <span
-                    className="inline-flex min-h-[48px] flex-1 sm:flex-initial cursor-not-allowed items-center justify-center gap-1.5 sm:gap-2 rounded-xl border border-slate-200 bg-slate-100 px-3 py-3 sm:px-5 sm:py-3.5 text-xs sm:text-sm font-medium text-slate-500 text-center"
-                    aria-disabled="true"
-                  >
-                    <span>💬</span>
-                    <span>카카오톡 (준비중)</span>
-                  </span>
-                )}
-
-                {hasPhone ? (
-                  <a
-                    href={`tel:${SITE_CONFIG.contact.phone}`}
-                    className="inline-flex min-h-[48px] flex-1 sm:flex-initial items-center justify-center gap-1.5 sm:gap-2 rounded-xl border border-slate-300 bg-white px-3 py-3 sm:px-5 sm:py-3.5 text-xs sm:text-sm font-bold text-slate-800 shadow-xs transition hover:bg-slate-50 active:scale-[0.98] text-center"
-                  >
-                    <span>📞</span>
-                    <span>전화 상담</span>
-                  </a>
-                ) : (
-                  <span
-                    className="inline-flex min-h-[48px] flex-1 sm:flex-initial cursor-not-allowed items-center justify-center gap-1.5 sm:gap-2 rounded-xl border border-slate-200 bg-slate-100 px-3 py-3 sm:px-5 sm:py-3.5 text-xs sm:text-sm font-medium text-slate-500 text-center"
-                    aria-disabled="true"
-                  >
-                    <span>📞</span>
-                    <span>전화 상담 (준비중)</span>
-                  </span>
-                )}
-              </div>
-
-              {/* Safe Points */}
-              <div className="mt-5 flex flex-wrap items-center gap-2 text-xs font-medium text-slate-500">
-                <span className="inline-flex items-center gap-1 rounded-md bg-slate-100 px-2.5 py-1">
-                  ✓ 품목 사진 확인 후 견적
-                </span>
-                <span className="inline-flex items-center gap-1 rounded-md bg-slate-100 px-2.5 py-1">
-                  ✓ 실내 반출 전 동선 확인
-                </span>
-                <span className="inline-flex items-center gap-1 rounded-md bg-slate-100 px-2.5 py-1">
-                  ✓ 합리적인 비용 산정
-                </span>
-              </div>
-            </div>
-
-            <div className="lg:col-span-5">
-              <ImagePlaceholder
-                label="폐기물 수거 현장 사진 영역"
-                sublabel="가구 분해 및 적재 작업 현장 사진 반영 예정"
-                aspectRatio="video"
-              />
-            </div>
-          </div>
-        </div>
-      </section>
 
       {/* SECTION 02: CATEGORIES */}
       <section className="border-y border-slate-200/70 bg-slate-50/80 py-14 md:py-20">

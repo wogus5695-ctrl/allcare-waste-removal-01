@@ -7,6 +7,7 @@ import { generatePageSchema } from '@/engine/schema-engine';
 import { getInternalLinks } from '@/engine/link-engine';
 import { SITE_CONFIG, getAbsoluteUrl, hasValidContactPhone, hasValidKakaoUrl } from '@/config/site';
 import { ImagePlaceholder } from '@/components/ImagePlaceholder';
+import { ServiceHero } from '@/components/ServiceHero';
 
 interface PageProps {
   searchParams: Promise<{ k?: string }>;
@@ -137,96 +138,29 @@ export default async function HomePage({ searchParams }: PageProps) {
         />
 
         <div className="w-full">
-          {/* SECTION 01: HERO (Rhythm: White Bg, 2-Col Split, Photo Estimate Primary) */}
-          <section className="bg-white py-12 md:py-20">
-            <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
-              <div className="grid grid-cols-1 items-center gap-10 lg:grid-cols-12 lg:gap-14">
-                {/* Hero Left: Text Content & Dual CTA */}
-                <div className="lg:col-span-7">
-                  <div className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-slate-50 px-3.5 py-1 text-xs font-semibold text-slate-700">
-                    <span className="h-1.5 w-1.5 rounded-full bg-orange-600"></span>
-                    {content.serviceSectionTitle}
-                  </div>
-                  <h1 className="mt-4 text-3xl font-extrabold tracking-tight text-slate-900 break-keep sm:text-4xl lg:text-5xl">
-                    {content.h1}
-                  </h1>
-                  <p className="mt-4 text-lg font-bold text-slate-800 break-keep sm:text-xl">
-                    {content.heroHook}
-                  </p>
-                  <p className="mt-3 text-sm leading-relaxed text-slate-600 break-keep sm:text-base">
-                    {content.heroDescription}
-                  </p>
+          {/* SECTION 01: HERO (Full-Width Visual & Standardized CTA) */}
+          {/* Hero CTA Responsive Pattern: flex items-center gap-2.5 sm:flex-wrap sm:gap-3 | flex-1 sm:flex-initial */}
+          <ServiceHero
+            serviceFamily={context.serviceFamily}
+            serviceLabel={context.serviceFamily === 'DEMOLITION' ? '철거 · 원상복구' : '폐기물 수거 · 처리'}
+            h1Main={`${context.seoDisplayName} ${context.workKeyword.displayName},`}
+            h1Sub={context.serviceFamily === 'DEMOLITION' ? '현장에 필요한 작업을 한 번에' : '필요한 현장을 빠르게 비워드립니다'}
+            supportingCopy={content.heroDescription}
+            breadcrumbs={
+              context.serviceFamily === 'DEMOLITION'
+                ? [
+                    { label: '홈', href: '/' },
+                    { label: '철거·원상복구', href: '/demolition' },
+                    { label: `${context.seoDisplayName} ${context.workKeyword.displayName}` },
+                  ]
+                : [
+                    { label: '홈', href: '/' },
+                    { label: '폐기물 수거·처리', href: '/waste' },
+                    { label: `${context.seoDisplayName} ${context.workKeyword.displayName}` },
+                  ]
+            }
+          />
 
-                  {/* Dual CTA: 1순위 카카오톡 견적(Warm Orange) + 2순위 전화 상담(Navy) */}
-                  <div className="mt-8 flex items-center gap-2.5 sm:flex-wrap sm:gap-3">
-                    {hasKakao ? (
-                      <a
-                        href={SITE_CONFIG.contact.kakaoUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex min-h-[48px] flex-1 sm:flex-initial items-center justify-center gap-1.5 sm:gap-2 rounded-xl bg-orange-600 px-3 py-3 sm:px-6 sm:py-3.5 text-xs sm:text-sm font-bold text-white shadow-sm transition hover:bg-orange-700 active:scale-[0.98] text-center"
-                      >
-                        <span>💬</span>
-                        <span className="sm:hidden">카카오톡 문의</span>
-                        <span className="hidden sm:inline">카카오톡으로 견적 문의</span>
-                      </a>
-                    ) : (
-                      <span
-                        className="inline-flex min-h-[48px] flex-1 sm:flex-initial cursor-not-allowed items-center justify-center gap-1.5 sm:gap-2 rounded-xl border border-slate-200 bg-slate-100 px-3 py-3 sm:px-5 sm:py-3.5 text-xs sm:text-sm font-medium text-slate-500 text-center"
-                        title="카카오톡 채널 등록 시 실제 연결됩니다"
-                        aria-disabled="true"
-                      >
-                        <span>💬</span>
-                        <span className="sm:hidden">카카오톡 (준비중)</span>
-                        <span className="hidden sm:inline">카카오톡 견적 (준비중)</span>
-                      </span>
-                    )}
-
-                    {hasPhone ? (
-                      <a
-                        href={`tel:${SITE_CONFIG.contact.phone}`}
-                        className="inline-flex min-h-[48px] flex-1 sm:flex-initial items-center justify-center gap-1.5 sm:gap-2 rounded-xl border border-slate-300 bg-white px-3 py-3 sm:px-5 sm:py-3.5 text-xs sm:text-sm font-bold text-slate-800 shadow-xs transition hover:bg-slate-50 active:scale-[0.98] text-center"
-                      >
-                        <span>📞</span>
-                        <span>전화 상담</span>
-                      </a>
-                    ) : (
-                      <span
-                        className="inline-flex min-h-[48px] flex-1 sm:flex-initial cursor-not-allowed items-center justify-center gap-1.5 sm:gap-2 rounded-xl border border-slate-200 bg-slate-100 px-3 py-3 sm:px-5 sm:py-3.5 text-xs sm:text-sm font-medium text-slate-500 text-center"
-                        title="운영자 대표번호 등록 시 실제 연결됩니다"
-                        aria-disabled="true"
-                      >
-                        <span>📞</span>
-                        <span>전화 상담 (준비중)</span>
-                      </span>
-                    )}
-                  </div>
-
-                  {/* Safe Trust Points */}
-                  <div className="mt-5 flex flex-wrap items-center gap-2 text-xs font-medium text-slate-500">
-                    <span className="inline-flex items-center gap-1 rounded-md bg-slate-100 px-2.5 py-1">
-                      ✓ 사진으로 품목 먼저 확인
-                    </span>
-                    <span className="inline-flex items-center gap-1 rounded-md bg-slate-100 px-2.5 py-1">
-                      ✓ 현장 조건 확인 후 상담
-                    </span>
-                    <span className="inline-flex items-center gap-1 rounded-md bg-slate-100 px-2.5 py-1">
-                      ✓ 견적 기준 사전 안내
-                    </span>
-                  </div>
-                </div>
-
-                {/* Hero Right: Operator Photo Slot */}
-                <div className="lg:col-span-5">
-                  <ImagePlaceholder
-                    label="운영자 제공 현장 사진 영역"
-                    sublabel={`${context.seoDisplayName} 수거 작업 현장 사진 반영 예정`}
-                    aspectRatio="video"
-                  />
-                </div>
-              </div>
-            </div>
-          </section>
 
           {/* SECTION 02: WHAT WE COLLECT (Rhythm: Soft Gray Bg, Visual Cards Grid) */}
           <section id="services" className="border-y border-slate-200/70 bg-slate-50/80 py-14 md:py-20">

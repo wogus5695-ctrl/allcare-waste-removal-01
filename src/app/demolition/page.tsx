@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import { SITE_CONFIG, getAbsoluteUrl, hasValidContactPhone, hasValidKakaoUrl } from '@/config/site';
-import { ImagePlaceholder } from '@/components/ImagePlaceholder';
+import { ServiceHero } from '@/components/ServiceHero';
 
 export const metadata: Metadata = {
   title: `철거·원상복구 공사 및 시공 상담 | ${SITE_CONFIG.brandName}`,
@@ -74,70 +74,19 @@ export default function DemolitionServiceMainPage() {
 
   return (
     <div className="w-full">
-      {/* SECTION 01: HERO */}
-      <section className="bg-white py-12 md:py-20">
-        <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
-          {/* Breadcrumb */}
-          <nav aria-label="Breadcrumb" className="mb-6">
-            <ol className="flex items-center gap-2 text-xs text-slate-500">
-              <li>
-                <a href="/" className="transition hover:text-slate-900">홈</a>
-              </li>
-              <li>/</li>
-              <li className="font-semibold text-slate-800" aria-current="page">철거·원상복구</li>
-            </ol>
-          </nav>
+      {/* SECTION 01: HERO (Full-Width Visual & Standardized CTA) */}
+      <ServiceHero
+        serviceFamily="DEMOLITION"
+        serviceLabel="철거 · 원상복구"
+        h1Main="철거부터 원상복구까지,"
+        h1Sub="현장에 필요한 작업을 한 번에"
+        supportingCopy="상가·사무실 원상복구부터 가벽과 부분 철거까지 현장 상태와 철거 범위를 확인해 필요한 작업을 안내합니다."
+        breadcrumbs={[
+          { label: '홈', href: '/' },
+          { label: '철거·원상복구' },
+        ]}
+      />
 
-          <div className="grid grid-cols-1 items-center gap-10 lg:grid-cols-12 lg:gap-14">
-            <div className="lg:col-span-7">
-              <div className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-slate-50 px-3.5 py-1 text-xs font-semibold text-slate-700">
-                <span className="h-1.5 w-1.5 rounded-full bg-orange-600"></span>
-                철거·원상복구 시공 상담
-              </div>
-              <h1 className="mt-4 text-3xl font-extrabold tracking-tight text-slate-900 break-keep sm:text-4xl lg:text-5xl">
-                철거·원상복구 시공 및 견적 상담
-              </h1>
-              <p className="mt-4 text-lg font-bold text-slate-800 break-keep sm:text-xl">
-                상가 원상복구부터 사무실 가벽 철거, 인테리어 부분 철거까지
-              </p>
-              <p className="mt-2 text-sm leading-relaxed text-slate-600 break-keep sm:text-base">
-                올케어환경은 실내 구조물 해체와 임대차 계약 조건에 맞춘 원상복구 상담을 제공합니다.
-                현장 여건에 맞춘 합리적인 견적 산정 기준과 체계적인 반출 절차를 확인해 보세요.
-              </p>
-
-              <div className="mt-8 flex flex-wrap gap-3">
-                {hasKakao && (
-                  <a
-                    href={SITE_CONFIG.contact.kakaoUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center justify-center rounded-xl bg-[#FEE500] px-6 py-3.5 text-sm font-bold text-[#3c1e1e] shadow-sm transition hover:bg-[#FADA0A]"
-                  >
-                    카카오톡 사진 전송 및 철거 견적 상담
-                  </a>
-                )}
-                {hasPhone && (
-                  <a
-                    href={`tel:${SITE_CONFIG.contact.phone.replace(/[^0-9]/g, '')}`}
-                    className="inline-flex items-center justify-center rounded-xl border border-slate-300 bg-white px-6 py-3.5 text-sm font-bold text-slate-700 shadow-sm transition hover:border-orange-500 hover:text-orange-600"
-                  >
-                    전화 상담 문의
-                  </a>
-                )}
-              </div>
-            </div>
-
-            <div className="lg:col-span-5">
-              <ImagePlaceholder
-                label="철거·원상복구 시공 현장"
-                sublabel="실제 철거 작업 현장 사진 반영 예정"
-                aspectRatio="video"
-                className="w-full shadow-md"
-              />
-            </div>
-          </div>
-        </div>
-      </section>
 
       {/* SECTION 02: CATEGORIES */}
       <section className="border-t border-slate-100 bg-slate-50/60 py-12 md:py-16">
