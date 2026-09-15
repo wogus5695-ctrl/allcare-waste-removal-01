@@ -65,12 +65,11 @@ export function EstimateCriteriaSection({
                 alt={config.imageAlt || `${h2Text} 현장`}
                 fill
                 sizes="(max-width: 768px) 100vw, 50vw"
-                className="object-cover"
-                style={
-                  config.imagePosition
-                    ? { objectPosition: config.imagePosition }
-                    : undefined
-                }
+                className={`object-cover ${
+                  config.serviceFamily === 'DEMOLITION'
+                    ? 'object-[38%_50%] md:object-[42%_50%]'
+                    : 'object-[50%_50%] md:object-[50%_52%]'
+                }`}
               />
             ) : (
               /* Fallback neutral field surface when operator field image is not yet registered */

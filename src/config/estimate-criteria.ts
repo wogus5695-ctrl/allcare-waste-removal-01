@@ -11,7 +11,8 @@ export interface EstimateCriteriaConfig {
   supportingCopy: string;
   imageSrc?: string | null;
   imageAlt?: string;
-  imagePosition?: string;
+  desktopObjectPosition?: string;
+  mobileObjectPosition?: string;
   items: [EstimateCriterion, EstimateCriterion, EstimateCriterion, EstimateCriterion];
 }
 
@@ -24,10 +25,11 @@ export const WASTE_ESTIMATE_CONFIG: EstimateCriteriaConfig = {
   h2: '폐기물 견적은 이렇게 결정됩니다',
   supportingCopy:
     '단순 무게만이 아닌 품목 구성, 전체 물량, 현장 반출 환경, 차량 접근성까지 종합적으로 고려하여 합리적인 견적을 안내합니다.',
-  // 운영자 현장 사진 등록 슬롯 (미등록 시 중립 서피스 폴백)
-  imageSrc: null,
-  imageAlt: '올케어환경 폐기물 수거 및 적재 작업 현장',
-  imagePosition: 'center',
+  // 운영자 실제 현장 사진 적용 (1톤 트럭 폐기물 적재 현장)
+  imageSrc: '/images/estimate/waste-estimate.webp',
+  imageAlt: '폐기물을 차량에 적재한 수거 현장',
+  desktopObjectPosition: '50% 52%',
+  mobileObjectPosition: '50% 50%',
   items: [
     {
       num: '01',
@@ -65,10 +67,11 @@ export const DEMOLITION_ESTIMATE_CONFIG: EstimateCriteriaConfig = {
   h2: '철거 견적은 이렇게 결정됩니다',
   supportingCopy:
     '단순 평당 단가가 아닌 철거 범위, 구조·마감재 종류, 현장 반출 여건, 원상복구 조건까지 종합적으로 검토하여 정확한 견적을 안내합니다.',
-  // 운영자 현장 사진 등록 슬롯 (미등록 시 중립 서피스 폴백)
-  imageSrc: null,
-  imageAlt: '올케어환경 실내 철거 및 원상복구 작업 현장',
-  imagePosition: 'center',
+  // 운영자 실제 현장 사진 적용 (전동 장비 실내 철거 현장)
+  imageSrc: '/images/estimate/demolition-estimate.webp',
+  imageAlt: '전동 장비를 이용한 실내 철거 작업 현장',
+  desktopObjectPosition: '42% 50%',
+  mobileObjectPosition: '38% 50%',
   items: [
     {
       num: '01',
