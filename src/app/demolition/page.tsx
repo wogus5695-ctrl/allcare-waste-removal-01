@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { SITE_CONFIG, getAbsoluteUrl, hasValidContactPhone, hasValidKakaoUrl } from '@/config/site';
 import { ServiceHero } from '@/components/ServiceHero';
 import { ServiceScopeSection } from '@/components/ServiceScopeSection';
+import { EstimateCriteriaSection } from '@/components/EstimateCriteriaSection';
 
 export const metadata: Metadata = {
   title: `철거·원상복구 공사 및 시공 상담 | ${SITE_CONFIG.brandName}`,
@@ -25,14 +26,6 @@ export const metadata: Metadata = {
   },
 };
 
-const ESTIMATE_FACTORS = [
-  { num: '01', title: '철거 면적 및 평수', desc: '시공 면적(전용 평수)과 천장 높이에 따른 철거 및 해체 공수 산출' },
-  { num: '02', title: '구조재 성상', desc: '석고보드, 조적(벽돌), 콘크리트, 경량 철골, 유리 등 철거 대상 재질' },
-  { num: '03', title: '야간·소음 규정', desc: '건물 관리소 규약에 따른 주말·야간 시공 필요 여부 및 소음 제한 조건' },
-  { num: '04', title: '반출 이동 동선', desc: '승강기 보양 후 운반 가능 여부, 사다리차 접근성 및 계단 작업 조건' },
-  { num: '05', title: '원상복구 범위', desc: '천장 텍스 복구, 바닥 디럭스타일 복구 등 임대인 명도 조건 부합 여부' },
-  { num: '06', title: '잔재물 반출 여건', desc: '철거 폐기물 적재 공간 및 폐기물 운반 차량 진입 여건 확인' },
-];
 
 const PROCESS_STEPS = [
   { step: '01', title: '현장 사진·도면 전달', desc: '철거 대상 부위 사진 또는 실측 도면을 카카오톡 또는 문자로 전송' },
@@ -83,34 +76,8 @@ export default function DemolitionServiceMainPage() {
       {/* SECTION 02: SERVICE SCOPE (4 Representative Cards & Image Architecture) */}
       <ServiceScopeSection serviceFamily="DEMOLITION" />
 
-      {/* SECTION 03: ESTIMATE FACTORS */}
-      <section className="border-t border-slate-100 bg-white py-12 md:py-16">
-        <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
-          <div className="text-center">
-            <h2 className="text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">
-              철거 견적 산정 기준 6가지
-            </h2>
-            <p className="mt-2 text-sm text-slate-600 break-keep sm:text-base">
-              철거 비용은 단순 평당 단가로 책정되지 않으며, 현장의 제반 구조적 요인과 시공 여건에 따라 결정됩니다.
-            </p>
-          </div>
-
-          <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {ESTIMATE_FACTORS.map((factor) => (
-              <div
-                key={factor.num}
-                className="flex flex-col justify-between rounded-xl border border-slate-200 bg-slate-50/50 p-5"
-              >
-                <div>
-                  <span className="text-xs font-black tracking-wider text-orange-600">{factor.num}</span>
-                  <h3 className="mt-1 text-base font-bold text-slate-900">{factor.title}</h3>
-                  <p className="mt-2 text-xs leading-relaxed text-slate-600 sm:text-sm">{factor.desc}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+      {/* SECTION 03: ESTIMATE CRITERIA */}
+      <EstimateCriteriaSection serviceFamily="DEMOLITION" variant="white" />
 
       {/* SECTION 04: WORK PROCESS */}
       <section className="border-t border-slate-100 bg-slate-50/60 py-12 md:py-16">

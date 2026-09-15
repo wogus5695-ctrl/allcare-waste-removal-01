@@ -9,6 +9,7 @@ import { SITE_CONFIG, getAbsoluteUrl, hasValidContactPhone, hasValidKakaoUrl } f
 import { ImagePlaceholder } from '@/components/ImagePlaceholder';
 import { ServiceHero } from '@/components/ServiceHero';
 import { ServiceScopeSection } from '@/components/ServiceScopeSection';
+import { EstimateCriteriaSection } from '@/components/EstimateCriteriaSection';
 
 interface PageProps {
   searchParams: Promise<{ k?: string }>;
@@ -64,17 +65,6 @@ const MAIN_SERVICES = [
   { title: '사업장 폐기물', desc: '창고 적재물, 현장 잔재물 맞춤 수거', icon: '🏭' },
 ];
 
-/**
- * 견적 전 확인하는 6가지 요소 (Section 04 기준)
- */
-const ESTIMATE_FACTORS = [
-  { num: '01', title: '품목 종류', desc: '가구, 가전, 목재, 혼합 폐기물 등 성상별 처리 방식 확인' },
-  { num: '02', title: '전체 물량', desc: '단품 소량 수거부터 1톤·다수 차량 적재 물량까지 체계적 파악' },
-  { num: '03', title: '건물 층수', desc: '현장 층수와 보행 이동 거리에 따른 반출 동선 검토' },
-  { num: '04', title: '엘리베이터 유무', desc: '승강기 이용 가능 여부 또는 계단 반출 난이도 확인' },
-  { num: '05', title: '차량 접근성', desc: '작업 차량 진입 및 주차 가능 여부 사전 파악' },
-  { num: '06', title: '분해·해체 여부', desc: '문틀 통과를 위한 가구 분해 및 사전 해체 필요성 확인' },
-];
 
 /**
  * 4단계 진행 절차 (Section 05 기준)
@@ -205,43 +195,8 @@ export default async function HomePage({ searchParams }: PageProps) {
             </div>
           </section>
 
-          {/* SECTION 04: ESTIMATE FACTORS (Rhythm: Soft Gray Bg, Big Numbered Cards) */}
-          <section id="estimate" className="border-y border-slate-200/70 bg-slate-50/80 py-14 md:py-20">
-            <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
-              <div className="max-w-2xl">
-                <span className="text-xs font-bold uppercase tracking-wider text-orange-600">
-                  Estimate Criteria
-                </span>
-                <h2 className="mt-2 text-2xl font-black tracking-tight text-slate-900 break-keep sm:text-3xl">
-                  {content.estimateTitle}
-                </h2>
-                <p className="mt-2 text-sm leading-relaxed text-slate-600 break-keep sm:text-base">
-                  {content.estimateDescription}
-                </p>
-              </div>
-
-              <div className="mt-8 grid grid-cols-2 gap-3.5 sm:grid-cols-3 sm:gap-4">
-                {ESTIMATE_FACTORS.map((factor, idx) => (
-                  <div
-                    key={idx}
-                    className="flex flex-col justify-between rounded-2xl border border-slate-200/80 bg-white p-5 shadow-xs transition hover:border-slate-300 hover:shadow-sm"
-                  >
-                    <span className="font-mono text-xl font-black text-orange-600/90 sm:text-2xl">
-                      {factor.num}
-                    </span>
-                    <div className="mt-3">
-                      <h3 className="text-sm font-bold text-slate-900 break-keep sm:text-base">
-                        {factor.title}
-                      </h3>
-                      <p className="mt-1 text-xs leading-relaxed text-slate-500 break-keep sm:text-xs">
-                        {factor.desc}
-                      </p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </section>
+          {/* SECTION 04: ESTIMATE CRITERIA */}
+          <EstimateCriteriaSection serviceFamily={context.serviceFamily} />
 
           {/* SECTION 05: PROCESS TIMELINE (Rhythm: White Bg, Numbered Process Steps) */}
           <section id="process" className="bg-white py-14 md:py-20">
@@ -700,43 +655,8 @@ export default async function HomePage({ searchParams }: PageProps) {
           </div>
         </section>
 
-        {/* SECTION 04: ESTIMATE FACTORS */}
-        <section id="estimate" className="border-y border-slate-200/70 bg-slate-50/80 py-14 md:py-20">
-          <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
-            <div className="max-w-2xl">
-              <span className="text-xs font-bold uppercase tracking-wider text-orange-600">
-                Estimate Criteria
-              </span>
-              <h2 className="mt-2 text-2xl font-black tracking-tight text-slate-900 break-keep sm:text-3xl">
-                폐기물 견적은 어떤 기준으로 달라질까요?
-              </h2>
-              <p className="mt-2 text-sm leading-relaxed text-slate-600 break-keep sm:text-base">
-                단순 무게뿐 아니라 현장 작업 난이도에 직결되는 6가지 요소를 투명하게 검토합니다.
-              </p>
-            </div>
-
-            <div className="mt-8 grid grid-cols-2 gap-3.5 sm:grid-cols-3 sm:gap-4">
-              {ESTIMATE_FACTORS.map((factor, idx) => (
-                <div
-                  key={idx}
-                  className="flex flex-col justify-between rounded-2xl border border-slate-200/80 bg-white p-5 shadow-xs transition hover:border-slate-300 hover:shadow-sm"
-                >
-                  <span className="font-mono text-xl font-black text-orange-600/90 sm:text-2xl">
-                    {factor.num}
-                  </span>
-                  <div className="mt-3">
-                    <h3 className="text-sm font-bold text-slate-900 break-keep sm:text-base">
-                      {factor.title}
-                    </h3>
-                    <p className="mt-1 text-xs leading-relaxed text-slate-500 break-keep sm:text-xs">
-                      {factor.desc}
-                    </p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
+        {/* SECTION 04: ESTIMATE CRITERIA */}
+        <EstimateCriteriaSection serviceFamily="WASTE" />
 
         {/* SECTION 05: PROCESS */}
         <section id="process" className="bg-white py-14 md:py-20">

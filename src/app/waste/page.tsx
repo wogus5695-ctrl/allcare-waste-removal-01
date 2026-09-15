@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { SITE_CONFIG, getAbsoluteUrl, hasValidContactPhone, hasValidKakaoUrl } from '@/config/site';
 import { ServiceHero } from '@/components/ServiceHero';
 import { ServiceScopeSection } from '@/components/ServiceScopeSection';
+import { EstimateCriteriaSection } from '@/components/EstimateCriteriaSection';
 
 export const metadata: Metadata = {
   title: `폐기물 수거·처리 서비스 안내 | ${SITE_CONFIG.brandName}`,
@@ -25,14 +26,6 @@ export const metadata: Metadata = {
   },
 };
 
-const ESTIMATE_FACTORS = [
-  { num: '01', title: '품목 성상', desc: '가구, 가전, 목재, 혼합 잡화 등 성상별 적재 및 처리 방식' },
-  { num: '02', title: '전체 물량', desc: '단품 소량 수거부터 1톤·다수 트럭 분량까지 실측 파악' },
-  { num: '03', title: '작업 층수', desc: '건물 층수와 실내에서 작업 차량까지의 보행 이동 동선' },
-  { num: '04', title: '엘리베이터 여부', desc: '승강기 이용 가능 여부 및 계단 반출 작업 난이도' },
-  { num: '05', title: '차량 접근성', desc: '건물 입구 인근 작업 차량 주차 및 상차 환경' },
-  { num: '06', title: '분해 필요성', desc: '문틀 및 통로 통과를 위한 사전 분해·해체 공수' },
-];
 
 const PROCESS_STEPS = [
   { step: '01', title: '사진 전달', desc: '버리실 품목 전체 사진을 카카오톡 또는 문자로 전송' },
@@ -109,43 +102,8 @@ export default function WasteServiceMainPage() {
         </div>
       </section>
 
-      {/* SECTION 04: ESTIMATE FACTORS */}
-      <section className="border-y border-slate-200/70 bg-slate-50/80 py-14 md:py-20">
-        <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
-          <div className="max-w-2xl">
-            <span className="text-xs font-bold uppercase tracking-wider text-orange-600">
-              Estimate Criteria
-            </span>
-            <h2 className="mt-2 text-2xl font-black tracking-tight text-slate-900 break-keep sm:text-3xl">
-              폐기물 견적 산정 기준
-            </h2>
-            <p className="mt-2 text-sm leading-relaxed text-slate-600 break-keep sm:text-base">
-              단순 무게뿐 아니라 현장 반출 난이도에 직결되는 6가지 요소를 투명하게 검토합니다.
-            </p>
-          </div>
-
-          <div className="mt-8 grid grid-cols-2 gap-3.5 sm:grid-cols-3 sm:gap-4">
-            {ESTIMATE_FACTORS.map((factor, idx) => (
-              <div
-                key={idx}
-                className="flex flex-col justify-between rounded-2xl border border-slate-200/80 bg-white p-5 shadow-xs transition hover:border-slate-300 hover:shadow-sm"
-              >
-                <span className="font-mono text-xl font-black text-orange-600/90 sm:text-2xl">
-                  {factor.num}
-                </span>
-                <div className="mt-3">
-                  <h3 className="text-sm font-bold text-slate-900 break-keep sm:text-base">
-                    {factor.title}
-                  </h3>
-                  <p className="mt-1 text-xs leading-relaxed text-slate-500 break-keep sm:text-xs">
-                    {factor.desc}
-                  </p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+      {/* SECTION 04: ESTIMATE CRITERIA */}
+      <EstimateCriteriaSection serviceFamily="WASTE" />
 
       {/* SECTION 05: PROCESS */}
       <section className="bg-white py-14 md:py-20">
