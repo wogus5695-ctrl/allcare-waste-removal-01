@@ -8,6 +8,7 @@ import { getInternalLinks } from '@/engine/link-engine';
 import { SITE_CONFIG, getAbsoluteUrl, hasValidContactPhone, hasValidKakaoUrl } from '@/config/site';
 import { ImagePlaceholder } from '@/components/ImagePlaceholder';
 import { ServiceHero } from '@/components/ServiceHero';
+import { ServiceScopeSection } from '@/components/ServiceScopeSection';
 
 interface PageProps {
   searchParams: Promise<{ k?: string }>;
@@ -162,38 +163,9 @@ export default async function HomePage({ searchParams }: PageProps) {
           />
 
 
-          {/* SECTION 02: WHAT WE COLLECT (Rhythm: Soft Gray Bg, Visual Cards Grid) */}
-          <section id="services" className="border-y border-slate-200/70 bg-slate-50/80 py-14 md:py-20">
-            <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
-              <div className="max-w-2xl">
-                <span className="text-xs font-bold uppercase tracking-wider text-orange-600">
-                  Service Scope
-                </span>
-                <h2 className="mt-2 text-2xl font-black tracking-tight text-slate-900 break-keep sm:text-3xl">
-                  {content.serviceSectionTitle}
-                </h2>
-                <p className="mt-2 text-sm leading-relaxed text-slate-600 break-keep sm:text-base">
-                  현장 여건과 배출 물품의 특성에 맞춰 안전하고 체계적으로 분류·반출합니다.
-                </p>
-              </div>
+          {/* SECTION 02: SERVICE SCOPE (4 Representative Cards & Image Architecture) */}
+          <ServiceScopeSection serviceFamily={context.serviceFamily} />
 
-              <div className="mt-8 grid grid-cols-2 gap-3.5 sm:grid-cols-4 sm:gap-4">
-                {content.serviceItems.map((item, idx) => (
-                  <div
-                    key={idx}
-                    className="flex flex-col items-center justify-center rounded-2xl border border-slate-200/80 bg-white p-5 text-center shadow-xs transition hover:border-slate-300 hover:shadow-sm"
-                  >
-                    <span className="text-2xl" aria-hidden="true">
-                      📦
-                    </span>
-                    <span className="mt-2 text-sm font-bold text-slate-900 break-keep">
-                      {item}
-                    </span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </section>
 
           {/* SECTION 03: DECISION GUIDE (Rhythm: White Bg, 3 Structured Points) */}
           <section id="decision" className="bg-white py-14 md:py-20">

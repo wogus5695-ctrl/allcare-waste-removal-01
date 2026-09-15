@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { SITE_CONFIG, getAbsoluteUrl, hasValidContactPhone, hasValidKakaoUrl } from '@/config/site';
 import { ServiceHero } from '@/components/ServiceHero';
+import { ServiceScopeSection } from '@/components/ServiceScopeSection';
 
 export const metadata: Metadata = {
   title: `철거·원상복구 공사 및 시공 상담 | ${SITE_CONFIG.brandName}`,
@@ -23,15 +24,6 @@ export const metadata: Metadata = {
     type: 'website',
   },
 };
-
-const DEMOLITION_CATEGORIES = [
-  { title: '상가 원상복구', desc: '임대차 계약 종료에 따른 마감재 철거 및 임대인 인도 기준 원상회복', icon: '🏪' },
-  { title: '사무실 가벽·칸막이 철거', desc: '경량 석고보드 스터드, 유리벽, 래핑 칸막이 해체 및 천장 몰딩 마감', icon: '🏢' },
-  { title: '실내 인테리어 부분 철거', desc: '주방 싱크대, 욕실 타일, 붙박이장, 신발장 등 리모델링 전 선별 철거', icon: '🔨' },
-  { title: '바닥재 철거 및 면처리', desc: '데코타일, 디럭스타일, 강화마루, 에폭시 바닥재 철거 및 샌딩 면정리', icon: '🧱' },
-  { title: '천장재·텍스 해체', desc: 'M-bar, T-bar 경량 철골 천장틀 및 석고 텍스 안전 철거 분리', icon: '🏗️' },
-  { title: '폐업 매장 철거 정리', desc: '영업 종료 매장 내부 인테리어 철거, 주방 설비 및 집기 일괄 정리', icon: '🏬' },
-];
 
 const ESTIMATE_FACTORS = [
   { num: '01', title: '철거 면적 및 평수', desc: '시공 면적(전용 평수)과 천장 높이에 따른 철거 및 해체 공수 산출' },
@@ -88,32 +80,8 @@ export default function DemolitionServiceMainPage() {
       />
 
 
-      {/* SECTION 02: CATEGORIES */}
-      <section className="border-t border-slate-100 bg-slate-50/60 py-12 md:py-16">
-        <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
-          <div className="text-center">
-            <h2 className="text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">
-              주요 철거 및 원상복구 분야
-            </h2>
-            <p className="mt-2 text-sm text-slate-600 break-keep sm:text-base">
-              상업 공간, 업무 시설, 주거 공간의 구조와 요구 조건에 맞춘 맞춤형 철거를 제공합니다.
-            </p>
-          </div>
-
-          <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {DEMOLITION_CATEGORIES.map((cat) => (
-              <div
-                key={cat.title}
-                className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm transition hover:shadow-md"
-              >
-                <div className="text-2xl">{cat.icon}</div>
-                <h3 className="mt-3 text-base font-bold text-slate-900">{cat.title}</h3>
-                <p className="mt-1 text-xs leading-relaxed text-slate-600 sm:text-sm">{cat.desc}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+      {/* SECTION 02: SERVICE SCOPE (4 Representative Cards & Image Architecture) */}
+      <ServiceScopeSection serviceFamily="DEMOLITION" />
 
       {/* SECTION 03: ESTIMATE FACTORS */}
       <section className="border-t border-slate-100 bg-white py-12 md:py-16">

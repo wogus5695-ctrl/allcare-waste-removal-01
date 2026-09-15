@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { SITE_CONFIG, getAbsoluteUrl, hasValidContactPhone, hasValidKakaoUrl } from '@/config/site';
 import { ServiceHero } from '@/components/ServiceHero';
+import { ServiceScopeSection } from '@/components/ServiceScopeSection';
 
 export const metadata: Metadata = {
   title: `폐기물 수거·처리 서비스 안내 | ${SITE_CONFIG.brandName}`,
@@ -23,15 +24,6 @@ export const metadata: Metadata = {
     type: 'website',
   },
 };
-
-const WASTE_CATEGORIES = [
-  { title: '대형 가구 분해·반출', desc: '장롱, 침대, 매트리스, 소파 등 실내 반출 및 분해 수거', icon: '🛋️' },
-  { title: '가정집 비움 정리', desc: '원룸 퇴거, 베란다 묵은 짐, 유품 정리 및 생활 폐기물 일괄 수거', icon: '🏠' },
-  { title: '이사 전후 폐기물', desc: '이사 전 버릴 짐 선별 및 이사 후 남은 잔여 폐기물 처리', icon: '📦' },
-  { title: '사무실 집기 정리', desc: '사무용 책상, 의자, 파티션 분해 및 빌딩 화물 승강기 반출', icon: '🏢' },
-  { title: '상가 매장 집기', desc: '영업용 진열대, 카운터, 비품 수거 및 매장 내부 정리', icon: '🏪' },
-  { title: '현장 잔재물 수거', desc: '인테리어 공사 후 마대에 담긴 부산물 및 폐목재 상차 운반', icon: '🏭' },
-];
 
 const ESTIMATE_FACTORS = [
   { num: '01', title: '품목 성상', desc: '가구, 가전, 목재, 혼합 잡화 등 성상별 적재 및 처리 방식' },
@@ -88,41 +80,8 @@ export default function WasteServiceMainPage() {
       />
 
 
-      {/* SECTION 02: CATEGORIES */}
-      <section className="border-y border-slate-200/70 bg-slate-50/80 py-14 md:py-20">
-        <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
-          <div className="max-w-2xl">
-            <span className="text-xs font-bold uppercase tracking-wider text-orange-600">
-              Service Scope
-            </span>
-            <h2 className="mt-2 text-2xl font-black tracking-tight text-slate-900 break-keep sm:text-3xl">
-              주요 폐기물 수거 서비스 분야
-            </h2>
-            <p className="mt-2 text-sm leading-relaxed text-slate-600 break-keep sm:text-base">
-              배출 품목의 성상과 현장 여건에 맞춰 안전하고 체계적인 수거 절차를 지원합니다.
-            </p>
-          </div>
-
-          <div className="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-3 sm:gap-5">
-            {WASTE_CATEGORIES.map((cat, idx) => (
-              <div
-                key={idx}
-                className="rounded-2xl border border-slate-200/80 bg-white p-6 shadow-xs transition hover:border-slate-300 hover:shadow-sm"
-              >
-                <span className="text-3xl" aria-hidden="true">
-                  {cat.icon}
-                </span>
-                <h3 className="mt-4 text-base font-bold text-slate-900 break-keep">
-                  {cat.title}
-                </h3>
-                <p className="mt-1.5 text-xs leading-relaxed text-slate-500 break-keep sm:text-sm">
-                  {cat.desc}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+      {/* SECTION 02: SERVICE SCOPE (4 Representative Cards & Image Architecture) */}
+      <ServiceScopeSection serviceFamily="WASTE" />
 
       {/* SECTION 03: REGION HUB ENTRY BANNER */}
       <section className="bg-white py-10">
