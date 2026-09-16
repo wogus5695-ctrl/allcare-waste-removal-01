@@ -41,6 +41,11 @@ export function resolveSiteOrigin(env: NodeJS.ProcessEnv = process.env): string 
   const rawOrigin = env.SITE_ORIGIN || env.NEXT_PUBLIC_SITE_ORIGIN;
   const isProduction = env.NODE_ENV === 'production';
 
+  // Vercel 기본/프리뷰 도메인(*.vercel.app)이 환경변수에 남아있는 경우 공식 프로덕션 도메인으로 엄격 보정
+  if (rawOrigin && rawOrigin.includes('vercel.app')) {
+    return 'https://www.allcarehg.co.kr';
+  }
+
   if (!rawOrigin || rawOrigin.trim() === '') {
     if (isProduction) {
       throw new Error(
