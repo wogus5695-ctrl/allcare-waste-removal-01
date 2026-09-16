@@ -2,7 +2,7 @@ import { WorkKeywordEntity, ServiceFamily } from '@/types/keyword';
 import { RegionEntity } from '@/types/region';
 import { PageContext } from '@/types/content';
 import { ALL_KEYWORDS, findKeywordByRouteKey } from '@/data/keywords';
-import { findRegionByRouteKey } from '@/data/regions';
+import { findRegionByRouteKey, findProductionRegionByRouteKey } from '@/data/regions';
 import { getServiceFamilyConfig } from '@/config/service-family';
 import { getServiceRegionPolicy } from '@/config/service-region-policy';
 
@@ -12,6 +12,13 @@ export interface ResolvedRoute {
   serviceFamily: ServiceFamily;
   canonicalQuery: string;
   isIndexable: boolean;
+}
+
+/**
+ * 프로덕션 런타임 전용 Resolver (테스트 픽스처 제외)
+ */
+export function resolveProductionRoute(rawK?: string | null): ResolvedRoute | null {
+  return resolveBaseRoute(rawK, findProductionRegionByRouteKey);
 }
 
 /**

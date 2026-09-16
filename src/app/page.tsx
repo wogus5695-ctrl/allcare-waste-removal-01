@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
-import { resolveBaseRoute, createPageContext } from '@/engine/resolver';
+import { resolveProductionRoute, createPageContext } from '@/engine/resolver';
 import { generateDynamicContent } from '@/engine/content-engine';
 import { generatePageMetadata } from '@/engine/seo-engine';
 import { generatePageSchema } from '@/engine/schema-engine';
@@ -42,7 +42,7 @@ export async function generateMetadata({ searchParams }: PageProps): Promise<Met
   }
 
   // 2. k 쿼리가 전달된 동적 요청
-  const resolved = resolveBaseRoute(k);
+  const resolved = resolveProductionRoute(k);
   if (!resolved) {
     return {
       title: `페이지를 찾을 수 없습니다 | ${SITE_CONFIG.brandName}`,
@@ -110,7 +110,7 @@ export default async function HomePage({ searchParams }: PageProps) {
   // CASE A: 동적 키워드 랜딩 페이지 (?k=지역명-작업명)
   // =========================================================================
   if (k) {
-    const resolved = resolveBaseRoute(k);
+    const resolved = resolveProductionRoute(k);
     if (!resolved) {
       // 잘못된 지역/작업/비활성 쿼리는 즉시 실제 HTTP 404 반환
       notFound();

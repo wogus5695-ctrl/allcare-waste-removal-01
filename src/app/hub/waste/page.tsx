@@ -1,11 +1,11 @@
 import type { Metadata } from 'next';
 import { SITE_CONFIG, getAbsoluteUrl } from '@/config/site';
-import { SUWON_REGIONS } from '@/data/regions/suwon';
+import { PRODUCTION_REGIONS } from '@/data/regions';
 import { RegionEntity } from '@/types/region';
 
 export const metadata: Metadata = {
-  title: `수원시 폐기물 수거 서비스 지역 허브 | ${SITE_CONFIG.brandName}`,
-  description: `${SITE_CONFIG.brandName} 수원시 전 지역(장안구, 권선구, 팔달구, 영통구 60개 동) 폐기물 수거 및 현장 정리 서비스 안내 허브입니다.`,
+  title: `수도권 폐기물 수거 서비스 지역 허브 | ${SITE_CONFIG.brandName}`,
+  description: `${SITE_CONFIG.brandName} 수도권(서울 67개 지역, 인천 56개 지역, 경기 188개 지역 등 총 311개 지역) 폐기물 수거 및 현장 정리 서비스 안내 허브입니다.`,
   alternates: {
     canonical: getAbsoluteUrl('/hub/waste'),
   },
@@ -14,8 +14,8 @@ export const metadata: Metadata = {
     follow: true,
   },
   openGraph: {
-    title: `수원시 폐기물 수거 서비스 지역 허브 | ${SITE_CONFIG.brandName}`,
-    description: `${SITE_CONFIG.brandName} 수원시 전 지역 폐기물 수거 및 현장 정리 서비스 지역 안내 허브입니다.`,
+    title: `수도권 폐기물 수거 서비스 지역 허브 | ${SITE_CONFIG.brandName}`,
+    description: `${SITE_CONFIG.brandName} 수도권 전 지역 폐기물 수거 및 현장 정리 서비스 지역 안내 허브입니다.`,
     url: getAbsoluteUrl('/hub/waste'),
     siteName: SITE_CONFIG.brandName,
     locale: 'ko_KR',
@@ -25,20 +25,66 @@ export const metadata: Metadata = {
 
 /**
  * Waste Service Hub (/hub/waste)
- * 수원시 4개 구 55개 동 폐기물 수거 전용 계층 탐색 디렉토리
+ * 서울 5개 자치구(67개), 인천 5개 자치구(56개), 경기 5개 시(188개) 등 총 311개 활성 지역 폐기물 수거 전용 계층 탐색 디렉토리
  */
 export default function WasteHubPage() {
-  const siEntity = SUWON_REGIONS.find((r) => r.regionType === 'SI');
-  const guList = SUWON_REGIONS.filter((r) => r.regionType === 'GU');
-  const dongByParentId = new Map<string, RegionEntity[]>();
+  const activeRegions = PRODUCTION_REGIONS.filter((r) => r.isHubEligible);
 
-  for (const r of SUWON_REGIONS) {
-    if (r.regionType === 'DONG' && r.parentRegionId) {
-      const existing = dongByParentId.get(r.parentRegionId) || [];
-      existing.push(r);
-      dongByParentId.set(r.parentRegionId, existing);
+  // 1. 서울 5개 자치구
+  const seoulGus = activeRegions.filter((r) => r.upperRegionId === 'seoul' && r.regionType === 'GU');
+  const seoulDongsByGu = new Map<string, RegionEntity[]>();
+  for (const r of activeRegions) {
+    if (r.regionType === 'DONG' && r.parentRegionId && seoulGus.some((g) => g.regionId === r.parentRegionId)) {
+      const list = seoulDongsByGu.get(r.parentRegionId) || [];
+      list.push(r);
+      seoulDongsByGu.set(r.parentRegionId, list);
     }
   }
+
+  // 2. 인천 5개 자치구
+  const incheonGus = activeRegions.filter((r) => r.upperRegionId === 'incheon' && r.regionType === 'GU');
+  const incheonDongsByGu = new Map<string, RegionEntity[]>();
+  for (const r of activeRegions) {
+    if (r.regionType === 'DONG' && r.parentRegionId && incheonGus.some((g) => g.regionId === r.parentRegionId)) {
+      const list = incheonDongsByGu.get(r.parentRegionId) || [];
+      list.push(r);
+      incheonDongsByGu.set(r.parentRegionId, list);
+    }
+  }
+
+  // 3. 경기도 5개 시 (수원시, 화성시, 평택시, 고양시, 용인시)
+  const gyeonggiCities = [
+    {
+      id: 'gg-suwon',
+      name: '수원시',
+      badge: '수원시 전역',
+      desc: '장안구, 권선구, 팔달구, 영통구 60개 지역 폐기물 수거 디렉토리입니다.',
+    },
+    {
+      id: 'gg-hs',
+      name: '화성시',
+      badge: '화성시 전역',
+      desc: '만세구, 효행구, 병점구, 동탄구 30개 지역 폐기물 수거 디렉토리입니다.',
+    },
+    {
+      id: 'gg-pt',
+      name: '평택시',
+      badge: '평택시 전역',
+      desc: '비전동, 동삭동, 고덕동 등 관할 20개 지역 폐기물 수거 디렉토리입니다.',
+    },
+    {
+      id: 'gg-gy',
+      name: '고양시',
+      badge: '고양시 전역',
+      desc: '덕양구, 일산동구, 일산서구 44개 지역 폐기물 수거 디렉토리입니다.',
+    },
+    {
+      id: 'gg-yi',
+      name: '용인시',
+      badge: '용인시 전역',
+      desc: '처인구, 기흥구, 수지구 34개 지역 폐기물 수거 디렉토리입니다.',
+    },
+  ];
 
   const siQuickServices = [
     { label: '폐기물처리업체', key: '폐기물처리업체' },
@@ -68,91 +114,287 @@ export default function WasteHubPage() {
       <header className="border-b border-slate-200 pb-8">
         <div className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs font-semibold text-slate-700">
           <span className="h-1.5 w-1.5 rounded-full bg-orange-600"></span>
-          폐기물 수거 지역 안내
+          폐기물 수거 서비스 지역 안내
         </div>
         <h1 className="mt-4 text-2xl font-black tracking-tight text-slate-900 break-keep sm:text-3xl md:text-4xl">
-          수원시 폐기물 수거·처리 서비스 지역 안내
+          수도권 폐기물 수거·처리 서비스 지역 디렉토리
         </h1>
         <p className="mt-3 max-w-2xl text-sm leading-relaxed text-slate-600 break-keep sm:text-base">
-          올케어환경은 수원시 4개 일반구(장안구, 권선구, 팔달구, 영통구) 및 관할 전 동 단위 현장 수거·정리 상담을 지원합니다.
-          아래 지역 목록에서 원하시는 행정구역을 선택하시면 상세 안내를 확인하실 수 있습니다.
+          올케어환경은 수도권 주요 거점(서울 5개 자치구 67개 지역, 인천 5개 자치구 56개 지역, 경기 5개 시 188개 지역 등 총 311개 지역)의
+          현장 수거·정리 상담을 전문적으로 지원합니다. 원하시는 지역을 선택하시면 상세 안내를 확인하실 수 있습니다.
         </p>
       </header>
 
-      {/* 수원시 전역 대표 서비스 바로가기 */}
-      {siEntity && (
-        <section className="my-8 rounded-2xl border border-slate-200 bg-slate-50/50 p-6 sm:p-8">
-          <h2 className="text-lg font-bold text-slate-900">
-            수원시 전역 대표 서비스
+      {/* 서울특별시 5개 자치구 서비스 지역 */}
+      <section className="my-8">
+        <div className="mb-4">
+          <span className="text-xs font-bold uppercase tracking-wider text-orange-600">서울특별시</span>
+          <h2 className="text-2xl font-bold tracking-tight text-slate-900">
+            서울특별시 5개 자치구 및 관할 동 서비스 안내
           </h2>
           <p className="mt-1 text-xs text-slate-500">
-            수원시 전 지역을 대상으로 제공되는 핵심 폐기물 수거 서비스 안내입니다.
+            강서구, 송파구, 서초구, 영등포구, 성동구 67개 지역 폐기물 수거 디렉토리입니다.
           </p>
-          <div className="mt-4 flex flex-wrap gap-2.5">
-            {siQuickServices.map((srv) => (
-              <a
-                key={srv.key}
-                href={`/?k=${siEntity.routeKey}-${srv.key}`}
-                className="inline-flex items-center gap-1.5 rounded-lg border border-slate-300 bg-white px-4 py-2 text-xs font-semibold text-slate-700 shadow-sm transition hover:border-orange-500 hover:text-orange-600 sm:text-sm"
+        </div>
+
+        <div className="space-y-8">
+          {seoulGus.map((gu) => {
+            const dongs = seoulDongsByGu.get(gu.regionId) || [];
+
+            return (
+              <div
+                key={gu.regionId}
+                className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm sm:p-8"
               >
-                <span>📍</span>
-                <span>수원시 {srv.label}</span>
-              </a>
-            ))}
-          </div>
-        </section>
-      )}
-
-      {/* 구별 하위 동 디렉토리 그리드 */}
-      <div className="space-y-8">
-        {guList.map((gu) => {
-          const dongs = dongByParentId.get(gu.regionId) || [];
-
-          return (
-            <section
-              key={gu.regionId}
-              className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm sm:p-8"
-            >
-              <div className="flex flex-wrap items-center justify-between gap-4 border-b border-slate-100 pb-4">
-                <div>
-                  <h2 className="text-xl font-bold tracking-tight text-slate-900">
-                    {gu.seoDisplayName}
-                  </h2>
-                  <p className="mt-0.5 text-xs text-slate-500">
-                    관할 {dongs.length}개 동 단위 폐기물 수거 안내
-                  </p>
+                <div className="flex flex-wrap items-center justify-between gap-4 border-b border-slate-100 pb-4">
+                  <div>
+                    <h3 className="text-xl font-bold tracking-tight text-slate-900">
+                      {gu.seoDisplayName}
+                    </h3>
+                    <p className="mt-0.5 text-xs text-slate-500">
+                      관할 {dongs.length}개 동 단위 서비스 안내
+                    </p>
+                  </div>
+                  <a
+                    href={`/?k=${gu.routeKey}-폐기물처리업체`}
+                    className="inline-flex items-center gap-1 text-xs font-bold text-orange-600 hover:underline sm:text-sm"
+                  >
+                    <span>{gu.seoDisplayName} 대표 안내</span>
+                    <span>→</span>
+                  </a>
                 </div>
-                <a
-                  href={`/?k=${gu.routeKey}-폐기물처리업체`}
-                  className="inline-flex items-center gap-1 text-xs font-bold text-orange-600 hover:underline sm:text-sm"
-                >
-                  <span>{gu.seoDisplayName} 대표 안내</span>
-                  <span>→</span>
-                </a>
-              </div>
 
-              {/* 관할 동 링크 그리드 */}
-              <div className="mt-6">
-                <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400">
-                  동별 서비스 안내 바로가기
-                </h3>
-                <div className="mt-3 grid grid-cols-2 gap-2.5 sm:grid-cols-3 md:grid-cols-4">
-                  {dongs.map((dong) => (
-                    <a
-                      key={dong.regionId}
-                      href={`/?k=${dong.routeKey}-폐기물처리업체`}
-                      className="flex items-center justify-between rounded-lg border border-slate-100 bg-slate-50 px-3.5 py-2.5 text-xs font-medium text-slate-700 transition hover:border-slate-300 hover:bg-white hover:text-slate-900 sm:text-sm"
-                    >
-                      <span>{dong.seoDisplayName}</span>
-                      <span className="text-slate-300">›</span>
-                    </a>
-                  ))}
+                {/* 관할 동 링크 그리드 */}
+                <div className="mt-6">
+                  <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400">
+                    동별 서비스 안내 바로가기
+                  </h4>
+                  <div className="mt-3 grid grid-cols-2 gap-2.5 sm:grid-cols-3 md:grid-cols-4">
+                    {dongs.map((dong) => (
+                      <a
+                        key={dong.regionId}
+                        href={`/?k=${dong.routeKey}-폐기물처리업체`}
+                        className="flex items-center justify-between rounded-lg border border-slate-100 bg-slate-50 px-3.5 py-2.5 text-xs font-medium text-slate-700 transition hover:border-slate-300 hover:bg-white hover:text-slate-900 sm:text-sm"
+                      >
+                        <span>{dong.seoDisplayName}</span>
+                        <span className="text-slate-300">›</span>
+                      </a>
+                    ))}
+                  </div>
                 </div>
               </div>
-            </section>
-          );
-        })}
-      </div>
+            );
+          })}
+        </div>
+      </section>
+
+      {/* 인천광역시 5개 자치구 서비스 지역 */}
+      <section className="my-8">
+        <div className="mb-4">
+          <span className="text-xs font-bold uppercase tracking-wider text-orange-600">인천광역시</span>
+          <h2 className="text-2xl font-bold tracking-tight text-slate-900">
+            인천광역시 5개 자치구 및 관할 동 서비스 안내
+          </h2>
+          <p className="mt-1 text-xs text-slate-500">
+            검단구, 서해구, 남동구, 부평구, 미추홀구 56개 지역 폐기물 수거 디렉토리입니다.
+          </p>
+        </div>
+
+        <div className="space-y-8">
+          {incheonGus.map((gu) => {
+            const dongs = incheonDongsByGu.get(gu.regionId) || [];
+
+            return (
+              <div
+                key={gu.regionId}
+                className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm sm:p-8"
+              >
+                <div className="flex flex-wrap items-center justify-between gap-4 border-b border-slate-100 pb-4">
+                  <div>
+                    <h3 className="text-xl font-bold tracking-tight text-slate-900">
+                      {gu.seoDisplayName}
+                    </h3>
+                    <p className="mt-0.5 text-xs text-slate-500">
+                      관할 {dongs.length}개 동 단위 서비스 안내
+                    </p>
+                  </div>
+                  <a
+                    href={`/?k=${gu.routeKey}-폐기물처리업체`}
+                    className="inline-flex items-center gap-1 text-xs font-bold text-orange-600 hover:underline sm:text-sm"
+                  >
+                    <span>{gu.seoDisplayName} 대표 안내</span>
+                    <span>→</span>
+                  </a>
+                </div>
+
+                {/* 관할 동 링크 그리드 */}
+                <div className="mt-6">
+                  <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400">
+                    동별 서비스 안내 바로가기
+                  </h4>
+                  <div className="mt-3 grid grid-cols-2 gap-2.5 sm:grid-cols-3 md:grid-cols-4">
+                    {dongs.map((dong) => (
+                      <a
+                        key={dong.regionId}
+                        href={`/?k=${dong.routeKey}-폐기물처리업체`}
+                        className="flex items-center justify-between rounded-lg border border-slate-100 bg-slate-50 px-3.5 py-2.5 text-xs font-medium text-slate-700 transition hover:border-slate-300 hover:bg-white hover:text-slate-900 sm:text-sm"
+                      >
+                        <span>{dong.seoDisplayName}</span>
+                        <span className="text-slate-300">›</span>
+                      </a>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </section>
+
+      {/* 경기도 5개 시 서비스 지역 */}
+      <section className="my-8">
+        <div className="mb-4">
+          <span className="text-xs font-bold uppercase tracking-wider text-orange-600">경기도</span>
+          <h2 className="text-2xl font-bold tracking-tight text-slate-900">
+            경기도 5개 시 및 관할 구·동 서비스 안내
+          </h2>
+          <p className="mt-1 text-xs text-slate-500">
+            수원시, 화성시, 평택시, 고양시, 용인시 188개 지역 폐기물 수거 디렉토리입니다.
+          </p>
+        </div>
+
+        <div className="space-y-12">
+          {gyeonggiCities.map((city) => {
+            const si = activeRegions.find((r) => r.regionId === city.id);
+            if (!si) return null;
+
+            const gus = activeRegions.filter((r) => r.parentRegionId === city.id && r.regionType === 'GU');
+            const directDongs = activeRegions.filter((r) => r.parentRegionId === city.id && r.regionType === 'DONG');
+
+            return (
+              <div key={city.id} className="rounded-3xl border border-slate-200 bg-slate-50/40 p-6 sm:p-8">
+                {/* 시 대표 헤더 */}
+                <div className="flex flex-wrap items-center justify-between gap-4 border-b border-slate-200 pb-6">
+                  <div>
+                    <div className="inline-flex items-center gap-1.5 rounded-md bg-orange-100/70 px-2.5 py-0.5 text-xs font-semibold text-orange-700">
+                      {city.badge}
+                    </div>
+                    <h3 className="mt-2 text-2xl font-bold tracking-tight text-slate-900">
+                      {si.seoDisplayName}
+                    </h3>
+                    <p className="mt-1 text-xs text-slate-500">
+                      {city.desc}
+                    </p>
+                  </div>
+                  <a
+                    href={`/?k=${si.routeKey}-폐기물처리업체`}
+                    className="inline-flex items-center gap-1 text-xs font-bold text-orange-600 hover:underline sm:text-sm"
+                  >
+                    <span>{si.seoDisplayName} 대표 안내</span>
+                    <span>→</span>
+                  </a>
+                </div>
+
+                {/* 수원시 특별 퀵서비스 링크 (시 단위 전역 서비스) */}
+                {city.id === 'gg-suwon' && (
+                  <div className="my-6 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+                    <h4 className="text-sm font-bold text-slate-800">
+                      수원시 전역 핵심 서비스 바로가기
+                    </h4>
+                    <div className="mt-3 flex flex-wrap gap-2">
+                      {siQuickServices.map((srv) => (
+                        <a
+                          key={srv.key}
+                          href={`/?k=${si.routeKey}-${srv.key}`}
+                          className="inline-flex items-center gap-1.5 rounded-lg border border-slate-200 bg-slate-50 px-3 py-1.5 text-xs font-medium text-slate-700 transition hover:border-orange-500 hover:bg-white hover:text-orange-600"
+                        >
+                          <span>📍</span>
+                          <span>수원시 {srv.label}</span>
+                        </a>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* 구가 있는 경우 (수원, 화성, 고양, 용인) */}
+                {gus.length > 0 && (
+                  <div className="mt-6 space-y-6">
+                    {gus.map((gu) => {
+                      const guDongs = activeRegions.filter(
+                        (r) => r.parentRegionId === gu.regionId && r.regionType === 'DONG'
+                      );
+
+                      return (
+                        <div
+                          key={gu.regionId}
+                          className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6"
+                        >
+                          <div className="flex flex-wrap items-center justify-between gap-4 border-b border-slate-100 pb-3">
+                            <div>
+                              <h4 className="text-lg font-bold tracking-tight text-slate-900">
+                                {gu.seoDisplayName}
+                              </h4>
+                              <p className="text-xs text-slate-500">
+                                관할 {guDongs.length}개 동 단위 폐기물 수거 안내
+                              </p>
+                            </div>
+                            <a
+                              href={`/?k=${gu.routeKey}-폐기물처리업체`}
+                              className="inline-flex items-center gap-1 text-xs font-bold text-orange-600 hover:underline sm:text-sm"
+                            >
+                              <span>{gu.seoDisplayName} 대표 안내</span>
+                              <span>→</span>
+                            </a>
+                          </div>
+
+                          <div className="mt-4">
+                            <h5 className="text-xs font-bold uppercase tracking-wider text-slate-400">
+                              동별 서비스 안내 바로가기
+                            </h5>
+                            <div className="mt-2.5 grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-4">
+                              {guDongs.map((dong) => (
+                                <a
+                                  key={dong.regionId}
+                                  href={`/?k=${dong.routeKey}-폐기물처리업체`}
+                                  className="flex items-center justify-between rounded-lg border border-slate-100 bg-slate-50 px-3 py-2 text-xs font-medium text-slate-700 transition hover:border-slate-300 hover:bg-white hover:text-slate-900 sm:text-sm"
+                                >
+                                  <span>{dong.seoDisplayName}</span>
+                                  <span className="text-slate-300">›</span>
+                                </a>
+                              ))}
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
+
+                {/* 구 없이 시 직할 동만 있는 경우 (평택시) */}
+                {directDongs.length > 0 && (
+                  <div className="mt-6 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
+                    <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400">
+                      평택시 관할 동별 서비스 안내 바로가기
+                    </h4>
+                    <div className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-4">
+                      {directDongs.map((dong) => (
+                        <a
+                          key={dong.regionId}
+                          href={`/?k=${dong.routeKey}-폐기물처리업체`}
+                          className="flex items-center justify-between rounded-lg border border-slate-100 bg-slate-50 px-3 py-2 text-xs font-medium text-slate-700 transition hover:border-slate-300 hover:bg-white hover:text-slate-900 sm:text-sm"
+                        >
+                          <span>{dong.seoDisplayName}</span>
+                          <span className="text-slate-300">›</span>
+                        </a>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      </section>
     </main>
   );
 }

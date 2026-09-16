@@ -62,6 +62,16 @@ export const P0_KEYWORDS: readonly WorkKeywordEntity[] = [
     isIndexable: true,
   },
   {
+    keywordId: 'kw-bulky-collection',
+    displayName: '대형폐기물수거',
+    routeKey: '대형폐기물수거',
+    serviceFamily: 'WASTE',
+    intentGroup: 'BULKY_WASTE_COLLECTION',
+    priority: 'P0',
+    isActive: true,
+    isIndexable: true,
+  },
+  {
     keywordId: 'kw-household',
     displayName: '가정폐기물처리',
     routeKey: '가정폐기물처리',

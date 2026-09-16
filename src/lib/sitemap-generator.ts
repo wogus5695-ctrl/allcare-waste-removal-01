@@ -1,9 +1,10 @@
-import { SUWON_REGIONS } from '@/data/regions/suwon';
+import { PRODUCTION_REGIONS } from '@/data/regions';
 import { ALL_KEYWORDS } from '@/data/keywords';
 import { RegionEntity } from '@/types/region';
 import { ServiceFamily } from '@/types/service-family';
 import { getAbsoluteUrl } from '@/config/site';
-import { isServiceRegionActive } from '@/config/service-region-policy';
+import { isServiceRegionActive, getServiceRegionPolicy } from '@/config/service-region-policy';
+import { isServiceFamilySearchExposureEnabled } from '@/config/service-family';
 
 /** 내부 운영 Chunk 크기 기준 (10,000 URLs) */
 export const SITEMAP_CHUNK_SIZE = 10000;
@@ -50,16 +51,11 @@ export function getMetroRegion(region: RegionEntity): string {
 }
 
 /**
- * Core Sitemap 대상 URL 목록 (6개: Root, Service Mains, Hubs)
- * - / (Brand Main)
- * - /waste (WASTE Service Main)
- * - /demolition (DEMOLITION Service Main)
- * - /hub (Service Hub Directory)
- * - /hub/waste (WASTE Region Hub)
- * - /hub/demolition (DEMOLITION Region Hub)
+ * Core Sitemap 대상 URL 목록 (현재 4개: Root, WASTE Service Main, Hub, WASTE Region Hub)
+ * - DEMOLITION 관련 URL(/demolition, /hub/demolition)은 searchExposureEnabled가 true일 때만 포함됨 (현재 온홀드)
  */
 export function getCoreUrlEntries(): readonly IndexableUrlEntry[] {
-  return [
+  const entries: IndexableUrlEntry[] = [
     {
       path: '/',
       url: getAbsoluteUrl('/'),
@@ -72,14 +68,6 @@ export function getCoreUrlEntries(): readonly IndexableUrlEntry[] {
       url: getAbsoluteUrl('/waste'),
       type: 'ROOT',
       serviceFamily: 'WASTE',
-      priority: 0.9,
-      changeFrequency: 'weekly',
-    },
-    {
-      path: '/demolition',
-      url: getAbsoluteUrl('/demolition'),
-      type: 'ROOT',
-      serviceFamily: 'DEMOLITION',
       priority: 0.9,
       changeFrequency: 'weekly',
     },
@@ -98,25 +86,39 @@ export function getCoreUrlEntries(): readonly IndexableUrlEntry[] {
       priority: 0.8,
       changeFrequency: 'weekly',
     },
-    {
+  ];
+
+  if (isServiceFamilySearchExposureEnabled('DEMOLITION')) {
+    entries.splice(2, 0, {
+      path: '/demolition',
+      url: getAbsoluteUrl('/demolition'),
+      type: 'ROOT',
+      serviceFamily: 'DEMOLITION',
+      priority: 0.9,
+      changeFrequency: 'weekly',
+    });
+    entries.push({
       path: '/hub/demolition',
       url: getAbsoluteUrl('/hub/demolition'),
       type: 'HUB',
       serviceFamily: 'DEMOLITION',
       priority: 0.8,
       changeFrequency: 'weekly',
-    },
-  ];
+    });
+  }
+
+  return entries;
 }
 
 /**
  * Dynamic 색인 대상 URL 목록 추출
- * - 활성화된 키워드(isActive=true) 및 서비스별 지역 정책(isServiceRegionActive=true) 동시 만족 대상만 선별
+ * - 활성화된 키워드(isActive=true), 지역 기본 색인 허용(isIndexable=true, isSitemapEligible=true)
+ * - 및 서비스별 지역 정책(isServiceRegionActive=true, policy.isSitemapEligible=true) 동시 만족 대상만 선별
  * - 현재 WASTE: 60 Region × 14 Keyword = 840 URLs
- * - 현재 DEMOLITION: 0 URLs
+ * - 현재 DEMOLITION: 0 URLs (온홀드)
  */
 export function getDynamicUrlEntries(): readonly IndexableUrlEntry[] {
-  const eligibleRegions = SUWON_REGIONS.filter(
+  const eligibleRegions = PRODUCTION_REGIONS.filter(
     (r) => r.isActive && r.isIndexable && r.isSitemapEligible
   );
 
@@ -130,6 +132,11 @@ export function getDynamicUrlEntries(): readonly IndexableUrlEntry[] {
     const metro = getMetroRegion(region);
     for (const keyword of eligibleKeywords) {
       if (!isServiceRegionActive(keyword.serviceFamily, region.regionId)) {
+        continue;
+      }
+
+      const policy = getServiceRegionPolicy(keyword.serviceFamily, region.regionId);
+      if (!policy || !policy.isSitemapEligible) {
         continue;
       }
 

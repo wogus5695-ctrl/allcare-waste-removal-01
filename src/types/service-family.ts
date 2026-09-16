@@ -10,4 +10,5 @@ export interface ServiceFamilyConfig {
   readonly label: string;
   readonly hubKey: string;
   readonly enabled: boolean;
+  readonly searchExposureEnabled: boolean;
 }

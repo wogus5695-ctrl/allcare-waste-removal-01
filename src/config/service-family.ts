@@ -11,12 +11,14 @@ export const SERVICE_FAMILY_REGISTRY: Record<ServiceFamily, ServiceFamilyConfig>
     label: '폐기물',
     hubKey: 'waste',
     enabled: true,
+    searchExposureEnabled: true,
   },
   DEMOLITION: {
     id: 'DEMOLITION',
     label: '철거',
     hubKey: 'demolition',
     enabled: true,
+    searchExposureEnabled: false, // STEP W-1B: 검색 노출 및 크롤러 수집 보류 (온홀드)
   },
 } as const;
 
@@ -26,4 +28,8 @@ export function getServiceFamilyConfig(family: ServiceFamily): ServiceFamilyConf
 
 export function getActiveServiceFamilies(): ServiceFamilyConfig[] {
   return Object.values(SERVICE_FAMILY_REGISTRY).filter((f) => f.enabled);
+}
+
+export function isServiceFamilySearchExposureEnabled(family: ServiceFamily): boolean {
+  return SERVICE_FAMILY_REGISTRY[family]?.searchExposureEnabled ?? false;
 }

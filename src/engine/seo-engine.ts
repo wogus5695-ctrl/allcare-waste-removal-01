@@ -17,6 +17,7 @@ const WASTE_SEO_PHRASES_BY_KEYWORD_ID: Record<string, KeywordSeoPhrases> = {
   'kw-general-short-co': { supportingTitle: '방문 수거 일정 상담', actionVerb: '현장 배출 여건에 맞춘 방문 일정을 상담합니다' },
   'kw-general-collection': { supportingTitle: '실내 방문 반출 상담', actionVerb: '직접 옮기기 어려운 짐의 실내 반출 여건을 확인합니다' },
   'kw-collection-company': { supportingTitle: '대량 폐기물 수거 상담', actionVerb: '많은 물량도 현장 조건에 맞춰 단계별 수거를 안내합니다' },
+  'kw-bulky-collection': { supportingTitle: '대형 폐기물 방문 수거 상담', actionVerb: '실내 대형 물품과 무거운 가구·집기의 안전한 반출 여건을 확인합니다' },
   'kw-household': { supportingTitle: '가정집·원룸 짐 정리', actionVerb: '생활 쓰레기와 가구 배출에 필요한 점검 사항을 안내합니다' },
   'kw-furniture': { supportingTitle: '대형 가구 분해 및 반출', actionVerb: '가구 크기와 반출 조건을 먼저 확인합니다' },
   'kw-moving': { supportingTitle: '이사 전후 폐기물 처리', actionVerb: '퇴거 일정에 맞춰 남은 짐의 수거 방안을 상담합니다' },
@@ -69,8 +70,9 @@ export function generatePageMetadata(context: PageContext): Metadata {
   // 3. Canonical URL
   const canonicalUrl = getAbsoluteUrl(`/?k=${encodeURIComponent(canonicalRoute)}`);
 
-  // 4. Robots 설정 (Indexability 정책 준수)
-  const robots = isIndexable
+  // 4. Robots 설정 (Indexability 정책 준수: DEMOLITION은 온홀드 상태로 항상 noindex, follow)
+  const shouldIndex = serviceFamily !== 'DEMOLITION' && isIndexable;
+  const robots = shouldIndex
     ? {
         index: true,
         follow: true,

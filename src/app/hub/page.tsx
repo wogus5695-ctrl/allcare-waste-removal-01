@@ -126,6 +126,7 @@ export default function ServiceHubDirectoryPage() {
           <div className="mt-8 pt-4 border-t border-slate-100">
             <a
               href="/hub/demolition"
+              rel="nofollow"
               className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-slate-900 px-5 py-3 text-sm font-bold text-white transition hover:bg-orange-600"
             >
               <span>수원시 철거 지역 허브 바로가기</span>

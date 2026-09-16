@@ -3,6 +3,7 @@ import { WorkKeywordEntity, IntentGroup } from '@/types/keyword';
 import { findRegionById } from '@/data/regions';
 import { findKeywordByRouteKey } from '@/data/keywords';
 import { isServiceRegionActive } from '@/config/service-region-policy';
+import { isServiceFamilySearchExposureEnabled } from '@/config/service-family';
 
 export interface InternalLinkItem {
   readonly label: string;
@@ -30,9 +31,10 @@ const RELATED_WORK_KEYS_BY_INTENT: Record<IntentGroup, readonly string[]> = {
   GENERAL_DISPOSAL: ['폐기물처리업체', '폐기물수거', '가정폐기물처리', '사무실폐기물처리'],
   GENERAL_COMPANY: ['폐기물처리', '폐기물처리비용', '가정폐기물처리', '사무실폐기물처리'],
   PRICE_ESTIMATE: ['폐기물처리업체', '가정폐기물처리', '이사폐기물처리', '사무실폐기물처리'],
-  GENERAL_COLLECTION: ['가구수거', '이사폐기물처리', '폐기물처리비용', '폐기물업체'],
+  GENERAL_COLLECTION: ['가구수거', '대형폐기물수거', '폐기물처리비용', '폐기물업체'],
+  BULKY_WASTE_COLLECTION: ['폐기물수거', '가구수거', '가정폐기물처리', '폐기물수거업체'],
   HOUSEHOLD: ['가구수거', '이사폐기물처리', '폐기물수거업체', '폐기물처리비용'],
-  FURNITURE: ['가정폐기물처리', '이사폐기물처리', '폐기물수거', '폐기물처리비용'],
+  FURNITURE: ['대형폐기물수거', '가정폐기물처리', '폐기물수거', '폐기물처리비용'],
   MOVING: ['가정폐기물처리', '가구수거', '폐기물수거', '폐기물처리업체'],
   OFFICE: ['사업장폐기물', '폐업폐기물처리', '상가폐기물처리', '폐기물처리업체'],
   COMMERCIAL: ['폐업폐기물처리', '사무실폐기물처리', '사업장폐기물', '폐기물처리업체'],
@@ -52,7 +54,8 @@ const RELATED_WORK_KEYS_BY_INTENT: Record<IntentGroup, readonly string[]> = {
  */
 const SPECIFIC_RELATED_WORK_OVERRIDES: Record<string, readonly string[]> = {
   // WASTE
-  'WASTE:가구수거': ['가정폐기물처리', '이사폐기물처리', '폐기물수거', '폐기물처리비용'],
+  'WASTE:대형폐기물수거': ['폐기물수거', '가구수거', '가정폐기물처리', '폐기물수거업체'],
+  'WASTE:가구수거': ['대형폐기물수거', '가정폐기물처리', '폐기물수거', '이사폐기물처리'],
   'WASTE:가정폐기물처리': ['가구수거', '이사폐기물처리', '폐기물수거업체', '폐기물처리비용'],
   'WASTE:이사폐기물처리': ['가정폐기물처리', '가구수거', '폐기물수거', '폐기물처리업체'],
   'WASTE:사무실폐기물처리': ['사업장폐기물', '폐업폐기물처리', '상가폐기물처리', '폐기물처리업체'],
@@ -64,8 +67,8 @@ const SPECIFIC_RELATED_WORK_OVERRIDES: Record<string, readonly string[]> = {
   'WASTE:폐기물처리': ['폐기물처리업체', '폐기물수거', '가정폐기물처리', '사무실폐기물처리'],
   'WASTE:폐기물처리업체': ['폐기물처리', '폐기물처리비용', '가정폐기물처리', '사무실폐기물처리'],
   'WASTE:폐기물업체': ['폐기물처리', '폐기물처리비용', '가정폐기물처리', '사무실폐기물처리'],
-  'WASTE:폐기물수거': ['가구수거', '이사폐기물처리', '폐기물처리비용', '폐기물업체'],
-  'WASTE:폐기물수거업체': ['가정폐기물처리', '가구수거', '폐기물처리비용', '폐기물처리업체'],
+  'WASTE:폐기물수거': ['대형폐기물수거', '가구수거', '폐기물업체', '폐기물처리비용'],
+  'WASTE:폐기물수거업체': ['가정폐기물처리', '가구수거', '대형폐기물수거', '폐기물처리업체'],
 
   // DEMOLITION
   'DEMOLITION:철거': ['철거업체', '철거비용', '내부철거', '상가철거'],
@@ -210,6 +213,11 @@ export function getCrossVerticalLink(
   const ruleKey = `${work.serviceFamily}:${work.routeKey}`;
   const rule = CROSS_LINK_RULES[ruleKey];
   if (!rule) {
+    return null;
+  }
+
+  // 0. 타겟 서비스 패밀리의 검색 노출이 허용되어 있는지 검증 (STEP W-1B: DEMOLITION 온홀드 시 차단)
+  if (!isServiceFamilySearchExposureEnabled(rule.targetFamily)) {
     return null;
   }
 

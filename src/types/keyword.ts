@@ -8,6 +8,7 @@ export type IntentGroup =
   | 'GENERAL_COMPANY'
   | 'PRICE_ESTIMATE'
   | 'GENERAL_COLLECTION'
+  | 'BULKY_WASTE_COLLECTION'
   | 'HOUSEHOLD'
   | 'FURNITURE'
   | 'MOVING'
