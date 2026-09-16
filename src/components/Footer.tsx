@@ -54,10 +54,34 @@ export function Footer() {
             <h3 className="font-semibold text-slate-700">사업자 정보</h3>
             {hasBusinessDetails ? (
               <ul className="mt-2 space-y-1">
-                {business?.companyName && <li>상호명: {business.companyName}</li>}
+                {business?.companyName && <li>상호(사업자명): {business.companyName}</li>}
                 {business?.representative && <li>대표자: {business.representative}</li>}
                 {business?.registrationNumber && <li>사업자등록번호: {business.registrationNumber}</li>}
                 {business?.address && <li>사업장 주소: {business.address}</li>}
+                {SITE_CONFIG.contact.phone && (
+                  <li>
+                    문의연락처:{' '}
+                    <a
+                      href={`tel:${SITE_CONFIG.contact.phone}`}
+                      className="font-medium text-slate-700 transition hover:text-orange-600 hover:underline underline-offset-2"
+                    >
+                      {SITE_CONFIG.contact.phone}
+                    </a>
+                  </li>
+                )}
+                {SITE_CONFIG.contact.kakaoUrl && (
+                  <li>
+                    카카오톡 채널:{' '}
+                    <a
+                      href={SITE_CONFIG.contact.kakaoUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="font-medium text-slate-700 transition hover:text-orange-600 hover:underline underline-offset-2"
+                    >
+                      채널 바로가기
+                    </a>
+                  </li>
+                )}
               </ul>
             ) : (
               <p className="mt-2 text-slate-400">

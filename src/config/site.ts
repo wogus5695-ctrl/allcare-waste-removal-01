@@ -110,12 +110,12 @@ export function getSiteConfig(env: NodeJS.ProcessEnv = process.env): SiteConfig 
   const appEnv: 'preview' | 'production' =
     env.APP_ENV === 'production' ? 'production' : 'preview';
 
-  const phone = env.CONTACT_PHONE || env.NEXT_PUBLIC_CONTACT_PHONE || '';
-  const kakaoUrl = env.CONTACT_KAKAO_URL || env.NEXT_PUBLIC_CONTACT_KAKAO_URL || '';
+  const phone = env.CONTACT_PHONE || env.NEXT_PUBLIC_CONTACT_PHONE || '050-7871-3550';
+  const kakaoUrl = env.CONTACT_KAKAO_URL || env.NEXT_PUBLIC_CONTACT_KAKAO_URL || 'http://pf.kakao.com/_XFLrX';
 
-  const bName = env.BUSINESS_NAME || env.NEXT_PUBLIC_BUSINESS_NAME || '';
-  const bRep = env.BUSINESS_REP || env.NEXT_PUBLIC_BUSINESS_REP || '';
-  const bReg = env.BUSINESS_REG_NO || env.NEXT_PUBLIC_BUSINESS_REG_NO || '';
+  const bName = env.BUSINESS_NAME || env.NEXT_PUBLIC_BUSINESS_NAME || '올케어 서비스';
+  const bRep = env.BUSINESS_REP || env.NEXT_PUBLIC_BUSINESS_REP || '김재현';
+  const bReg = env.BUSINESS_REG_NO || env.NEXT_PUBLIC_BUSINESS_REG_NO || '405-15-02677';
   const bAddr = env.BUSINESS_ADDRESS || env.NEXT_PUBLIC_BUSINESS_ADDRESS || '';
 
   return {
