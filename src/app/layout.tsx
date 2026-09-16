@@ -8,6 +8,11 @@ import { FloatingCta } from '@/components/FloatingCta';
 export const metadata: Metadata = {
   title: `${SITE_CONFIG.brandName} - 체계적인 폐기물 수거 및 현장 정리 상담`,
   description: '가정 및 사업장 폐기물 수거, 대형 가구 반출, 이사 폐기물 정리 상담 전문 올케어환경입니다.',
+  verification: {
+    other: {
+      'naver-site-verification': '7d4871946d9a18a800f8385beb07d5da9e3d0af7',
+    },
+  },
   icons: {
     icon: [
       { url: '/favicon.ico', sizes: 'any' },
