@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { PageContext } from '@/types/content';
 import { SITE_CONFIG, getAbsoluteUrl } from '@/config/site';
+import { getServiceSocialImage } from '@/config/hero-theme';
 
 interface KeywordSeoPhrases {
   supportingTitle: string;
@@ -84,6 +85,9 @@ export function generatePageMetadata(context: PageContext): Metadata {
         googleBot: { index: false, follow: true },
       };
 
+  const socialImageConfig = getServiceSocialImage(serviceFamily);
+  const socialImageUrl = getAbsoluteUrl(socialImageConfig.path);
+
   return {
     title,
     description,
@@ -98,6 +102,20 @@ export function generatePageMetadata(context: PageContext): Metadata {
       siteName: SITE_CONFIG.brandName,
       locale: 'ko_KR',
       type: 'website',
+      images: [
+        {
+          url: socialImageUrl,
+          width: socialImageConfig.width,
+          height: socialImageConfig.height,
+          alt: socialImageConfig.alt,
+        },
+      ],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: `${dynamicKeyword} | ${SITE_CONFIG.brandName}`,
+      description,
+      images: [socialImageUrl],
     },
   };
 }

@@ -20,6 +20,20 @@ export const metadata: Metadata = {
     siteName: SITE_CONFIG.brandName,
     locale: 'ko_KR',
     type: 'website',
+    images: [
+      {
+        url: getAbsoluteUrl('/images/hero/waste-hero.jpg'),
+        width: 1024,
+        height: 935,
+        alt: '올케어환경 폐기물 수거 및 처리 서비스',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: `수도권 폐기물 수거 서비스 지역 허브 | ${SITE_CONFIG.brandName}`,
+    description: `${SITE_CONFIG.brandName} 수도권 전 지역 폐기물 수거 및 현장 정리 서비스 지역 안내 허브입니다.`,
+    images: [getAbsoluteUrl('/images/hero/waste-hero.jpg')],
   },
 };
 

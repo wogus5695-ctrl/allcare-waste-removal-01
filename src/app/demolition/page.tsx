@@ -24,6 +24,21 @@ export const metadata: Metadata = {
     siteName: SITE_CONFIG.brandName,
     locale: 'ko_KR',
     type: 'website',
+    images: [
+      {
+        url: getAbsoluteUrl('/images/hero/demolition-hero.jpg'),
+        width: 1024,
+        height: 768,
+        alt: '올케어환경 철거 서비스',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: `철거·원상복구 공사 및 시공 상담 | ${SITE_CONFIG.brandName}`,
+    description:
+      '상가 원상복구, 사무실 가벽 철거, 실내 인테리어 철거 및 바닥재 철거까지. 현장 맞춤형 견적 산정 기준과 안전한 철거 시공 절차를 안내해 드립니다.',
+    images: [getAbsoluteUrl('/images/hero/demolition-hero.jpg')],
   },
 };
 

@@ -16,7 +16,7 @@ export const metadata: Metadata = {
     index: true,
     follow: true,
   },
-  openGraph: {
+    openGraph: {
     title: `폐기물 수거·처리 서비스 안내 | ${SITE_CONFIG.brandName}`,
     description:
       '가정집 대형 가구 반출부터 이사 폐기물, 사무실 및 상가 불용 집기 수거까지. 현장 맞춤형 견적 기준과 수거 진행 절차를 안내해 드립니다.',
@@ -24,6 +24,21 @@ export const metadata: Metadata = {
     siteName: SITE_CONFIG.brandName,
     locale: 'ko_KR',
     type: 'website',
+    images: [
+      {
+        url: getAbsoluteUrl('/images/hero/waste-hero.jpg'),
+        width: 1024,
+        height: 935,
+        alt: '올케어환경 폐기물 수거 및 처리 서비스',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: `폐기물 수거·처리 서비스 안내 | ${SITE_CONFIG.brandName}`,
+    description:
+      '가정집 대형 가구 반출부터 이사 폐기물, 사무실 및 상가 불용 집기 수거까지. 현장 맞춤형 견적 기준과 수거 진행 절차를 안내해 드립니다.',
+    images: [getAbsoluteUrl('/images/hero/waste-hero.jpg')],
   },
 };
 

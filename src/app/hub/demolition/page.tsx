@@ -20,6 +20,20 @@ export const metadata: Metadata = {
     siteName: SITE_CONFIG.brandName,
     locale: 'ko_KR',
     type: 'website',
+    images: [
+      {
+        url: getAbsoluteUrl('/images/hero/demolition-hero.jpg'),
+        width: 1024,
+        height: 768,
+        alt: '올케어환경 철거 서비스',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: `수원시 철거·원상복구 서비스 지역 허브 | ${SITE_CONFIG.brandName}`,
+    description: `${SITE_CONFIG.brandName} 수원시 전 지역 철거·원상복구 공사 및 시공 상담 서비스 지역 안내 허브입니다.`,
+    images: [getAbsoluteUrl('/images/hero/demolition-hero.jpg')],
   },
 };
 
