@@ -146,7 +146,10 @@ export default async function HomePage({ searchParams }: PageProps) {
 
 
           {/* SECTION 02: SERVICE SCOPE (4 Representative Cards & Image Architecture) */}
-          <ServiceScopeSection serviceFamily={context.serviceFamily} />
+          <ServiceScopeSection
+            serviceFamily={context.serviceFamily}
+            intentGroup={context.workKeyword.intentGroup}
+          />
 
 
           {/* SECTION 03: DECISION GUIDE (Rhythm: White Bg, 3 Structured Points) */}

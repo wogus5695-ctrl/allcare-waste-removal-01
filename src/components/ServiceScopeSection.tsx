@@ -1,22 +1,25 @@
 import Image from 'next/image';
 import {
-  WASTE_SCOPE_CONFIG,
+  getWasteScopeConfig,
   DEMOLITION_SCOPE_CONFIG,
 } from '@/config/service-scope-cards';
+import { IntentGroup } from '@/types/keyword';
 
 interface ServiceScopeSectionProps {
   serviceFamily: 'WASTE' | 'DEMOLITION';
+  intentGroup?: IntentGroup;
   id?: string;
 }
 
 export function ServiceScopeSection({
   serviceFamily,
+  intentGroup,
   id = 'services',
 }: ServiceScopeSectionProps) {
   const config =
     serviceFamily === 'DEMOLITION'
       ? DEMOLITION_SCOPE_CONFIG
-      : WASTE_SCOPE_CONFIG;
+      : getWasteScopeConfig(intentGroup);
 
   return (
     <section
