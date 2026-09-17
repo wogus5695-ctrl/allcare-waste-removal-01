@@ -78,7 +78,7 @@ export default function DemolitionServiceMainPage() {
         serviceLabel="철거 · 원상복구"
         h1Main="철거부터 원상복구까지,"
         h1Sub="현장에 필요한 작업을 한 번에"
-        supportingCopy="상가·사무실 원상복구부터 가벽과 부분 철거까지 현장 상태와 철거 범위를 확인해 필요한 작업을 안내합니다."
+        supportingCopy="철거 공간 사진과 작업 범위를 보내주시면 현장 구조를 확인해 필요한 철거·복구 범위를 안내해드립니다."
         breadcrumbs={[
           { label: '홈', href: '/' },
           { label: '철거·원상복구' },

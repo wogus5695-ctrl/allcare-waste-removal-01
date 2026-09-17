@@ -2,6 +2,7 @@ import { PageContext, ContentOutput, DecisionPoint, FaqItem } from '@/types/cont
 import { generateDemolitionContent } from './demolition-content-engine';
 
 interface KeywordContentTemplate {
+  heroBenefit: string;
   heroHook: (regionName: string) => string;
   heroDescription: (regionName: string) => string;
   serviceSectionTitle: string;
@@ -65,9 +66,10 @@ function createStandardFaqs(
 const TEMPLATE_BY_KEYWORD_ID: Record<string, KeywordContentTemplate> = {
   // 01. 폐기물처리 (GENERAL_DISPOSAL)
   'kw-general-disposal': {
+    heroBenefit: '빠르게 정리해드립니다',
     heroHook: (r) => `${r}에서 버려야 할 폐기물이 많은데 어떻게 분리하고 처리해야 할지 고민이신가요?`,
-    heroDescription: (r) =>
-      `${r}에서 폐기물처리가 필요한 경우 수거할 품목의 사진과 대략적인 양을 먼저 보내주시면 폐기물 종류와 반출 조건을 확인해 필요한 작업 범위를 안내합니다.`,
+    heroDescription: () =>
+      '주소, 일정, 사진을 보내주시면 현장 조건을 확인해 수거 가능 범위와 작업 방법을 안내해드립니다.',
     serviceSectionTitle: '주요 처리 대상 품목',
     serviceItems: ['대형 생활가구', '가전제품 및 잡화', '혼합 배출 폐기물', '창고·베란다 묵은 짐'],
     decisionTitle: '폐기물 배출 시 사전 확인 사항',
@@ -89,9 +91,10 @@ const TEMPLATE_BY_KEYWORD_ID: Record<string, KeywordContentTemplate> = {
 
   // 02. 폐기물처리업체 (GENERAL_COMPANY)
   'kw-general-company': {
+    heroBenefit: '빠르게 정리해드립니다',
     heroHook: (r) => `${r}에서 믿고 맡길 수 있는 폐기물 수거 업체를 찾고 계신가요?`,
-    heroDescription: (r) =>
-      `${r}에서 폐기물처리업체가 필요한 경우 수거할 품목의 사진과 대략적인 양을 먼저 보내주시면 폐기물 종류와 반출 조건을 확인해 필요한 작업 범위를 안내합니다.`,
+    heroDescription: () =>
+      '주소, 일정, 사진을 보내주시면 현장 조건을 확인해 수거 가능 범위와 작업 방법을 안내해드립니다.',
     serviceSectionTitle: '업체 방문 수거 서비스 분야',
     serviceItems: ['가정집 대형폐기물', '사업장 및 매장 집기', '무거운 중량물 반출', '현장 맞춤형 분리수거'],
     decisionTitle: '전문 업체 선택 시 고려 기준',
@@ -113,9 +116,10 @@ const TEMPLATE_BY_KEYWORD_ID: Record<string, KeywordContentTemplate> = {
 
   // 03. 폐기물처리 비용 (PRICE_ESTIMATE)
   'kw-price-estimate': {
+    heroBenefit: '현장 조건에 맞춰 안내해드립니다',
     heroHook: (r) => `${r} 폐기물 처리 비용이 어떤 기준으로 달라지는지 궁금하신가요?`,
-    heroDescription: (r) =>
-      `${r}에서 폐기물처리 비용이 궁금하신 경우 수거할 품목의 사진과 층수, 엘리베이터 여부를 보내주시면 현장 조건에 맞춘 정확한 견적을 안내합니다.`,
+    heroDescription: () =>
+      '사진과 대략적인 양을 보내주시면 품목과 반출 조건을 확인해 비용 기준을 안내해드립니다.',
     serviceSectionTitle: '비용 산정 대상 주요 품목',
     serviceItems: ['가구 단품 및 세트', '트럭 단위 물량', '계단 수작업 반출 품목', '해체·분해 작업 필요 품목'],
     decisionTitle: '폐기물 처리 비용을 좌우하는 4대 요소',
@@ -143,9 +147,10 @@ const TEMPLATE_BY_KEYWORD_ID: Record<string, KeywordContentTemplate> = {
 
   // 04. 폐기물업체 (GENERAL_COMPANY)
   'kw-general-short-co': {
+    heroBenefit: '빠르게 정리해드립니다',
     heroHook: (r) => `${r}에서 폐기물을 정리할 수거 업체를 찾고 계신가요?`,
-    heroDescription: (r) =>
-      `${r}에서 폐기물업체가 필요한 경우 주거지와 상업 공간의 배출 조건에 맞추어 사진 확인 후 적절한 수거 절차를 안내합니다.`,
+    heroDescription: () =>
+      '주소, 일정, 사진을 보내주시면 현장 조건을 확인해 수거 가능 범위와 작업 방법을 안내해드립니다.',
     serviceSectionTitle: '수거 지원 분야',
     serviceItems: ['가정 및 원룸 폐기물', '상가 매장 비품', '대형 폐기물 방문 수거', '이사 전후 폐기물'],
     decisionTitle: '폐기물 업체 선정 체크포인트',
@@ -166,9 +171,10 @@ const TEMPLATE_BY_KEYWORD_ID: Record<string, KeywordContentTemplate> = {
 
   // 05. 폐기물수거 (GENERAL_COLLECTION)
   'kw-general-collection': {
+    heroBenefit: '빠르게 정리해드립니다',
     heroHook: (r) => `${r}에서 직접 밖으로 내놓기 힘든 무거운 폐기물, 방문 수거가 필요하신가요?`,
-    heroDescription: (r) =>
-      `${r}에서 폐기물수거가 필요한 경우 실내에 있는 품목 사진을 먼저 보내주시면 외부 반출부터 차량 상차까지 필요한 작업 과정을 안내합니다.`,
+    heroDescription: () =>
+      '주소, 일정, 사진을 보내주시면 현장 조건을 확인해 수거 가능 범위와 작업 방법을 안내해드립니다.',
     serviceSectionTitle: '방문 수거 전문 품목',
     serviceItems: ['직접 들기 힘든 대형가구', '베란다 누적 폐기물', '무거운 가전 및 집기', '포장 폐기물 일체'],
     decisionTitle: '방문 수거 시 주요 체크 항목',
@@ -189,9 +195,10 @@ const TEMPLATE_BY_KEYWORD_ID: Record<string, KeywordContentTemplate> = {
 
   // 06. 폐기물수거업체 (GENERAL_COLLECTION)
   'kw-collection-company': {
+    heroBenefit: '빠르게 정리해드립니다',
     heroHook: (r) => `${r}에서 많은 양의 짐과 폐기물을 일괄로 수거할 업체를 찾고 계신가요?`,
-    heroDescription: (r) =>
-      `${r}에서 폐기물수거업체를 찾고 계신 경우 짐과 폐기물 사진을 보내주시면 물량 규모와 현장 여건에 맞춘 체계적인 수거 계획을 안내합니다.`,
+    heroDescription: () =>
+      '주소, 일정, 사진을 보내주시면 현장 조건을 확인해 수거 가능 범위와 작업 방법을 안내해드립니다.',
     serviceSectionTitle: '대량 수거 서비스 영역',
     serviceItems: ['가정 내 복합 폐기물', '원룸·오피스텔 전체 정리', '상가 대량 집기 수거', '창고 보관 물품'],
     decisionTitle: '대량 수거 의뢰 시 점검사항',
@@ -212,9 +219,10 @@ const TEMPLATE_BY_KEYWORD_ID: Record<string, KeywordContentTemplate> = {
 
   // 07. 대형폐기물수거 (BULKY_WASTE_COLLECTION)
   'kw-bulky-collection': {
+    heroBenefit: '큰 품목도 빠르게 정리해드립니다',
     heroHook: (r) => `${r}에서 직접 밖으로 내놓기 어려운 무거운 대형 폐기물 방문 수거를 고민 중이신가요?`,
-    heroDescription: (r) =>
-      `${r}에서 대형폐기물수거가 필요한 경우 현장 사진을 먼저 보내주시면 대형 가구 및 무거운 집기의 반출 동선과 분해 필요성을 확인해 작업 범위를 안내합니다. 본 서비스는 지자체 스티커 배출이 아닌, 전문 인력이 실내에서 직접 반출을 대행하는 민간 수거 상담입니다.`,
+    heroDescription: () =>
+      '가구 사진과 층수, 엘리베이터 여부를 보내주시면 반출 조건을 확인해 작업 범위를 안내해드립니다.',
     serviceSectionTitle: '방문 수거 주요 대상 품목',
     serviceItems: ['직접 배출이 곤란한 대형 가구류', '무거운 중량 생활 집기 및 비품', '여러 개의 복합 대형 품목 일괄 배출', '대형 가구·생활 집기 등 상담 후 처리 가능 품목 확인'],
     decisionTitle: '대형폐기물 반출 전 현장 확인 기준',
@@ -240,9 +248,10 @@ const TEMPLATE_BY_KEYWORD_ID: Record<string, KeywordContentTemplate> = {
 
   // 08. 가정폐기물처리 (HOUSEHOLD)
   'kw-household': {
+    heroBenefit: '집 안 정리를 도와드립니다',
     heroHook: (r) => `${r} 집안 곳곳에 쌓인 생활 쓰레기와 대형 가정 폐기물을 한 번에 비우고 싶으신가요?`,
-    heroDescription: (r) =>
-      `${r}에서 가정폐기물처리가 필요한 경우 집안 곳곳에 남은 생활 잡화와 대형 가구 사진을 보내주시면 배출 조건에 맞춘 수거 절차를 안내합니다.`,
+    heroDescription: () =>
+      '정리할 물품의 사진과 대략적인 양을 보내주시면 현장 조건을 확인해 수거 범위를 안내해드립니다.',
     serviceSectionTitle: '가정 폐기물 주요 수거 품목',
     serviceItems: ['가구 및 인테리어 소품', '생활 주방용품 및 식기', '베란다·창고 적치물', '옷가지 및 이불류'],
     decisionTitle: '가정집 정리 시 주요 고려사항',
@@ -268,9 +277,10 @@ const TEMPLATE_BY_KEYWORD_ID: Record<string, KeywordContentTemplate> = {
 
   // 09. 가구수거 (FURNITURE)
   'kw-furniture': {
+    heroBenefit: '큰 품목도 빠르게 정리해드립니다',
     heroHook: (r) => `${r}에서 무겁고 부피가 큰 침대, 소파, 장롱 배출을 고민 중이신가요?`,
-    heroDescription: (r) =>
-      `${r}에서 가구수거가 필요한 경우 대형 가구의 크기와 분해 필요 여부, 통로 반출 조건을 사진으로 확인해 안전한 수거 절차를 안내합니다.`,
+    heroDescription: () =>
+      '가구 사진과 층수, 엘리베이터 여부를 보내주시면 반출 조건을 확인해 작업 범위를 안내해드립니다.',
     serviceSectionTitle: '수거 가능 주요 대형 가구',
     serviceItems: ['매트리스 및 프레임', '소파 및 리클라이너', '장롱 및 붙박이장', '원목 책상 및 식탁'],
     decisionTitle: '대형 가구 수거 시 필수 확인 포인트',
@@ -296,9 +306,10 @@ const TEMPLATE_BY_KEYWORD_ID: Record<string, KeywordContentTemplate> = {
 
   // 10. 이사폐기물처리 (MOVING)
   'kw-moving': {
+    heroBenefit: '남은 짐까지 정리해드립니다',
     heroHook: (r) => `${r} 이사 전후 퇴거 일정에 맞춰 남은 대형 가구와 폐기물을 정리해야 하나요?`,
-    heroDescription: (r) =>
-      `${r}에서 이사폐기물처리가 필요한 경우 퇴거 일정에 맞춰 남은 대형 가구와 잡화 사진을 보내주시면 차질 없는 수거 일정을 조율합니다.`,
+    heroDescription: () =>
+      '이사 전후 남은 물품의 사진과 희망 일정을 보내주시면 반출 조건과 가능한 일정을 확인해 안내해드립니다.',
     serviceSectionTitle: '이사 전후 다발 품목',
     serviceItems: ['교체 대상 낡은 가구', '이사 잔여 생활용품', '베란다 화분 및 잡화', '빌트인 외 남은 가전'],
     decisionTitle: '이사 폐기물 처리 핵심 체크리스트',
@@ -324,9 +335,10 @@ const TEMPLATE_BY_KEYWORD_ID: Record<string, KeywordContentTemplate> = {
 
   // 11. 사무실폐기물처리 (OFFICE)
   'kw-office': {
+    heroBenefit: '현장에 맞춰 정리해드립니다',
     heroHook: (r) => `${r} 사무실 이전이나 구조 변경으로 남은 책상, 의자, 파티션 정리가 필요하신가요?`,
-    heroDescription: (r) =>
-      `${r}에서 사무실폐기물처리가 필요한 경우 업무 공간의 사무용 집기와 비품 사진을 보내주시면 화물 승강기 이용 규정과 반출 통로에 맞춰 신속한 수거를 돕습니다.`,
+    heroDescription: () =>
+      '집기와 폐기물 사진, 정리 범위, 희망 일정을 보내주시면 현장 조건을 확인해 작업 범위를 안내해드립니다.',
     serviceSectionTitle: '사무실 주요 수거 품목',
     serviceItems: ['사무용 책상 및 서랍장', '회의용 탁자 및 의자', '파티션(칸막이) 해체물', '캐비닛 및 책장'],
     decisionTitle: '빌딩 내 사무실 정리 시 점검사항',
@@ -352,9 +364,10 @@ const TEMPLATE_BY_KEYWORD_ID: Record<string, KeywordContentTemplate> = {
 
   // 12. 상가폐기물처리 (COMMERCIAL)
   'kw-commercial': {
+    heroBenefit: '현장에 맞춰 정리해드립니다',
     heroHook: (r) => `${r} 매장 리모델링이나 상가 정리로 인한 진열대와 대형 집기 처리가 필요하신가요?`,
-    heroDescription: (r) =>
-      `${r}에서 상가폐기물처리가 필요한 경우 매장 집기 교체나 공간 정리 시 발생하는 상업용 비품 사진을 보내주시면 주변 통행 여건에 맞춰 깔끔하게 수거합니다.`,
+    heroDescription: () =>
+      '집기와 폐기물 사진, 정리 범위, 희망 일정을 보내주시면 현장 조건을 확인해 작업 범위를 안내해드립니다.',
     serviceSectionTitle: '상가 주요 수거 품목',
     serviceItems: ['매장 진열대 및 쇼케이스', '상업용 테이블 및 의자', '카운터 및 선반장', '주방 보조 집기'],
     decisionTitle: '상가 폐기물 배출 시 확인사항',
@@ -380,9 +393,10 @@ const TEMPLATE_BY_KEYWORD_ID: Record<string, KeywordContentTemplate> = {
 
   // 13. 폐업폐기물처리 (CLOSURE)
   'kw-closure': {
+    heroBenefit: '현장에 맞춰 정리해드립니다',
     heroHook: (r) => `${r} 폐업이나 원상복구를 앞두고 내부의 모든 집기와 잔재물을 비워야 하나요?`,
-    heroDescription: (r) =>
-      `${r}에서 폐업폐기물처리가 필요한 경우 매장 내 잔여 집기와 비품 사진을 보내주시면 임대차 인도 일정에 차질 없도록 일괄 수거를 돕습니다.`,
+    heroDescription: () =>
+      '집기와 폐기물 사진, 정리 범위, 희망 일정을 보내주시면 현장 조건을 확인해 작업 범위를 안내해드립니다.',
     serviceSectionTitle: '폐업 정리 수거 대상',
     serviceItems: ['영업용 집기 및 비품 전체', '남은 포장재 및 소모품', '카운터·간이 칸막이', '불용 재고 및 집기'],
     decisionTitle: '원상복구 전 공간 비움 포인트',
@@ -408,9 +422,10 @@ const TEMPLATE_BY_KEYWORD_ID: Record<string, KeywordContentTemplate> = {
 
   // 14. 사업장폐기물 (BUSINESS_FACILITY)
   'kw-business': {
+    heroBenefit: '현장에 맞춰 정리해드립니다',
     heroHook: (r) => `${r} 사업장이나 물류 창고에 쌓인 불용 자재와 복합 폐기물 수거 상담이 필요하신가요?`,
-    heroDescription: (r) =>
-      `${r}에서 사업장폐기물 수거가 필요한 경우 공장, 창고 등에 보관 중인 불용 자재와 복합 폐기물 사진을 보내주시면 현장 조건에 맞춰 체계적인 수거 계획을 안내합니다.`,
+    heroDescription: () =>
+      '집기와 폐기물 사진, 정리 범위, 희망 일정을 보내주시면 현장 조건을 확인해 작업 범위를 안내해드립니다.',
     serviceSectionTitle: '사업장 수거 가능 품목',
     serviceItems: ['창고 불용 자재 및 파렛트', '포장 박스 및 폐목재류', '사무실·창고 교체 비품', '대량 포장 잔재물'],
     decisionTitle: '사업장 폐기물 처리 시 주의점',
@@ -436,9 +451,10 @@ const TEMPLATE_BY_KEYWORD_ID: Record<string, KeywordContentTemplate> = {
 
   // 15. 건설폐기물 (CONSTRUCTION)
   'kw-construction': {
+    heroBenefit: '현장 조건에 맞춰 안내해드립니다',
     heroHook: (r) => `${r} 인테리어 리모델링 공사 후 남은 건축 잔재물과 폐자재 수거 상담을 원하시나요?`,
-    heroDescription: (r) =>
-      `${r}에서 건설폐기물 수거가 필요한 경우 인테리어 리모델링 후 마대에 담긴 잔재물과 목자재 사진을 보내주시면 현장 반출 조건에 맞춰 신속한 수거를 돕습니다.`,
+    heroDescription: () =>
+      '폐자재 종류와 양이 보이는 사진을 보내주시면 품목 구성과 반출 조건을 확인해 상담해드립니다.',
     serviceSectionTitle: '인테리어 잔재물 상담 품목',
     serviceItems: ['마대 포장 건축 잔재물', '철거 후 남은 폐목재류', '석고보드 및 단열재 잔재', '철거 잡자재 및 몰딩류'],
     decisionTitle: '건축 잔재물 배출 시 확인사항',
@@ -472,28 +488,18 @@ export function generateDynamicContent(context: PageContext): ContentOutput {
     return generateDemolitionContent(context);
   }
 
-  const { seoDisplayName, workKeyword, regionLevel } = context;
+  const { seoDisplayName, workKeyword } = context;
   const template = TEMPLATE_BY_KEYWORD_ID[workKeyword.keywordId] || TEMPLATE_BY_KEYWORD_ID['kw-general-disposal'];
 
-  // H1: 정확히 1개, {seoDisplayName} {work.displayName}
+  // H1: 정확히 1개, {seoDisplayName} {workKeyword.displayName}
   const h1 = `${seoDisplayName} ${workKeyword.displayName}`;
-
-  // Hero Hook
+  const heroBenefit = template.heroBenefit;
   const heroHook = template.heroHook(seoDisplayName);
-
-  // Hero Description: Region Level별 자연스러운 문맥 가미 (허위 지역정보 금지, 방문견적 강제 표현 제거)
-  let levelContextNote = '';
-  if (regionLevel === 'SI') {
-    levelContextNote = ` ${seoDisplayName} 전역 주요 권역을 중심으로 신속한 사진 확인과 일정 조율을 도와드립니다.`;
-  } else if (regionLevel === 'GU') {
-    levelContextNote = ` ${seoDisplayName} 생활권 현장 특성에 맞춰 작업 여건과 반출 동선을 확인합니다.`;
-  } else {
-    levelContextNote = ` ${seoDisplayName} 인근 현장 여건에 맞춘 꼼꼼한 사전 확인과 상담을 제공합니다.`;
-  }
-  const heroDescription = `${template.heroDescription(seoDisplayName)}${levelContextNote}`;
+  const heroDescription = template.heroDescription(seoDisplayName);
 
   return {
     h1,
+    heroBenefit,
     heroHook,
     heroDescription,
     serviceSectionTitle: template.serviceSectionTitle,

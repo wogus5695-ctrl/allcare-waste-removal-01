@@ -88,18 +88,25 @@ export function ServiceHero({
         }}
         aria-hidden="true"
       />
-      {/* 모바일 전용 상하 그라디언트 (상단 텍스트 보호 및 하단 현장 사진 노출) */}
+      {/* 모바일 전용 2-Layer 오버레이 (현장 사진 가시성 대폭 확보 + 상단 텍스트 가독성 최적화) */}
+      {/* Layer 2: Light Global Overlay */}
+      <div
+        className="absolute inset-0 z-10 pointer-events-none block md:hidden"
+        style={{ backgroundColor: 'rgba(255, 255, 255, 0.28)' }}
+        aria-hidden="true"
+      />
+      {/* Layer 3: Soft Text Readability Gradient */}
       <div
         className="absolute inset-0 z-10 pointer-events-none block md:hidden"
         style={{
           background:
-            'linear-gradient(180deg, rgba(255,255,255,0.97) 0%, rgba(255,255,255,0.93) 58%, rgba(255,255,255,0.65) 80%, rgba(255,255,255,0.15) 100%)',
+            'linear-gradient(180deg, rgba(255,255,255,0.86) 0%, rgba(255,255,255,0.72) 42%, rgba(255,255,255,0.30) 70%, rgba(255,255,255,0.05) 100%)',
         }}
         aria-hidden="true"
       />
 
       {/* FOREGROUND CONTENT LAYER (Left-aligned container, visual center보다 5~10% 상단 안착) */}
-      <div className="relative z-20 mx-auto w-full max-w-5xl px-4 pt-12 pb-20 sm:px-6 sm:pt-16 sm:pb-28 md:pt-20 md:pb-36 lg:px-8 lg:pt-24 lg:pb-44">
+      <div className="relative z-20 mx-auto w-full max-w-5xl px-4 pt-10 pb-16 sm:px-6 sm:pt-16 sm:pb-28 md:pt-20 md:pb-36 lg:px-8 lg:pt-24 lg:pb-44">
         <div className="max-w-xl lg:max-w-2xl">
           {/* STEP 1: BREADCRUMB */}
           <nav aria-label="Breadcrumb" className="mb-4 sm:mb-5">

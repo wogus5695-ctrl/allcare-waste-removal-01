@@ -1,6 +1,7 @@
 import { PageContext, ContentOutput, DecisionPoint, FaqItem } from '@/types/content';
 
 interface DemolitionKeywordContentTemplate {
+  heroBenefit: string;
   heroHook: (regionName: string) => string;
   heroDescription: (regionName: string) => string;
   serviceSectionTitle: string;
@@ -26,9 +27,10 @@ interface DemolitionKeywordContentTemplate {
 const DEMOLITION_TEMPLATES_BY_KEYWORD_ID: Record<string, DemolitionKeywordContentTemplate> = {
   // 01. 철거 (GENERAL_DEMOLITION)
   'kw-demo-general': {
+    heroBenefit: '필요한 범위부터 확인해드립니다',
     heroHook: (r) => `${r}에서 실내 시설물과 마감재 철거를 계획 중이신가요?`,
-    heroDescription: (r) =>
-      `${r} 일대 실내 공간의 불필요한 시설을 정리하고, 안전하게 반출할 수 있도록 작업 범위와 준비 절차를 안내해 드립니다.`,
+    heroDescription: () =>
+      '철거할 공간의 사진과 작업 범위를 보내주시면 현장 구조를 확인해 필요한 철거 범위를 안내해드립니다.',
     serviceSectionTitle: '주요 철거 작업 범위',
     serviceItems: ['실내 가벽 철거', '천장 마감재 철거', '바닥재 철거', '상업 시설물 철거'],
     decisionTitle: '철거 작업 전 사전 확인 사항',
@@ -67,9 +69,10 @@ const DEMOLITION_TEMPLATES_BY_KEYWORD_ID: Record<string, DemolitionKeywordConten
 
   // 02. 철거업체 (COMPANY_SELECTION)
   'kw-demo-company': {
+    heroBenefit: '현장 조건에 맞춰 시공해드립니다',
     heroHook: (r) => `${r} 현장 조건에 맞춰 꼼꼼하게 시공해 줄 철거 업체를 찾고 계신가요?`,
-    heroDescription: (r) =>
-      `${r} 일대 상가, 사무실, 주거 공간의 실내 철거 작업 여건을 확인하고 차질 없는 시공 계획을 함께 상담해 드립니다.`,
+    heroDescription: () =>
+      '현장 사진과 대략적인 면적, 작업 범위를 알려주시면 현장 여건을 확인해 시공 계획을 상담해드립니다.',
     serviceSectionTitle: '지원 가능 시공 부문',
     serviceItems: ['상가 매장 철거', '사무실 집기·가벽 철거', '인테리어 선행 철거', '원상복구 철거'],
     decisionTitle: '철거 업체 선정 시 핵심 확인 사항',
@@ -108,9 +111,10 @@ const DEMOLITION_TEMPLATES_BY_KEYWORD_ID: Record<string, DemolitionKeywordConten
 
   // 03. 철거비용 (PRICE_ESTIMATE)
   'kw-demo-price': {
+    heroBenefit: '현장 조건에 맞춰 안내해드립니다',
     heroHook: (r) => `${r} 실내 철거 비용이 어떤 기준에 따라 달라지는지 궁금하신가요?`,
-    heroDescription: (r) =>
-      `${r} 일대 공간 철거 시 소요되는 면적별, 마감재별 견적 결정 요인을 투명하게 검토해 드립니다.`,
+    heroDescription: () =>
+      '철거할 공간 사진과 대략적인 면적을 보내주시면 마감재와 반출 여건을 확인해 비용 기준을 안내해드립니다.',
     serviceSectionTitle: '견적 산정 검토 항목',
     serviceItems: ['가벽 분해 철거비', '천장 텍스 철거비', '바닥재 철거비', '폐기물 상차·운반비'],
     decisionTitle: '철거 비용을 좌우하는 3대 핵심 변수',
@@ -149,9 +153,10 @@ const DEMOLITION_TEMPLATES_BY_KEYWORD_ID: Record<string, DemolitionKeywordConten
 
   // 04. 내부철거 (INTERIOR)
   'kw-demo-interior': {
+    heroBenefit: '필요한 부분만 철거해드립니다',
     heroHook: (r) => `${r} 건물 내부 인테리어 철거 및 마감재 제거를 준비하고 계신가요?`,
-    heroDescription: (r) =>
-      `${r} 실내 가벽, 천장, 바닥재 등 구조체를 제외한 내부 마감 시설물을 안전하게 해체하는 절차를 안내해 드립니다.`,
+    heroDescription: () =>
+      '철거할 구역의 사진과 작업 범위를 보내주시면 구조와 마감재를 확인해 상담해드립니다.',
     serviceSectionTitle: '내부 철거 시공 범위',
     serviceItems: ['석고보드 가벽 철거', '천장 석고·텍스 철거', '데코타일·마루 철거', '실내 조명·배선 정리'],
     decisionTitle: '내부 철거 시 사전 점검 요소',
@@ -190,9 +195,10 @@ const DEMOLITION_TEMPLATES_BY_KEYWORD_ID: Record<string, DemolitionKeywordConten
 
   // 05. 상가철거 (COMMERCIAL)
   'kw-demo-commercial': {
+    heroBenefit: '일정에 맞춰 신속히 철거해드립니다',
     heroHook: (r) => `${r} 상가 매장 정리나 리모델링을 위한 내부 시설 철거를 앞두고 계신가요?`,
-    heroDescription: (r) =>
-      `${r} 상업 공간의 진열대, 조명, 카운터, 바닥 마감 등 매장 특성에 맞춘 시설물 철거 방안을 안내해 드립니다.`,
+    heroDescription: () =>
+      '매장 사진과 집기 철거 범위, 희망 일정을 보내주시면 현장 조건을 확인해 작업 범위를 안내해드립니다.',
     serviceSectionTitle: '상가 철거 주요 품목',
     serviceItems: ['매장 진열 시설물', '카운터 및 수납장', '유리 파티션·도어', '바닥 타일 및 천장 마감'],
     decisionTitle: '상가 철거 전 필수 협의 사항',
@@ -231,9 +237,10 @@ const DEMOLITION_TEMPLATES_BY_KEYWORD_ID: Record<string, DemolitionKeywordConten
 
   // 06. 사무실철거 (OFFICE)
   'kw-demo-office': {
+    heroBenefit: '현장에 맞춰 신속히 철거해드립니다',
     heroHook: (r) => `${r} 사무실 이전이나 계약 만료에 따른 오피스 내부 철거가 필요하신가요?`,
-    heroDescription: (r) =>
-      `${r} 빌딩 오피스 환경에 맞춰 칸막이, 바닥 텍스, 천장 조명 등 사무 시설물을 안전하게 철거해 드립니다.`,
+    heroDescription: () =>
+      '사무실 사진과 가벽·집기 철거 범위, 희망 일정을 보내주시면 빌딩 여건을 확인해 작업 범위를 안내해드립니다.',
     serviceSectionTitle: '사무실 철거 범위',
     serviceItems: ['경량 래핑·유리 칸막이', '바닥 데코타일·디럭스타일', '천장 텍스·매립등', '랜선 및 배선 정리'],
     decisionTitle: '빌딩 사무실 철거 사전 체크포인트',
@@ -272,9 +279,10 @@ const DEMOLITION_TEMPLATES_BY_KEYWORD_ID: Record<string, DemolitionKeywordConten
 
   // 07. 부분철거 (PARTIAL)
   'kw-demo-partial': {
+    heroBenefit: '필요한 부분만 철거해드립니다',
     heroHook: (r) => `${r}에서 필요한 공간이나 특정 시설물만 선택하여 철거하고 싶으신가요?`,
-    heroDescription: (r) =>
-      `${r} 일대 실내 공간에서 살릴 부분은 안전하게 보호하고 원하는 가벽, 주방, 욕실 등 일부 부위만 선별 철거합니다.`,
+    heroDescription: () =>
+      '철거할 구역의 사진과 작업 범위를 보내주시면 보존 부위를 확인해 필요한 부분만 깔끔히 안내해드립니다.',
     serviceSectionTitle: '선별 부분 철거 부문',
     serviceItems: ['비내력벽 가벽 일부', '주방 싱크대·상부장', '욕실 타일·도기류', '베란다 화단·수납장'],
     decisionTitle: '부분 철거 시 필수 점검 사항',
@@ -313,9 +321,10 @@ const DEMOLITION_TEMPLATES_BY_KEYWORD_ID: Record<string, DemolitionKeywordConten
 
   // 08. 폐업철거 (CLOSURE)
   'kw-demo-closure': {
+    heroBenefit: '원상복구 범위를 확인해드립니다',
     heroHook: (r) => `${r} 매장 폐업 일정에 맞춰 내부 시설물 철거와 비움을 계획 중이신가요?`,
-    heroDescription: (r) =>
-      `${r} 사업 정리 일정에 맞춰 매장 인테리어 철거와 고정 시설물 해체를 신속하고 차질 없이 지원합니다.`,
+    heroDescription: () =>
+      '점포 사진과 퇴거 일정, 원상복구 범위를 알려주시면 필요한 철거와 마감 범위를 안내해드립니다.',
     serviceSectionTitle: '폐업 철거 지원 범위',
     serviceItems: ['홀 인테리어 철거', '주방 조적·닥트 시설', '간판 및 외부 부착물', '매장 바닥·천장 정리'],
     decisionTitle: '폐업 철거 시 사전 고려 사항',
@@ -354,9 +363,10 @@ const DEMOLITION_TEMPLATES_BY_KEYWORD_ID: Record<string, DemolitionKeywordConten
 
   // 09. 원상복구 (RESTORATION)
   'kw-demo-restoration': {
+    heroBenefit: '원상복구 범위를 확인해드립니다',
     heroHook: (r) => `${r} 임대 공간 계약 만료 후 건물주 인도 기준 원상복구 범위를 확인하고 계신가요?`,
-    heroDescription: (r) =>
-      `${r} 일대 상가, 사무실 임대차 종료 시 필요한 내부 시설 철거와 원상회복 범위를 체계적으로 상담해 드립니다.`,
+    heroDescription: () =>
+      '현장 사진과 임대차 종료 일정, 복구 범위를 보내주시면 필요한 철거·원상복구 작업을 안내해드립니다.',
     serviceSectionTitle: '원상복구 주요 시공 분야',
     serviceItems: ['임차 시설물 해체 철거', '가벽 분해 및 벽면 정리', '바닥 마감재 철거', '천장 조명·텍스 정돈'],
     decisionTitle: '원상복구 공사 전 핵심 점검 사항',
@@ -398,30 +408,20 @@ const DEMOLITION_TEMPLATES_BY_KEYWORD_ID: Record<string, DemolitionKeywordConten
  * 철거 (DEMOLITION) Dynamic Content 생성기
  */
 export function generateDemolitionContent(context: PageContext): ContentOutput {
-  const { seoDisplayName, workKeyword, regionLevel } = context;
+  const { seoDisplayName, workKeyword } = context;
   const template =
     DEMOLITION_TEMPLATES_BY_KEYWORD_ID[workKeyword.keywordId] ||
     DEMOLITION_TEMPLATES_BY_KEYWORD_ID['kw-demo-general'];
 
   // H1: 정확히 1개, {seoDisplayName} {workKeyword.displayName} (예: 매탄동 상가철거)
   const h1 = `${seoDisplayName} ${workKeyword.displayName}`;
-
-  // Hero Hook
+  const heroBenefit = template.heroBenefit;
   const heroHook = template.heroHook(seoDisplayName);
-
-  // Hero Description: Region Level별 자연스러운 문맥 가미 (허위 지역 특성 날조 금지)
-  let levelContextNote = '';
-  if (regionLevel === 'SI') {
-    levelContextNote = ` ${seoDisplayName} 주요 권역 현장 여건에 맞춰 신속한 일정 조율을 도와드립니다.`;
-  } else if (regionLevel === 'GU') {
-    levelContextNote = ` ${seoDisplayName} 일대 현장 조건에 맞춘 맞춤형 철거 계획을 수립합니다.`;
-  } else {
-    levelContextNote = ` ${seoDisplayName} 인근 현장 환경에 맞춘 세심한 작업 상담을 제공합니다.`;
-  }
-  const heroDescription = `${template.heroDescription(seoDisplayName)}${levelContextNote}`;
+  const heroDescription = template.heroDescription(seoDisplayName);
 
   return {
     h1,
+    heroBenefit,
     heroHook,
     heroDescription,
     serviceSectionTitle: template.serviceSectionTitle,

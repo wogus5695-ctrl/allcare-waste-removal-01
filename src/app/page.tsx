@@ -136,7 +136,7 @@ export default async function HomePage({ searchParams }: PageProps) {
             serviceFamily={context.serviceFamily}
             serviceLabel={context.serviceFamily === 'DEMOLITION' ? '철거 · 원상복구' : '폐기물 수거 · 처리'}
             h1Main={`${context.seoDisplayName} ${context.workKeyword.displayName},`}
-            h1Sub={context.serviceFamily === 'DEMOLITION' ? '현장에 필요한 작업을 한 번에' : '필요한 현장을 빠르게 비워드립니다'}
+            h1Sub={content.heroBenefit || (context.serviceFamily === 'DEMOLITION' ? '현장에 필요한 작업을 한 번에' : '빠르게 정리해드립니다')}
             supportingCopy={content.heroDescription}
             breadcrumbs={[
               { label: '홈', href: '/' },

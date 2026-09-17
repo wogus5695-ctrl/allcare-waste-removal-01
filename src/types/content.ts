@@ -24,6 +24,7 @@ export interface FaqItem {
 
 export interface ContentOutput {
   h1: string;
+  heroBenefit?: string;
   heroHook: string;
   heroDescription: string;
   serviceSectionTitle: string;

@@ -77,8 +77,8 @@ export default function WasteServiceMainPage() {
         serviceFamily="WASTE"
         serviceLabel="폐기물 수거 · 처리"
         h1Main="폐기물 수거·처리,"
-        h1Sub="필요한 현장을 빠르게 비워드립니다"
-        supportingCopy="가정집·이사·상가·사무실에서 나온 폐기물까지 현장과 물량을 확인해 수거 방법과 견적을 안내합니다."
+        h1Sub="빠르게 정리해드립니다"
+        supportingCopy="사진과 대략적인 양을 보내주시면 현장 조건을 확인해 필요한 작업 범위를 안내해드립니다."
         breadcrumbs={[
           { label: '홈', href: '/' },
           { label: '폐기물 수거·처리' },
