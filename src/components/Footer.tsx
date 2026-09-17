@@ -42,10 +42,6 @@ export function Footer() {
               <Link href="/demolition" className="transition hover:text-orange-600 hover:underline underline-offset-2">
                 🔨 철거·원상복구 안내
               </Link>
-              <span className="text-slate-300">•</span>
-              <Link href="/hub" className="transition hover:text-orange-600 hover:underline underline-offset-2">
-                📍 수원시 서비스 지역 안내
-              </Link>
             </div>
           </div>
 

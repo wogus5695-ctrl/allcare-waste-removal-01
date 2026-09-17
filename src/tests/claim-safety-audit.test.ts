@@ -168,13 +168,13 @@ describe('STEP 3-C2 Claim Safety, Fake Contact & Dynamic Intent Audit', () => {
       assert.strictEqual(pageFile.includes('<summary'), true, 'page.tsx에 <summary> 태그가 존재해야 합니다.');
     });
 
-    it('Footer 링크에서 내부 용어 (허브)가 제거되어야 한다', () => {
+    it('Footer 링크에서 수원시 서비스 지역 안내가 제거되어야 한다', () => {
       const footerFile = fs.readFileSync(
         path.join(process.cwd(), 'src/components/Footer.tsx'),
         'utf-8'
       );
       assert.strictEqual(footerFile.includes('(허브)'), false, 'Footer에 "(허브)" 텍스트가 노출되지 않아야 합니다.');
-      assert.ok(footerFile.includes('수원시 서비스 지역 안내'), 'Footer에 정제된 지역 안내 문구가 포함되어야 합니다.');
+      assert.strictEqual(footerFile.includes('수원시 서비스 지역 안내'), false, 'Footer에 수원시 서비스 지역 안내 링크가 노출되지 않아야 합니다.');
     });
 
     it('Hero CTA는 모바일에서 flex-1 기반 2열 배치를 지원해야 한다', () => {

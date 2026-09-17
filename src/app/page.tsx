@@ -138,19 +138,10 @@ export default async function HomePage({ searchParams }: PageProps) {
             h1Main={`${context.seoDisplayName} ${context.workKeyword.displayName},`}
             h1Sub={context.serviceFamily === 'DEMOLITION' ? '현장에 필요한 작업을 한 번에' : '필요한 현장을 빠르게 비워드립니다'}
             supportingCopy={content.heroDescription}
-            breadcrumbs={
-              context.serviceFamily === 'DEMOLITION'
-                ? [
-                    { label: '홈', href: '/' },
-                    { label: '철거·원상복구', href: '/demolition' },
-                    { label: `${context.seoDisplayName} ${context.workKeyword.displayName}` },
-                  ]
-                : [
-                    { label: '홈', href: '/' },
-                    { label: '폐기물 수거·처리', href: '/waste' },
-                    { label: `${context.seoDisplayName} ${context.workKeyword.displayName}` },
-                  ]
-            }
+            breadcrumbs={[
+              { label: '홈', href: '/' },
+              { label: `${context.seoDisplayName} ${context.workKeyword.displayName}` },
+            ]}
           />
 
 
