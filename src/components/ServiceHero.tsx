@@ -46,6 +46,10 @@ export function ServiceHero({
   const theme = getHeroTheme(serviceFamily);
   const hasPhone = hasValidContactPhone(SITE_CONFIG.contact.phone);
   const hasKakao = hasValidKakaoUrl(SITE_CONFIG.contact.kakaoUrl);
+  const heroAlt =
+    serviceFamily === 'DEMOLITION'
+      ? '올케어환경 철거 작업 현장 이미지'
+      : '올케어환경 폐기물 수거 작업 현장 이미지';
 
   return (
     <section className="relative w-full overflow-hidden bg-slate-100 min-h-[580px] sm:min-h-[640px] md:min-h-[720px] lg:min-h-[820px] flex flex-col justify-center">
@@ -55,10 +59,8 @@ export function ServiceHero({
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={theme.bgImage}
-            alt=""
-            aria-hidden="true"
-            // @ts-expect-error - Next.js/HTML fetchpriority
-            fetchpriority="high"
+            alt={heroAlt}
+            fetchPriority="high"
             loading="eager"
             className="h-full w-full object-cover [object-position:var(--bg-pos-mo)] sm:[object-position:var(--bg-pos-pc)] [transform:var(--bg-tf-mo)] sm:[transform:var(--bg-tf-pc)] origin-center"
             style={

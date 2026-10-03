@@ -1,6 +1,7 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 import { SUWON_REGIONS } from '../data/regions/suwon';
+import { PRODUCTION_REGIONS } from '../data/regions';
 import { P0_KEYWORDS } from '../data/keywords/p0-keywords';
 import {
   DEMOLITION_P0_KEYWORDS,
@@ -23,30 +24,30 @@ describe('STEP 5-I: Final Multi-Vertical Architecture & Zero Regression Lock Aud
   // 1. FINAL URL INVENTORY
   // =========================================================================
   describe('1. Final URL Inventory & Invariants', () => {
-    it('Static Core = 6 URLs', () => {
+    it('Static Core = 4 URLs', () => {
       const core = getCoreUrlEntries();
-      assert.equal(core.length, 6);
+      assert.equal(core.length, 4);
       assert.deepEqual(
         core.map((e) => e.path),
-        ['/', '/waste', '/demolition', '/hub', '/hub/waste', '/hub/demolition']
+        ['/', '/waste', '/hub', '/hub/waste']
       );
     });
 
-    it('WASTE Dynamic = 840 URLs, DEMOLITION Dynamic = 540 URLs, Total Dynamic = 1380 URLs', () => {
+    it('WASTE Dynamic = 4,665 URLs, DEMOLITION Dynamic = 0 URLs (On-Hold), Total Dynamic = 4,665 URLs', () => {
       const dynamic = getDynamicUrlEntries();
       const waste = dynamic.filter((e) => e.serviceFamily === 'WASTE');
       const demo = dynamic.filter((e) => e.serviceFamily === 'DEMOLITION');
 
-      assert.equal(waste.length, 840);
-      assert.equal(demo.length, 540);
-      assert.equal(dynamic.length, 1380);
+      assert.equal(waste.length, 4665);
+      assert.equal(demo.length, 0);
+      assert.equal(dynamic.length, 4665);
     });
 
-    it('Total Indexable = 1386 URLs, Duplicate URL = 0', () => {
+    it('Total Indexable = 4669 URLs, Duplicate URL = 0', () => {
       const all = getIndexableUrlEntries();
-      assert.equal(all.length, 1386);
+      assert.equal(all.length, 4669);
       const unique = new Set(all.map((e) => e.url));
-      assert.equal(unique.size, 1386);
+      assert.equal(unique.size, 4669);
     });
   });
 
@@ -54,8 +55,8 @@ describe('STEP 5-I: Final Multi-Vertical Architecture & Zero Regression Lock Aud
   // 2. SERVICE FAMILY & KEYWORD INVENTORY
   // =========================================================================
   describe('2. Service Family & Keyword Invariants', () => {
-    it('WASTE 14 P0 Keywords & DEMOLITION 9 P0 Keywords', () => {
-      assert.equal(P0_KEYWORDS.length, 14);
+    it('WASTE 15 P0 Keywords & DEMOLITION 9 P0 Keywords', () => {
+      assert.equal(P0_KEYWORDS.length, 15);
       assert.equal(DEMOLITION_P0_KEYWORDS.length, 9);
       for (const k of P0_KEYWORDS) assert.equal(k.serviceFamily, 'WASTE');
       for (const k of DEMOLITION_P0_KEYWORDS) assert.equal(k.serviceFamily, 'DEMOLITION');
@@ -108,23 +109,29 @@ describe('STEP 5-I: Final Multi-Vertical Architecture & Zero Regression Lock Aud
   // 4. SITEMAP INDEX & CANONICAL EQUALITY
   // =========================================================================
   describe('4. Sitemap Index & Canonical Equality', () => {
-    it('Root Sitemap Index has exactly 3 children', () => {
+    it('Root Sitemap Index has exactly 4 children', () => {
       const children = getRootSitemapIndexEntries();
-      assert.equal(children.length, 3);
+      assert.equal(children.length, 4);
       assert.deepEqual(
         children.map((c) => c.filename),
-        ['core.xml', 'waste-gyeonggi-001.xml', 'demolition-gyeonggi-001.xml']
+        [
+          'core.xml',
+          'waste-gyeonggi-001.xml',
+          'waste-seoul-001.xml',
+          'waste-incheon-001.xml',
+        ]
       );
     });
 
-    it('Child sitemaps URL counts: core=6, waste=840, demolition=540', () => {
+    it('Child sitemaps URL counts: core=4, waste-gyeonggi=2820, waste-seoul=1005, waste-incheon=840', () => {
       const map = getChildSitemapsMap();
-      assert.equal(map.get('core.xml')?.length, 6);
-      assert.equal(map.get('waste-gyeonggi-001.xml')?.length, 840);
-      assert.equal(map.get('demolition-gyeonggi-001.xml')?.length, 540);
+      assert.equal(map.get('core.xml')?.length, 4);
+      assert.equal(map.get('waste-gyeonggi-001.xml')?.length, 2820);
+      assert.equal(map.get('waste-seoul-001.xml')?.length, 1005);
+      assert.equal(map.get('waste-incheon-001.xml')?.length, 840);
     });
 
-    it('All 1380 dynamic URLs match PageContext Canonical 100%', () => {
+    it('All 4665 dynamic URLs match PageContext Canonical 100%', () => {
       const dynamic = getDynamicUrlEntries();
       for (const entry of dynamic) {
         const kParam = new URL(entry.url).searchParams.get('k')!;
@@ -141,8 +148,14 @@ describe('STEP 5-I: Final Multi-Vertical Architecture & Zero Regression Lock Aud
   // =========================================================================
   // 5. CRAWL GRAPH & ORPHAN AUDIT
   // =========================================================================
+  // =========================================================================
+  // 5. CRAWL GRAPH & ORPHAN AUDIT
+  // =========================================================================
+  // =========================================================================
+  // 5. CRAWL GRAPH & ORPHAN AUDIT
+  // =========================================================================
   describe('5. Crawl Graph & Orphan Audit', () => {
-    it('All 1,380 dynamic URLs must be discoverable in HTML link graph (Orphan URL = 0)', () => {
+    it('All 4,665 dynamic URLs must be discoverable in HTML link graph (Orphan URL = 0)', () => {
       const dynamic = getDynamicUrlEntries();
       const allRouteKeys = new Set(
         dynamic.map((e) => new URL(e.url).searchParams.get('k')!)
@@ -154,41 +167,30 @@ describe('STEP 5-I: Final Multi-Vertical Architecture & Zero Regression Lock Aud
       }
 
       // Hub links:
-      const wasteSi = SUWON_REGIONS.find((r) => r.regionType === 'SI')!;
-      const wasteGu = SUWON_REGIONS.filter((r) => r.regionType === 'GU');
-      const wasteDong = SUWON_REGIONS.filter((r) => r.regionType === 'DONG');
+      const wasteSi = PRODUCTION_REGIONS.filter((r) => r.regionType === 'SI');
+      const wasteGu = PRODUCTION_REGIONS.filter((r) => r.regionType === 'GU');
+      const wasteDong = PRODUCTION_REGIONS.filter((r) => r.regionType === 'DONG');
 
       const wasteHubKeys = [
-        `${wasteSi.routeKey}-폐기물처리업체`,
-        `${wasteSi.routeKey}-폐기물수거`,
-        `${wasteSi.routeKey}-가정폐기물처리`,
-        `${wasteSi.routeKey}-폐기물처리비용`,
+        ...wasteSi.flatMap((si) => [
+          `${si.routeKey}-폐기물처리업체`,
+          `${si.routeKey}-폐기물수거`,
+          `${si.routeKey}-가정폐기물처리`,
+          `${si.routeKey}-폐기물처리비용`,
+        ]),
         ...wasteGu.map((g) => `${g.routeKey}-폐기물처리업체`),
         ...wasteDong.map((d) => `${d.routeKey}-폐기물처리업체`),
       ];
 
-      const demoSi = SUWON_REGIONS.find((r) => r.regionType === 'SI')!;
-      const demoGu = SUWON_REGIONS.filter((r) => r.regionType === 'GU');
-      const demoDong = SUWON_REGIONS.filter((r) => r.regionType === 'DONG');
-
-      const demoHubKeys = [
-        `${demoSi.routeKey}-철거업체`,
-        `${demoSi.routeKey}-상가철거`,
-        `${demoSi.routeKey}-원상복구`,
-        `${demoSi.routeKey}-철거비용`,
-        ...demoGu.map((g) => `${g.routeKey}-철거업체`),
-        ...demoDong.map((d) => `${d.routeKey}-철거업체`),
-      ];
-
-      for (const k of [...wasteHubKeys, ...demoHubKeys]) {
+      for (const k of wasteHubKeys) {
         if (inboundMap.has(k)) {
           inboundMap.set(k, inboundMap.get(k)! + 1);
         }
       }
 
       // Dynamic page internal links:
-      for (const r of SUWON_REGIONS) {
-        for (const kw of [...P0_KEYWORDS, ...DEMOLITION_P0_KEYWORDS]) {
+      for (const r of PRODUCTION_REGIONS) {
+        for (const kw of P0_KEYWORDS) {
           const links = getInternalLinks(r, kw);
           if (links.parentLink) {
             const pKey = links.parentLink.href.replace('/?k=', '');
@@ -225,11 +227,11 @@ describe('STEP 5-I: Final Multi-Vertical Architecture & Zero Regression Lock Aud
       }
       console.log('[CRAWL GRAPH AUDIT] Orphan breakdown by keyword:', orphanKws);
 
-      assert.ok(inboundMap.size === 1380);
+      assert.ok(inboundMap.size === 4665);
       assert.equal(orphans.length, 0, `Orphan URLs must be 0, found ${orphans.length}`);
     });
 
-    it('Click depth from Hubs to all 1380 URLs must be reachable (Unreachable = 0)', () => {
+    it('Click depth from Hubs to all 4,665 URLs must be reachable (Unreachable = 0)', () => {
       const dynamic = getDynamicUrlEntries();
       const allRouteKeys = new Set(
         dynamic.map((e) => decodeURIComponent(new URL(e.url).searchParams.get('k')!))
@@ -240,8 +242,8 @@ describe('STEP 5-I: Final Multi-Vertical Architecture & Zero Regression Lock Aud
         adj.set(k, []);
       }
 
-      for (const r of SUWON_REGIONS) {
-        for (const kw of [...P0_KEYWORDS, ...DEMOLITION_P0_KEYWORDS]) {
+      for (const r of PRODUCTION_REGIONS) {
+        for (const kw of P0_KEYWORDS) {
           const srcKey = `${r.routeKey}-${kw.routeKey}`;
           const links = getInternalLinks(r, kw);
           const out: string[] = [];
@@ -256,23 +258,19 @@ describe('STEP 5-I: Final Multi-Vertical Architecture & Zero Regression Lock Aud
       const queue: string[] = [];
 
       // Seed from Hub links
-      const wasteSi = SUWON_REGIONS.find((r) => r.regionType === 'SI')!;
-      const wasteGu = SUWON_REGIONS.filter((r) => r.regionType === 'GU');
-      const wasteDong = SUWON_REGIONS.filter((r) => r.regionType === 'DONG');
+      const wasteSi = PRODUCTION_REGIONS.filter((r) => r.regionType === 'SI');
+      const wasteGu = PRODUCTION_REGIONS.filter((r) => r.regionType === 'GU');
+      const wasteDong = PRODUCTION_REGIONS.filter((r) => r.regionType === 'DONG');
 
       const seedKeys = [
-        `${wasteSi.routeKey}-폐기물처리업체`,
-        `${wasteSi.routeKey}-폐기물수거`,
-        `${wasteSi.routeKey}-가정폐기물처리`,
-        `${wasteSi.routeKey}-폐기물처리비용`,
+        ...wasteSi.flatMap((si) => [
+          `${si.routeKey}-폐기물처리업체`,
+          `${si.routeKey}-폐기물수거`,
+          `${si.routeKey}-가정폐기물처리`,
+          `${si.routeKey}-폐기물처리비용`,
+        ]),
         ...wasteGu.map((g) => `${g.routeKey}-폐기물처리업체`),
         ...wasteDong.map((d) => `${d.routeKey}-폐기물처리업체`),
-        `${wasteSi.routeKey}-철거업체`,
-        `${wasteSi.routeKey}-상가철거`,
-        `${wasteSi.routeKey}-원상복구`,
-        `${wasteSi.routeKey}-철거비용`,
-        ...wasteGu.map((g) => `${g.routeKey}-철거업체`),
-        ...wasteDong.map((d) => `${d.routeKey}-철거업체`),
       ];
 
       for (const k of seedKeys) {
@@ -310,7 +308,7 @@ describe('STEP 5-I: Final Multi-Vertical Architecture & Zero Regression Lock Aud
       console.log('  Depth 4 (Hop 3):', depthDist[4] || 0);
       console.log('  Unreachable in HTML graph:', unreachable);
 
-      assert.equal(allRouteKeys.size, 1380);
+      assert.equal(allRouteKeys.size, 4665);
       assert.equal(unreachable, 0, `Unreachable dynamic URLs must be 0, found ${unreachable}`);
     });
   });

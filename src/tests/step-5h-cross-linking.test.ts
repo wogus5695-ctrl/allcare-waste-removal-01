@@ -86,7 +86,7 @@ describe('STEP 5-H: Controlled Cross-Vertical Linking & Static Claim Safety Test
       assert.equal(ALLOWED_PAIRS.length, 3);
     });
 
-    it('F. Cross-Link 대상 WASTE 페이지는 정확히 180개여야 한다 (60 Regions × 3 Keywords)', () => {
+    it('F. Cross-Link 대상 WASTE 페이지는 0개여야 한다 (DEMOLITION 검색 노출 온홀드로 인한 차단)', () => {
       let wasteCrossLinkCount = 0;
       for (const r of SUWON_REGIONS) {
         for (const kw of P0_KEYWORDS) {
@@ -96,10 +96,10 @@ describe('STEP 5-H: Controlled Cross-Vertical Linking & Static Claim Safety Test
           }
         }
       }
-      assert.equal(wasteCrossLinkCount, 180);
+      assert.equal(wasteCrossLinkCount, 0);
     });
 
-    it('G. Cross-Link 대상 DEMOLITION 페이지는 정확히 180개여야 한다 (60 Regions × 3 Keywords)', () => {
+    it('G. Cross-Link 대상 DEMOLITION 페이지는 정확히 180개여야 한다 (60 Regions × 3 Keywords ➔ WASTE)', () => {
       let demoCrossLinkCount = 0;
       for (const r of SUWON_REGIONS) {
         for (const kw of DEMOLITION_P0_KEYWORDS) {
@@ -112,7 +112,7 @@ describe('STEP 5-H: Controlled Cross-Vertical Linking & Static Claim Safety Test
       assert.equal(demoCrossLinkCount, 180);
     });
 
-    it('H. 전체 Cross-Link Edge 총합은 정확히 360개여야 한다 (180 + 180)', () => {
+    it('H. 전체 Cross-Link Edge 총합은 정확히 180개여야 한다 (0 WASTE➔DEMO + 180 DEMO➔WASTE)', () => {
       let totalEdges = 0;
       for (const r of SUWON_REGIONS) {
         for (const kw of [...P0_KEYWORDS, ...DEMOLITION_P0_KEYWORDS]) {
@@ -122,7 +122,7 @@ describe('STEP 5-H: Controlled Cross-Vertical Linking & Static Claim Safety Test
           }
         }
       }
-      assert.equal(totalEdges, 360);
+      assert.equal(totalEdges, 180);
     });
 
     it('I. 페이지당 Cross-Vertical Link는 최대 1개여야 한다 (Per-Page CrossLink <= 1)', () => {
@@ -160,7 +160,7 @@ describe('STEP 5-H: Controlled Cross-Vertical Linking & Static Claim Safety Test
       }
     });
 
-    it('K. 360개 모든 Cross-Link Destination은 404가 아닌 유효한 동적 라우트여야 한다 (404 = 0)', () => {
+    it('K. 180개 모든 활성 Cross-Link Destination은 404가 아닌 유효한 동적 라우트여야 한다 (404 = 0)', () => {
       for (const r of SUWON_REGIONS) {
         for (const kw of [...P0_KEYWORDS, ...DEMOLITION_P0_KEYWORDS]) {
           const crossLink = getCrossVerticalLink(r, kw);
@@ -176,15 +176,15 @@ describe('STEP 5-H: Controlled Cross-Vertical Linking & Static Claim Safety Test
       }
     });
 
-    it('L. Cross-Link는 실제 SSR HTML Anchor로 유효해야 한다', () => {
+    it('L. DEMOLITION에서 WASTE로의 Cross-Link는 실제 SSR HTML Anchor로 유효해야 한다', () => {
       const maetan = SUWON_REGIONS.find((r) => r.routeKey === '매탄동')!;
-      const wasteCommercial = P0_KEYWORDS.find((k) => k.routeKey === '상가폐기물처리')!;
-      const link = getCrossVerticalLink(maetan, wasteCommercial);
+      const demoCommercial = DEMOLITION_P0_KEYWORDS.find((k) => k.routeKey === '상가철거')!;
+      const link = getCrossVerticalLink(maetan, demoCommercial);
 
       assert.ok(link);
-      assert.equal(link.href, '/?k=매탄동-상가철거');
-      assert.equal(link.label, '매탄동 상가철거 안내');
-      assert.ok(link.sectionTitle.includes('철거'));
+      assert.equal(link.href, '/?k=매탄동-상가폐기물처리');
+      assert.equal(link.label, '매탄동 상가폐기물처리 안내');
+      assert.ok(link.sectionTitle.includes('철거') || link.sectionTitle.includes('정리'));
     });
   });
 
@@ -192,16 +192,14 @@ describe('STEP 5-H: Controlled Cross-Vertical Linking & Static Claim Safety Test
   // 4. SAMPLE 6 PAIR AUDIT
   // =========================================================================
   describe('4. Sample 6 Pair Audit', () => {
-    it('A. 매탄동 상가폐기물처리 ➔ 매탄동 상가철거', () => {
+    it('A. 매탄동 상가폐기물처리 ➔ 매탄동 상가철거 (DEMO target on hold -> null)', () => {
       const r = SUWON_REGIONS.find((x) => x.routeKey === '매탄동')!;
       const kw = P0_KEYWORDS.find((x) => x.routeKey === '상가폐기물처리')!;
       const link = getCrossVerticalLink(r, kw);
-      assert.ok(link);
-      assert.equal(link.href, '/?k=매탄동-상가철거');
-      assert.equal(link.label, '매탄동 상가철거 안내');
+      assert.equal(link, null);
     });
 
-    it('B. 매탄동 상가철거 ➔ 매탄동 상가폐기물처리', () => {
+    it('B. 매탄동 상가철거 ➔ 매탄동 상가폐기물처리 (WASTE target active)', () => {
       const r = SUWON_REGIONS.find((x) => x.routeKey === '매탄동')!;
       const kw = DEMOLITION_P0_KEYWORDS.find((x) => x.routeKey === '상가철거')!;
       const link = getCrossVerticalLink(r, kw);
@@ -210,16 +208,14 @@ describe('STEP 5-H: Controlled Cross-Vertical Linking & Static Claim Safety Test
       assert.equal(link.label, '매탄동 상가폐기물처리 안내');
     });
 
-    it('C. 오목천동 사무실폐기물처리 ➔ 오목천동 사무실철거', () => {
+    it('C. 오목천동 사무실폐기물처리 ➔ 오목천동 사무실철거 (DEMO target on hold -> null)', () => {
       const r = SUWON_REGIONS.find((x) => x.routeKey === '오목천동')!;
       const kw = P0_KEYWORDS.find((x) => x.routeKey === '사무실폐기물처리')!;
       const link = getCrossVerticalLink(r, kw);
-      assert.ok(link);
-      assert.equal(link.href, '/?k=오목천동-사무실철거');
-      assert.equal(link.label, '오목천동 사무실철거 안내');
+      assert.equal(link, null);
     });
 
-    it('D. 오목천동 사무실철거 ➔ 오목천동 사무실폐기물처리', () => {
+    it('D. 오목천동 사무실철거 ➔ 오목천동 사무실폐기물처리 (WASTE target active)', () => {
       const r = SUWON_REGIONS.find((x) => x.routeKey === '오목천동')!;
       const kw = DEMOLITION_P0_KEYWORDS.find((x) => x.routeKey === '사무실철거')!;
       const link = getCrossVerticalLink(r, kw);
@@ -228,16 +224,14 @@ describe('STEP 5-H: Controlled Cross-Vertical Linking & Static Claim Safety Test
       assert.equal(link.label, '오목천동 사무실폐기물처리 안내');
     });
 
-    it('E. 수원시-정자동 폐업폐기물처리 ➔ 수원시-정자동 폐업철거', () => {
+    it('E. 수원시-정자동 폐업폐기물처리 ➔ 수원시-정자동 폐업철거 (DEMO target on hold -> null)', () => {
       const r = SUWON_REGIONS.find((x) => x.routeKey === '수원시-정자동')!;
       const kw = P0_KEYWORDS.find((x) => x.routeKey === '폐업폐기물처리')!;
       const link = getCrossVerticalLink(r, kw);
-      assert.ok(link);
-      assert.equal(link.href, '/?k=수원시-정자동-폐업철거');
-      assert.equal(link.label, '수원시 정자동 폐업철거 안내');
+      assert.equal(link, null);
     });
 
-    it('F. 수원시-정자동 폐업철거 ➔ 수원시-정자동 폐업폐기물처리', () => {
+    it('F. 수원시-정자동 폐업철거 ➔ 수원시-정자동 폐업폐기물처리 (WASTE target active)', () => {
       const r = SUWON_REGIONS.find((x) => x.routeKey === '수원시-정자동')!;
       const kw = DEMOLITION_P0_KEYWORDS.find((x) => x.routeKey === '폐업철거')!;
       const link = getCrossVerticalLink(r, kw);
@@ -251,14 +245,14 @@ describe('STEP 5-H: Controlled Cross-Vertical Linking & Static Claim Safety Test
   // 5. REGRESSION & SITEMAP AUDIT
   // =========================================================================
   describe('5. Zero Regression Audit', () => {
-    it('N. 전체 Dynamic URL 수는 1380개(840 + 540)로 완전 불변이어야 한다', () => {
+    it('N. 전체 Dynamic URL 수는 4665개(311 Region × 15 Keyword)로 완전 불변이어야 한다', () => {
       const dynamicEntries = getDynamicUrlEntries();
-      assert.equal(dynamicEntries.length, 1380);
+      assert.equal(dynamicEntries.length, 4665);
     });
 
-    it('O. Sitemap 색인 총 대상 수는 1386개(Core 6 + Dynamic 1380)로 불변이어야 한다', () => {
+    it('O. Sitemap 색인 총 대상 수는 4669개(Core 4 + Dynamic 4665)로 불변이어야 한다', () => {
       const entries = getIndexableUrlEntries();
-      assert.equal(entries.length, 1386);
+      assert.equal(entries.length, 4669);
     });
 
     it('P. 기존 Family 내부 링크(Parent Link, Related Links)는 온전히 보존되어야 한다', () => {

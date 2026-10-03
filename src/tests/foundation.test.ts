@@ -9,8 +9,8 @@ import { resolveSiteOrigin } from '../config/site';
 describe('STEP 2-A Core Foundation Tests (Corrected)', () => {
   // A. Keyword Dataset Tests
   describe('A. Keyword Dataset', () => {
-    it('총 14개의 P0 키워드가 등록되어 있어야 한다', () => {
-      assert.equal(P0_KEYWORDS.length, 14);
+    it('총 15개의 P0 키워드가 등록되어 있어야 한다', () => {
+      assert.equal(P0_KEYWORDS.length, 15);
     });
 
     it('keywordId 중복이 없어야 한다 (중복 = 0)', () => {

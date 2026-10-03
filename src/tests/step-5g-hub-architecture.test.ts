@@ -23,60 +23,60 @@ describe('STEP 5-G: Service Main + Multi-Vertical Hub Architecture Audit', () =>
   // 1. SITEMAP ARCHITECTURE & URL AUDIT
   // =========================================================================
   describe('1. Sitemap Architecture & URL Counts', () => {
-    it('Core Sitemap은 정확히 6개 URL을 포함해야 한다', () => {
+    it('Core Sitemap은 정확히 4개 URL을 포함해야 한다', () => {
       const coreEntries = getCoreUrlEntries();
-      assert.equal(coreEntries.length, 6);
+      assert.equal(coreEntries.length, 4);
 
       const paths = coreEntries.map((e) => e.path);
       assert.deepEqual(paths, [
         '/',
         '/waste',
-        '/demolition',
         '/hub',
         '/hub/waste',
-        '/hub/demolition',
       ]);
     });
 
-    it('Sitemap Index는 3개의 Child Sitemap을 선언해야 한다', () => {
+    it('Sitemap Index는 4개의 Child Sitemap을 선언해야 한다', () => {
       const indexEntries = getRootSitemapIndexEntries();
-      assert.equal(indexEntries.length, 3);
+      assert.equal(indexEntries.length, 4);
 
       const filenames = indexEntries.map((e) => e.filename);
       assert.deepEqual(filenames, [
         'core.xml',
         'waste-gyeonggi-001.xml',
-        'demolition-gyeonggi-001.xml',
+        'waste-seoul-001.xml',
+        'waste-incheon-001.xml',
       ]);
     });
 
-    it('각 Sitemap별 URL 카운트와 전체 Indexable URL은 1,386개여야 한다', () => {
+    it('각 Sitemap별 URL 카운트와 전체 Indexable URL은 4,669개여야 한다', () => {
       const childMap = getChildSitemapsMap();
 
       const coreEntries = childMap.get('core.xml') || [];
       const wasteEntries = childMap.get('waste-gyeonggi-001.xml') || [];
       const demoEntries = childMap.get('demolition-gyeonggi-001.xml') || [];
 
-      assert.equal(coreEntries.length, 6, 'Core URLs = 6');
-      assert.equal(wasteEntries.length, 840, 'Waste Dynamic URLs = 840');
-      assert.equal(demoEntries.length, 540, 'Demolition Dynamic URLs = 540');
+      assert.equal(coreEntries.length, 4, 'Core URLs = 4');
+      assert.equal(wasteEntries.length, 2820, 'Waste Gyeonggi Dynamic URLs = 2,820');
+      assert.equal(demoEntries.length, 0, 'Demolition Dynamic URLs = 0 (On-Hold)');
 
-      const total = coreEntries.length + wasteEntries.length + demoEntries.length;
-      assert.equal(total, 1386, 'Total Indexable URLs = 1,386');
+      let total = 0;
+      for (const entries of childMap.values()) {
+        total += entries.length;
+      }
+      assert.equal(total, 4669, 'Total Indexable URLs = 4,669');
     });
 
-    it('core.xml XML 문자열에 6개 URL이 올바르게 렌더링되어야 한다', () => {
+    it('core.xml XML 문자열에 4개 URL이 올바르게 렌더링되어야 한다', () => {
       const xml = getChildSitemapXml('core.xml');
       assert.ok(xml);
       assert.ok(xml.includes(`<loc>${getAbsoluteUrl('/')}</loc>`));
       assert.ok(xml.includes(`<loc>${getAbsoluteUrl('/waste')}</loc>`));
-      assert.ok(xml.includes(`<loc>${getAbsoluteUrl('/demolition')}</loc>`));
       assert.ok(xml.includes(`<loc>${getAbsoluteUrl('/hub')}</loc>`));
       assert.ok(xml.includes(`<loc>${getAbsoluteUrl('/hub/waste')}</loc>`));
-      assert.ok(xml.includes(`<loc>${getAbsoluteUrl('/hub/demolition')}</loc>`));
 
       const count = (xml.match(/<url>/g) || []).length;
-      assert.equal(count, 6);
+      assert.equal(count, 4);
     });
   });
 
@@ -111,13 +111,13 @@ describe('STEP 5-G: Service Main + Multi-Vertical Hub Architecture Audit', () =>
   });
 
   // =========================================================================
-  // 3. DYNAMIC URL IMMUTABILITY (1,380 URLs)
+  // 3. DYNAMIC URL IMMUTABILITY (4,665 URLs)
   // =========================================================================
   describe('3. Dynamic URL Immutability', () => {
-    it('WASTE 840개 Dynamic URL은 전혀 변경되지 않아야 한다', () => {
+    it('WASTE 4,665개 Dynamic URL은 전혀 변경되지 않아야 한다', () => {
       const dynamicEntries = getDynamicUrlEntries();
       const wasteEntries = dynamicEntries.filter((e) => e.serviceFamily === 'WASTE');
-      assert.equal(wasteEntries.length, 840);
+      assert.equal(wasteEntries.length, 4665);
 
       // 모든 WASTE URL은 /?k= 쿼리 파라미터 구조를 가져야 함
       for (const entry of wasteEntries) {
@@ -126,16 +126,10 @@ describe('STEP 5-G: Service Main + Multi-Vertical Hub Architecture Audit', () =>
       }
     });
 
-    it('DEMOLITION 540개 Dynamic URL은 전혀 변경되지 않아야 한다', () => {
+    it('DEMOLITION Dynamic URL은 검색 노출 보류(isSitemapEligible=false)로 0개여야 한다', () => {
       const dynamicEntries = getDynamicUrlEntries();
       const demoEntries = dynamicEntries.filter((e) => e.serviceFamily === 'DEMOLITION');
-      assert.equal(demoEntries.length, 540);
-
-      // 모든 DEMOLITION URL은 /?k= 쿼리 파라미터 구조를 가져야 함
-      for (const entry of demoEntries) {
-        assert.ok(entry.path.startsWith('/?k='), `Path must start with /?k=: ${entry.path}`);
-        assert.ok(!entry.path.startsWith('/demolition/'), `Path must not start with /demolition/: ${entry.path}`);
-      }
+      assert.equal(demoEntries.length, 0);
     });
   });
 

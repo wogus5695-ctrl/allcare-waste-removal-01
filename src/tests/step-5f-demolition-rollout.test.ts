@@ -48,120 +48,90 @@ describe('STEP 5-F: Full Suwon Demolition Region Rollout Test Suite', () => {
     });
   });
 
-  // [B] DEMOLITION URLs = 540
-  describe('[B] DEMOLITION URLs = 540', () => {
-    it('DEMOLITION Dynamic URL 수는 정확히 540개(60 Region × 9 Keyword)여야 한다', () => {
+  // [B] DEMOLITION URLs = 0 (On-Hold)
+  describe('[B] DEMOLITION URLs = 0', () => {
+    it('DEMOLITION Dynamic URL 수는 검색 노출 보류(isSitemapEligible=false)로 0개여야 한다', () => {
       const dynamicEntries = getDynamicUrlEntries();
       const demoEntries = dynamicEntries.filter((e) => e.serviceFamily === 'DEMOLITION');
-      assert.equal(demoEntries.length, 540);
+      assert.equal(demoEntries.length, 0);
     });
   });
 
-  // [C] WASTE URLs = 840
-  describe('[C] WASTE URLs = 840', () => {
-    it('기존 WASTE Dynamic URL 수는 840개로 변함없이 100% 유지되어야 한다', () => {
+  // [C] WASTE URLs = 4,665
+  describe('[C] WASTE URLs = 4,665', () => {
+    it('기존 WASTE Dynamic URL 수는 4,665개로 변함없이 100% 유지되어야 한다', () => {
       const dynamicEntries = getDynamicUrlEntries();
       const wasteEntries = dynamicEntries.filter((e) => e.serviceFamily === 'WASTE');
-      assert.equal(wasteEntries.length, 840);
+      assert.equal(wasteEntries.length, 4665);
     });
   });
 
-  // [D] Total Dynamic = 1380
-  describe('[D] Total Dynamic = 1380', () => {
-    it('전체 Dynamic URL은 1380개(840 WASTE + 540 DEMOLITION)여야 한다', () => {
+  // [D] Total Dynamic = 4,665
+  describe('[D] Total Dynamic = 4,665', () => {
+    it('전체 Dynamic URL은 4,665개여야 한다', () => {
       const dynamicEntries = getDynamicUrlEntries();
-      assert.equal(dynamicEntries.length, 1380);
+      assert.equal(dynamicEntries.length, 4665);
     });
   });
 
-  // [E] Demolition Sitemap = 540
-  describe('[E] Demolition Sitemap = 540', () => {
-    it('demolition-gyeonggi-001.xml 내 URL 수는 정확히 540개여야 한다', () => {
+  // [E] Demolition Sitemap = 0 (On-Hold)
+  describe('[E] Demolition Sitemap = 0', () => {
+    it('demolition-gyeonggi-001.xml 내 URL 수는 0개(검색 노출 보류)여야 한다', () => {
       const childMap = getChildSitemapsMap();
-      const demoEntries = childMap.get('demolition-gyeonggi-001.xml')!;
-      assert.ok(demoEntries);
-      assert.equal(demoEntries.length, 540);
+      const demoEntries = childMap.get('demolition-gyeonggi-001.xml') || [];
+      assert.equal(demoEntries.length, 0);
     });
   });
 
-  // [F] Waste Sitemap = 840
-  describe('[F] Waste Sitemap = 840', () => {
-    it('waste-gyeonggi-001.xml 내 URL 수는 정확히 840개여야 한다', () => {
+  // [F] Waste Sitemap = 2,820
+  describe('[F] Waste Sitemap = 2,820', () => {
+    it('waste-gyeonggi-001.xml 내 URL 수는 정확히 2,820개여야 한다', () => {
       const childMap = getChildSitemapsMap();
       const wasteEntries = childMap.get('waste-gyeonggi-001.xml')!;
       assert.ok(wasteEntries);
-      assert.equal(wasteEntries.length, 840);
+      assert.equal(wasteEntries.length, 2820);
     });
   });
 
-  // [G] Root Sitemap Child = 3
-  describe('[G] Root Sitemap Child = 3', () => {
-    it('Root sitemap.xml의 자식 사이트맵은 정확히 3개(core, waste-001, demolition-001)여야 한다', () => {
+  // [G] Root Sitemap Child = 4
+  describe('[G] Root Sitemap Child = 4', () => {
+    it('Root sitemap.xml의 자식 사이트맵은 정확히 4개여야 한다', () => {
       const rootEntries = getRootSitemapIndexEntries();
-      assert.equal(rootEntries.length, 3);
+      assert.equal(rootEntries.length, 4);
       assert.deepEqual(
         rootEntries.map((e) => e.filename),
-        ['core.xml', 'waste-gyeonggi-001.xml', 'demolition-gyeonggi-001.xml']
+        [
+          'core.xml',
+          'waste-gyeonggi-001.xml',
+          'waste-seoul-001.xml',
+          'waste-incheon-001.xml',
+        ]
       );
     });
   });
 
-  // [H] Total Indexable = 1386
-  describe('[H] Total Indexable = 1386', () => {
-    it('전체 색인 대상 URL 수는 정확히 1386개(Core 6 + Dynamic 1380)여야 한다', () => {
+  // [H] Total Indexable = 4,669
+  describe('[H] Total Indexable = 4,669', () => {
+    it('전체 색인 대상 URL 수는 정확히 4,669개(Core 4 + Dynamic 4,665)여야 한다', () => {
       const entries = getIndexableUrlEntries();
-      assert.equal(entries.length, 1386);
+      assert.equal(entries.length, 4669);
     });
   });
 
-  // [I] Each Demolition Region URL Count = 9
-  describe('[I] Each Demolition Region URL Count = 9', () => {
-    it('60개 수원 모든 Region 각각에 대해 DEMOLITION URL은 정확히 9개씩 생성되어야 한다', () => {
+  // [I] Each Demolition Region URL Count = 0 (On-Hold)
+  describe('[I] Each Demolition Region URL Count = 0', () => {
+    it('DEMOLITION 사이트맵 유효 URL은 검색 노출 보류(isSitemapEligible=false)로 인해 0개여야 한다', () => {
       const dynamicEntries = getDynamicUrlEntries().filter((e) => e.serviceFamily === 'DEMOLITION');
-      const countsByRegion: Record<string, number> = {};
-
-      for (const r of SUWON_REGIONS) {
-        countsByRegion[r.regionId] = 0;
-      }
-
-      for (const entry of dynamicEntries) {
-        const kParam = new URL(entry.url).searchParams.get('k')!;
-        const resolved = resolveBaseRoute(kParam)!;
-        assert.ok(resolved);
-        countsByRegion[resolved.region.regionId]++;
-      }
-
-      for (const r of SUWON_REGIONS) {
-        assert.equal(
-          countsByRegion[r.regionId],
-          9,
-          `Region ${r.officialName}(${r.regionId})의 철거 URL 수는 9개여야 함`
-        );
-      }
+      assert.equal(dynamicEntries.length, 0);
     });
   });
 
   // [J] Canonical Mismatch = 0
   describe('[J] Canonical Mismatch = 0', () => {
-    it('540개 모든 Demolition URL의 Sitemap URL과 Canonical URL이 100% 일치해야 한다', () => {
+    it('0개 Demolition Sitemap URL (검색 노출 보류)', () => {
       const childMap = getChildSitemapsMap();
-      const demoEntries = childMap.get('demolition-gyeonggi-001.xml')!;
-
-      for (const entry of demoEntries) {
-        const kParam = new URL(entry.url).searchParams.get('k')!;
-        const resolved = resolveBaseRoute(kParam)!;
-        const ctx = createPageContext(resolved);
-        const meta = generatePageMetadata(ctx);
-        const canonical = String(meta.alternates?.canonical);
-
-        const expectedCanonical = getAbsoluteUrl(`/?k=${encodeURIComponent(ctx.canonicalRoute)}`);
-        const altExpectedCanonical = getAbsoluteUrl(`/?k=${ctx.canonicalRoute}`);
-
-        assert.ok(
-          canonical === expectedCanonical || canonical === altExpectedCanonical,
-          `Canonical mismatch for ${entry.url}`
-        );
-      }
+      const demoEntries = childMap.get('demolition-gyeonggi-001.xml') || [];
+      assert.equal(demoEntries.length, 0);
     });
   });
 
@@ -221,7 +191,7 @@ describe('STEP 5-F: Full Suwon Demolition Region Rollout Test Suite', () => {
       const meta = generatePageMetadata(ctx);
 
       assert.equal(content.h1, '매탄동 폐기물처리업체');
-      assert.equal(meta.title, `매탄동 폐기물처리업체 | 폐기물 수거 상담 | ${SITE_CONFIG.brandName}`);
+      assert.equal(meta.title, `매탄동 폐기물처리업체 | 전문 수거 업체 안내 | ${SITE_CONFIG.brandName}`);
       const canonical = decodeURIComponent(String(meta.alternates?.canonical));
       assert.ok(canonical.includes('/?k=매탄동-폐기물처리업체'));
     });
@@ -231,8 +201,8 @@ describe('STEP 5-F: Full Suwon Demolition Region Rollout Test Suite', () => {
   describe('[N] Family Cross Contamination = 0', () => {
     it('WASTE 사이트맵과 DEMOLITION 사이트맵 간 상호 오염이 0개여야 한다', () => {
       const childMap = getChildSitemapsMap();
-      const wasteEntries = childMap.get('waste-gyeonggi-001.xml')!;
-      const demoEntries = childMap.get('demolition-gyeonggi-001.xml')!;
+      const wasteEntries = childMap.get('waste-gyeonggi-001.xml') || [];
+      const demoEntries = childMap.get('demolition-gyeonggi-001.xml') || [];
 
       for (const e of wasteEntries) {
         assert.equal(e.serviceFamily, 'WASTE');

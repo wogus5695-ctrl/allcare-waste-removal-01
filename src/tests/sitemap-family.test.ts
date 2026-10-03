@@ -25,8 +25,8 @@ describe('STEP 5-A: Service Family Foundation & Sitemap Index Architecture', () 
   // [A] SERVICE FAMILY TYPE & REGISTRY AUDIT
   // =========================================================================
   describe('[A] Service Family Foundation', () => {
-    it('기존 14개 P0 키워드의 serviceFamily는 전부 WASTE여야 한다', () => {
-      assert.equal(P0_KEYWORDS.length, 14);
+    it('기존 15개 P0 키워드의 serviceFamily는 전부 WASTE여야 한다', () => {
+      assert.equal(P0_KEYWORDS.length, 15);
       for (const kw of P0_KEYWORDS) {
         assert.equal(kw.serviceFamily, 'WASTE', `${kw.displayName}의 serviceFamily는 WASTE여야 함`);
       }
@@ -54,19 +54,19 @@ describe('STEP 5-A: Service Family Foundation & Sitemap Index Architecture', () 
   });
 
   // =========================================================================
-  // [B] EXISTING URL IMMUTABILITY (840 WASTE DYNAMIC URLS)
+  // [B] EXISTING URL IMMUTABILITY (4,665 WASTE DYNAMIC URLS)
   // =========================================================================
   describe('[B] Existing URL Immutability', () => {
-    it('기존 840개 폐기물 Dynamic 조합 routeKey는 1개도 변경되지 않아야 한다', () => {
+    it('기존 4,665개 폐기물 Dynamic 조합 routeKey는 1개도 변경되지 않아야 한다', () => {
       const dynamicEntries = getDynamicUrlEntries();
       const wasteEntries = dynamicEntries.filter((e) => e.serviceFamily === 'WASTE');
-      assert.equal(wasteEntries.length, 840);
+      assert.equal(wasteEntries.length, 4665);
 
-      const expectedCombinations = 60 * 14;
-      assert.equal(expectedCombinations, 840);
+      const expectedCombinations = 311 * 15;
+      assert.equal(expectedCombinations, 4665);
 
       const uniquePaths = new Set(wasteEntries.map((e) => e.path));
-      assert.equal(uniquePaths.size, 840, '840개 URL path는 고유해야 함');
+      assert.equal(uniquePaths.size, 4665, '4,665개 URL path는 고유해야 함');
     });
   });
 
@@ -99,17 +99,24 @@ describe('STEP 5-A: Service Family Foundation & Sitemap Index Architecture', () 
   // =========================================================================
   // [D] ROOT SITEMAP INDEX (/sitemap.xml)
   // =========================================================================
+  // =========================================================================
+  // [D] ROOT SITEMAP INDEX (/sitemap.xml)
+  // =========================================================================
   describe('[D] Root Sitemap Index (/sitemap.xml)', () => {
-    it('Sitemap Index는 정확히 3개의 Child Sitemap(core, waste-gyeonggi-001, demolition-gyeonggi-001)을 가져야 한다', () => {
+    it('Sitemap Index는 정확히 4개의 Child Sitemap(core, waste-gyeonggi-001, waste-seoul-001, waste-incheon-001)을 가져야 한다', () => {
       const indexEntries = getRootSitemapIndexEntries();
-      assert.equal(indexEntries.length, 3);
+      assert.equal(indexEntries.length, 4);
 
       const filenames = indexEntries.map((e) => e.filename);
-      assert.deepEqual(filenames, ['core.xml', 'waste-gyeonggi-001.xml', 'demolition-gyeonggi-001.xml']);
+      assert.deepEqual(filenames, [
+        'core.xml',
+        'waste-gyeonggi-001.xml',
+        'waste-seoul-001.xml',
+        'waste-incheon-001.xml',
+      ]);
 
       assert.equal(indexEntries[0].loc, getAbsoluteUrl('/sitemaps/core.xml'));
       assert.equal(indexEntries[1].loc, getAbsoluteUrl('/sitemaps/waste-gyeonggi-001.xml'));
-      assert.equal(indexEntries[2].loc, getAbsoluteUrl('/sitemaps/demolition-gyeonggi-001.xml'));
     });
 
     it('Root XML 출력은 유효한 <sitemapindex> 규격이어야 한다', () => {
@@ -118,7 +125,6 @@ describe('STEP 5-A: Service Family Foundation & Sitemap Index Architecture', () 
       assert.ok(xml.includes('<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'));
       assert.ok(xml.includes(`  <sitemap>\n    <loc>${getAbsoluteUrl('/sitemaps/core.xml')}</loc>\n  </sitemap>`));
       assert.ok(xml.includes(`  <sitemap>\n    <loc>${getAbsoluteUrl('/sitemaps/waste-gyeonggi-001.xml')}</loc>\n  </sitemap>`));
-      assert.ok(xml.includes(`  <sitemap>\n    <loc>${getAbsoluteUrl('/sitemaps/demolition-gyeonggi-001.xml')}</loc>\n  </sitemap>`));
       assert.ok(xml.endsWith('</sitemapindex>\n'));
 
       // <urlset> 태그가 없어야 함
@@ -131,25 +137,23 @@ describe('STEP 5-A: Service Family Foundation & Sitemap Index Architecture', () 
   // [E] CORE SITEMAP (/sitemaps/core.xml)
   // =========================================================================
   describe('[E] Core Sitemap (/sitemaps/core.xml)', () => {
-    it('Core Sitemap은 정확히 6개의 URL(/, /waste, /demolition, /hub, /hub/waste, /hub/demolition)을 포함해야 한다', () => {
+    it('Core Sitemap은 정확히 4개의 URL(/, /waste, /hub, /hub/waste)을 포함해야 한다', () => {
       const coreEntries = getCoreUrlEntries();
-      assert.equal(coreEntries.length, 6);
+      assert.equal(coreEntries.length, 4);
 
       const paths = coreEntries.map((e) => e.path);
-      assert.deepEqual(paths, ['/', '/waste', '/demolition', '/hub', '/hub/waste', '/hub/demolition']);
+      assert.deepEqual(paths, ['/', '/waste', '/hub', '/hub/waste']);
 
       const xml = getChildSitemapXml('core.xml');
       assert.ok(xml);
       assert.ok(xml.includes('<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'));
       assert.ok(xml.includes(`<loc>${getAbsoluteUrl('/')}</loc>`));
       assert.ok(xml.includes(`<loc>${getAbsoluteUrl('/waste')}</loc>`));
-      assert.ok(xml.includes(`<loc>${getAbsoluteUrl('/demolition')}</loc>`));
       assert.ok(xml.includes(`<loc>${getAbsoluteUrl('/hub')}</loc>`));
       assert.ok(xml.includes(`<loc>${getAbsoluteUrl('/hub/waste')}</loc>`));
-      assert.ok(xml.includes(`<loc>${getAbsoluteUrl('/hub/demolition')}</loc>`));
 
       const count = (xml.match(/<url>/g) || []).length;
-      assert.equal(count, 6);
+      assert.equal(count, 4);
     });
   });
 
@@ -157,18 +161,18 @@ describe('STEP 5-A: Service Family Foundation & Sitemap Index Architecture', () 
   // [F] WASTE CHILD SITEMAP (/sitemaps/waste-gyeonggi-001.xml)
   // =========================================================================
   describe('[F] Waste Gyeonggi Child Sitemap (/sitemaps/waste-gyeonggi-001.xml)', () => {
-    it('Waste Gyeonggi Child Sitemap은 정확히 840개의 Dynamic URL을 포함해야 한다', () => {
+    it('Waste Gyeonggi Child Sitemap은 정확히 2,820개의 Dynamic URL을 포함해야 한다', () => {
       const childMap = getChildSitemapsMap();
       const wasteEntries = childMap.get('waste-gyeonggi-001.xml');
       assert.ok(wasteEntries);
-      assert.equal(wasteEntries.length, 840);
+      assert.equal(wasteEntries.length, 2820);
 
       const xml = getChildSitemapXml('waste-gyeonggi-001.xml');
       assert.ok(xml);
       assert.ok(xml.includes('<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'));
 
       const urlCount = (xml.match(/<url>/g) || []).length;
-      assert.equal(urlCount, 840);
+      assert.equal(urlCount, 2820);
     });
   });
 
@@ -183,15 +187,10 @@ describe('STEP 5-A: Service Family Foundation & Sitemap Index Architecture', () 
       assert.equal(nonWaste.length, 0, 'Waste sitemap에는 오직 WASTE 서비스만 포함되어야 함');
     });
 
-    it('DEMOLITION Child Sitemap은 540개 URL로 등록되어야 한다', () => {
+    it('DEMOLITION Child Sitemap은 노출보류(on-hold) 상태에서 0개 등록되어야 한다', () => {
       const childMap = getChildSitemapsMap();
       const demolitionSitemaps = Array.from(childMap.keys()).filter((k) => k.startsWith('demolition'));
-      assert.equal(demolitionSitemaps.length, 1);
-      assert.equal(demolitionSitemaps[0], 'demolition-gyeonggi-001.xml');
-      const demoEntries = childMap.get('demolition-gyeonggi-001.xml') || [];
-      assert.equal(demoEntries.length, 540);
-      const demoXml = getChildSitemapXml('demolition-gyeonggi-001.xml');
-      assert.ok(demoXml);
+      assert.equal(demolitionSitemaps.length, 0);
     });
   });
 
@@ -211,10 +210,10 @@ describe('STEP 5-A: Service Family Foundation & Sitemap Index Architecture', () 
   // [I] CANONICAL & SITEMAP 100% EQUALITY AUDIT
   // =========================================================================
   describe('[I] Canonical & Child Sitemap 100% Equality Audit', () => {
-    it('840개 Waste Child Sitemap URL은 각각의 Canonical URL과 100% 일치해야 한다 (Mismatch = 0)', () => {
+    it('Waste Gyeonggi Child Sitemap URL은 각각의 Canonical URL과 100% 일치해야 한다 (Mismatch = 0)', () => {
       const childMap = getChildSitemapsMap();
       const wasteEntries = childMap.get('waste-gyeonggi-001.xml') || [];
-      assert.equal(wasteEntries.length, 840);
+      assert.equal(wasteEntries.length, 2820);
 
       for (const entry of wasteEntries) {
         const urlObj = new URL(entry.url);
@@ -236,13 +235,13 @@ describe('STEP 5-A: Service Family Foundation & Sitemap Index Architecture', () 
       }
     });
 
-    it('총 실제 색인 대상 URL 수는 정확히 1386개여야 한다 (Core: 6 + WASTE Dynamic: 840 + DEMOLITION Dynamic: 540)', () => {
+    it('총 실제 색인 대상 URL 수는 정확히 4669개여야 한다 (Core: 4 + WASTE Dynamic: 4,665 + DEMOLITION Dynamic: 0)', () => {
       const childMap = getChildSitemapsMap();
       let totalUrls = 0;
       for (const entries of childMap.values()) {
         totalUrls += entries.length;
       }
-      assert.equal(totalUrls, 1386);
+      assert.equal(totalUrls, 4669);
     });
   });
 

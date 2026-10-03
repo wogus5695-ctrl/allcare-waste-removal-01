@@ -12,21 +12,21 @@ interface KeywordSeoPhrases {
  * 14개 폐기물 (WASTE) 작업 키워드별 안전한 SEO 문구 (과장 및 미검증 표현 배제)
  */
 const WASTE_SEO_PHRASES_BY_KEYWORD_ID: Record<string, KeywordSeoPhrases> = {
-  'kw-general-disposal': { supportingTitle: '현장 맞춤 수거 안내', actionVerb: '품목과 현장 조건을 확인해 필요한 수거 절차를 안내합니다' },
-  'kw-general-company': { supportingTitle: '폐기물 수거 상담', actionVerb: '품목과 현장 조건을 확인해 필요한 수거 방법을 안내합니다' },
-  'kw-price-estimate': { supportingTitle: '투명한 견적 및 비용 기준', actionVerb: '품목별 투명한 비용 산정 기준을 안내합니다' },
-  'kw-general-short-co': { supportingTitle: '방문 수거 일정 상담', actionVerb: '현장 배출 여건에 맞춘 방문 일정을 상담합니다' },
-  'kw-general-collection': { supportingTitle: '실내 방문 반출 상담', actionVerb: '직접 옮기기 어려운 짐의 실내 반출 여건을 확인합니다' },
-  'kw-collection-company': { supportingTitle: '대량 폐기물 수거 상담', actionVerb: '많은 물량도 현장 조건에 맞춰 단계별 수거를 안내합니다' },
-  'kw-bulky-collection': { supportingTitle: '대형 폐기물 방문 수거 상담', actionVerb: '실내 대형 물품과 무거운 가구·집기의 안전한 반출 여건을 확인합니다' },
-  'kw-household': { supportingTitle: '가정집·원룸 짐 정리', actionVerb: '생활 쓰레기와 가구 배출에 필요한 점검 사항을 안내합니다' },
-  'kw-furniture': { supportingTitle: '대형 가구 분해 및 반출', actionVerb: '가구 크기와 반출 조건을 먼저 확인합니다' },
-  'kw-moving': { supportingTitle: '이사 전후 폐기물 처리', actionVerb: '퇴거 일정에 맞춰 남은 짐의 수거 방안을 상담합니다' },
-  'kw-office': { supportingTitle: '사무실 집기 및 파티션 정리', actionVerb: '빌딩 반출 규정과 집기 수량을 고려해 수거 절차를 안내합니다' },
-  'kw-commercial': { supportingTitle: '상가 매장 집기 정리', actionVerb: '진열대와 상업용 비품의 반출 여건을 확인합니다' },
-  'kw-closure': { supportingTitle: '폐업 정리 실내 비움', actionVerb: '남은 집기와 비품의 일괄 정리 방안을 상담합니다' },
-  'kw-business': { supportingTitle: '사업장 불용 자재 수거 상담', actionVerb: '사전 품목 확인을 통해 수거 가능 여부와 절차를 안내합니다' },
-  'kw-construction': { supportingTitle: '인테리어 현장 잔재물 상담', actionVerb: '마대 포장 상태와 반출 동선을 확인해 일정을 조율합니다' },
+  'kw-general-disposal': { supportingTitle: '폐기물 종류별 처리 절차', actionVerb: '품목 분류와 반출 동선을 사전 확인해 체계적인 수거 절차를 안내합니다' },
+  'kw-general-company': { supportingTitle: '전문 수거 업체 안내', actionVerb: '작업 인력 배치와 현장 조건에 맞춘 전문 수거 계획을 안내합니다' },
+  'kw-price-estimate': { supportingTitle: '투명한 견적 및 비용 기준', actionVerb: '부피, 무게, 층수, 승강기 여건에 맞춘 투명한 견적 기준을 안내합니다' },
+  'kw-general-short-co': { supportingTitle: '신속 현장 방문 수거', actionVerb: '현장 진입 여건과 희망 일정에 맞춘 신속한 방문 수거를 안내합니다' },
+  'kw-general-collection': { supportingTitle: '실내 방문 반출 상담', actionVerb: '실내에서 직접 들어내어 상차하는 방문 수거 절차를 안내합니다' },
+  'kw-collection-company': { supportingTitle: '대량 수거 전담팀 안내', actionVerb: '맞춤 차량 배차와 수거팀 인력 투입에 따른 일괄 수거를 안내합니다' },
+  'kw-bulky-collection': { supportingTitle: '대형 폐기물 해체·반출', actionVerb: '대형 가구와 무거운 집기의 현장 분해 및 안전 반출 여건을 확인합니다' },
+  'kw-household': { supportingTitle: '가정집 살림 정리 수거', actionVerb: '가정집 혼합 폐기물과 생활 가구 일괄 수거 절차를 안내합니다' },
+  'kw-furniture': { supportingTitle: '가구 분해 및 반출', actionVerb: '침대, 장롱, 소파 등 가구 해체와 출입문 통과 여건을 확인합니다' },
+  'kw-moving': { supportingTitle: '이사 전후 퇴거 짐 정리', actionVerb: '퇴거 일정과 이삿짐 반출 시점에 맞춘 잔여 폐기물 처리 방안을 상담합니다' },
+  'kw-office': { supportingTitle: '사무실 집기·파티션 정리', actionVerb: '빌딩 화물 승강기 규정과 파티션 해체 작업에 맞춘 오피스 비움을 안내합니다' },
+  'kw-commercial': { supportingTitle: '매장 집기·진열대 수거', actionVerb: '상가 주차 여건과 매장 쇼케이스·진열대의 안전한 반출 절차를 안내합니다' },
+  'kw-closure': { supportingTitle: '폐업 매장 실내 일괄 비움', actionVerb: '임대차 만료 기한에 맞춘 폐업 매장 집기 일괄 반출 및 비움을 안내합니다' },
+  'kw-business': { supportingTitle: '사업장·창고 불용자재 수거', actionVerb: '창고 하차장 진입 여건과 불용 자재 성상 확인을 통한 B2B 수거를 안내합니다' },
+  'kw-construction': { supportingTitle: '인테리어 현장 잔재물 수거', actionVerb: '마대 포장 상태와 승강기 보양 여건에 맞춘 건축 잔재물 수거를 안내합니다' },
 };
 
 /**

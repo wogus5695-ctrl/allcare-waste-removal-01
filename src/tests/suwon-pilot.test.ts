@@ -72,12 +72,12 @@ describe('STEP 3-B2 Suwon Region Coverage & Collision Correction Tests', () => {
   });
 
   // =========================================================================
-  // 2. 14 WORK KEYWORDS COMBINATIONS & RESOLVER (60 × 14 = 840)
+  // 2. 15 WORK KEYWORDS COMBINATIONS & RESOLVER (60 × 15 = 900)
   // =========================================================================
-  describe('2. 14 Work Keywords × 60 Regions Dynamic URL Resolution', () => {
-    const expectedCount = 60 * 14; // 840개
+  describe('2. 15 Work Keywords × 60 Regions Dynamic URL Resolution', () => {
+    const expectedCount = 60 * 15; // 900개
 
-    it(`60개 지역과 14개 P0 키워드의 조합은 정확히 ${expectedCount}개의 고유 URL이어야 한다`, () => {
+    it(`60개 지역과 15개 P0 키워드의 조합은 정확히 ${expectedCount}개의 고유 URL이어야 한다`, () => {
       const generatedUrls = new Set<string>();
 
       for (const region of SUWON_REGIONS) {
@@ -277,20 +277,20 @@ describe('STEP 3-B2 Suwon Region Coverage & Collision Correction Tests', () => {
   });
 
   // =========================================================================
-  // 7. SITEMAP & CANONICAL EQUALITY (842 URLs)
+  // 7. SITEMAP & CANONICAL EQUALITY
   // =========================================================================
   describe('7. Sitemap & Canonical URL 100% Equality Audit', () => {
-    it('Sitemap 항목 수는 Core(6) + WASTE 동적(840) + DEMOLITION 동적(540) = 총 1386개여야 한다', () => {
+    it('Sitemap 항목 수는 Core(4) + WASTE 동적(4,665) + DEMOLITION 동적(0) = 총 4,669개여야 한다', () => {
       const entries = getIndexableUrlEntries();
-      assert.equal(entries.length, 1386);
+      assert.equal(entries.length, 4669);
 
       const coreEntries = entries.filter((e) => e.type === 'ROOT' || e.type === 'HUB');
       const wasteDynamicEntries = entries.filter((e) => e.type === 'DYNAMIC' && e.serviceFamily === 'WASTE');
       const demolitionDynamicEntries = entries.filter((e) => e.type === 'DYNAMIC' && e.serviceFamily === 'DEMOLITION');
 
-      assert.equal(coreEntries.length, 6);
-      assert.equal(wasteDynamicEntries.length, 840);
-      assert.equal(demolitionDynamicEntries.length, 540);
+      assert.equal(coreEntries.length, 4);
+      assert.equal(wasteDynamicEntries.length, 4665);
+      assert.equal(demolitionDynamicEntries.length, 0);
     });
 
     it('Sitemap에 포함된 모든 동적 URL은 PageContext의 Canonical URL과 100% 일치해야 한다', () => {
@@ -318,7 +318,7 @@ describe('STEP 3-B2 Suwon Region Coverage & Collision Correction Tests', () => {
 
     it('Sitemap에 중복 URL이 단 1개도 없어야 한다 (Duplicate URL = 0)', () => {
       const urls = getIndexableUrls();
-      assert.equal(new Set(urls).size, 1386);
+      assert.equal(new Set(urls).size, 4669);
     });
 
     it('Sitemap에 테스트용 Fixture(안산시 중앙동, 역삼동)가 노출되지 않아야 한다', () => {
